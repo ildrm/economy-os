@@ -1,0 +1,52 @@
+{
+  "name": "economyos",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@11.15.1",
+  "engines": {
+    "node": "26.5.0",
+    "pnpm": "11.15.1"
+  },
+  "config": {
+    "releaseToolchain": {
+      "corepack": "0.34.6"
+    }
+  },
+  "scripts": {
+    "build": "corepack pnpm -r --if-present build",
+    "benchmark:db": "node --experimental-strip-types database/benchmark.ts",
+    "benchmark:pit": "node scripts/benchmark-pit.mjs",
+    "check": "corepack pnpm lint && corepack pnpm typecheck && corepack pnpm test",
+    "db:drop": "node scripts/manage-verification-database.mjs drop",
+    "db:migrate": "node --env-file-if-exists=.env apps/api/scripts/database-admin.mjs migrate",
+    "db:prepare": "node scripts/manage-verification-database.mjs create",
+    "db:setup:local": "node --env-file-if-exists=.env apps/api/scripts/database-admin.mjs setup-local",
+    "db:verify": "node --experimental-strip-types database/verify.ts",
+    "ingestion:temporal:verify": "corepack pnpm --filter @economyos/ingestion-worker test:temporal",
+    "licenses:verify": "node scripts/verify-production-licenses.mjs",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "object-storage:verify": "corepack pnpm --filter @economyos/object-storage build && node scripts/verify-object-storage.mjs",
+    "policy:self-test": "node scripts/verify-policy-self-tests.mjs",
+    "repository:verify": "node scripts/verify-repository.mjs",
+    "release:automation:verify": "node scripts/verify-release-automation.mjs",
+    "release:evidence:generate": "node scripts/release-evidence.mjs generate",
+    "release:evidence:verify": "node scripts/release-evidence.mjs verify",
+    "typecheck": "corepack pnpm --filter './packages/**' build && corepack pnpm -r --if-present typecheck",
+    "test": "vitest run",
+    "test:a11y": "playwright test tests/accessibility.spec.ts",
+    "test:intelligence": "playwright test tests/intelligence.spec.ts",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@biomejs/biome": "2.5.10",
+    "@playwright/test": "1.62.1",
+    "@types/node": "26.3.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  }
+}

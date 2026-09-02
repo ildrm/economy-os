@@ -1,0 +1,13 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "services/*"
+
+allowBuilds:
+  '@scarf/scarf': false
+  '@swc/core': true
+  protobufjs: false
+
+catalogMode: strict
+enableGlobalVirtualStore: false
+verifyDepsBeforeRun: error

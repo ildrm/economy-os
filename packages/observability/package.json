@@ -1,0 +1,29 @@
+{
+  "name": "@economyos/observability",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@economyos/security": "workspace:*",
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/exporter-trace-otlp-http": "0.221.0",
+    "@opentelemetry/resources": "2.10.0",
+    "@opentelemetry/sdk-node": "0.221.0",
+    "@opentelemetry/semantic-conventions": "1.43.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.3.0"
+  }
+}

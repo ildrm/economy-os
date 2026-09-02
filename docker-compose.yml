@@ -1,0 +1,35 @@
+name: economyos
+
+services:
+  s3mock:
+    image: adobe/s3mock:5.1.0@sha256:65cf60155a2e235fe7d5bf6c633747d6fc7ed93f9f5a6727d86470026b83c2a2
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: economyos-local
+    ports:
+      - "127.0.0.1:59090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/favicon.ico"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  postgres:
+    image: timescale/timescaledb@sha256:bc8527e62f70f0766b29515077965025872fabb5349db421565f69ee273baf2d
+    command: ["postgres", "-c", "shared_preload_libraries=timescaledb"]
+    environment:
+      POSTGRES_DB: economyos
+      POSTGRES_USER: economyos
+      POSTGRES_PASSWORD: economyos-local-only
+    ports:
+      - "127.0.0.1:55432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U economyos -d economyos"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - economyos-postgres:/var/lib/postgresql/data
+
+volumes:
+  economyos-postgres:

@@ -1,0 +1,59 @@
+:root {
+  color-scheme: light dark;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --surface-canvas: #f5f7fa;
+  --surface-panel: #ffffff;
+  --surface-raised: #ffffff;
+  --text-primary: #101828;
+  --text-secondary: #475467;
+  --border-default: #d0d5dd;
+  --action-primary: #173b63;
+  --action-primary-text: #ffffff;
+  --focus-ring: #1570ef;
+  --status-success: #067647;
+  --status-caution: #b54708;
+  --status-danger: #b42318;
+  --data-observed: #175cd3;
+  --data-estimated: #087e8b;
+  --data-forecast: #6938ef;
+  --data-scenario: #dc6803;
+  --data-unknown: #667085;
+  --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: Vazirmatn, Tahoma, Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  --surface-canvas: #0c1524;
+  --surface-panel: #111c2d;
+  --surface-raised: #17243a;
+  --text-primary: #f2f4f7;
+  --text-secondary: #b9c2d0;
+  --border-default: #344054;
+  --action-primary: #84adff;
+  --action-primary-text: #0c1524;
+  --focus-ring: #84caff;
+  --data-observed: #84adff;
+  --data-estimated: #67e3f9;
+  --data-forecast: #bdb4fe;
+  --data-scenario: #fec84b;
+  --data-unknown: #98a2b3;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border-default: currentColor;
+    --focus-ring: #0057d9;
+  }
+}
+
+:lang(fa),
+:lang(ar) {
+  font-family: var(--font-arabic);
+}

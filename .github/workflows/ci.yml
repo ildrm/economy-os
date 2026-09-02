@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      CI: "true"
+      ECONOMYOS_VERIFY_DATABASE: economyos_verify_ci
+      ECONOMYOS_BENCHMARK_DATABASE: economyos_verify_ci
+      ECONOMYOS_VERIFY_RUN_ID: github-${{ github.run_id }}-${{ github.run_attempt }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@1e60f620b9541dca1515407b8cfd1f3fb18f4c2 # v4.0.3
+        with:
+          node-version-file: .node-version
+
+      - name: Activate pinned pnpm
+        run: |
+          npm install --global corepack@0.34.6 --ignore-scripts
+          corepack enable
+          corepack pnpm --version
+
+      - name: Install dependencies
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Verify release automation contracts
+        run: corepack pnpm release:automation:verify
+
+      - name: Production dependency audit
+        run: corepack pnpm audit --prod
+
+      - name: Verify policy gates against adversarial fixtures
+        run: corepack pnpm policy:self-test
+
+      - name: Verify repository secrets and internal links
+        run: corepack pnpm repository:verify
+
+      - name: Verify production dependency licenses
+        run: corepack pnpm licenses:verify
+
+      - name: Lint
+        run: corepack pnpm lint
+
+      - name: Typecheck
+        run: corepack pnpm typecheck
+
+      - name: Unit tests
+        run: corepack pnpm test
+
+      - name: Coverage gates
+        run: corepack pnpm test:coverage
+
+      - name: Production build
+        run: corepack pnpm build
+
+      - name: Verify ingestion workflow against pinned Temporal server
+        run: corepack pnpm ingestion:temporal:verify
+
+      - name: Start pinned integration services
+        run: docker compose up --detach --wait postgres s3mock
+
+      - name: Create owned disposable verification database
+        run: corepack pnpm db:prepare
+
+      - name: Verify migrations, RLS, PIT, ingestion, governance, state, and Timescale
+        run: corepack pnpm db:verify
+
+      - name: Verify immutable S3 object-storage behavior
+        run: corepack pnpm object-storage:verify
+
+      - name: Governed database point-in-time performance gate
+        run: corepack pnpm benchmark:db
+
+      - name: Install Chromium runtime
+        run: corepack pnpm exec playwright install --with-deps chromium
+
+      - name: Accessibility and localization browser tests
+        run: corepack pnpm test:a11y
+
+      - name: Economic-intelligence browser acceptance tests
+        run: corepack pnpm test:intelligence
+
+      - name: Point-in-time performance gate
+        run: corepack pnpm benchmark:pit
+
+      - name: Generate unsigned candidate SBOM and build manifest
+        run: corepack pnpm release:evidence:generate
+
+      - name: Verify candidate SBOM and build manifest
+        run: corepack pnpm release:evidence:verify
+
+      - name: Drop owned disposable verification database
+        if: always()
+        run: corepack pnpm db:drop
+
+      - name: Stop integration services
+        if: always()
+        run: docker compose down --volumes

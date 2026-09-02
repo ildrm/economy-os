@@ -1,0 +1,32 @@
+{
+  "name": "@economyos/ingestion-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:temporal": "vitest run --config vitest.temporal.config.ts"
+  },
+  "dependencies": {
+    "@economyos/canonical-data": "workspace:*",
+    "@economyos/data-admission": "workspace:*",
+    "@economyos/object-storage": "workspace:*",
+    "@temporalio/activity": "1.23.0",
+    "@temporalio/client": "1.23.0",
+    "@temporalio/common": "1.23.0",
+    "@temporalio/worker": "1.23.0",
+    "@temporalio/workflow": "1.23.0",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.3.0",
+    "@types/pg": "8.23.1",
+    "@temporalio/testing": "1.23.0",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  }
+}
