@@ -17,7 +17,15 @@ export function isSafeRelativeRedirect(value: string): boolean {
   if (!value.startsWith("/") || value.startsWith("//")) return false;
   try {
     const decoded = decodeURIComponent(value);
-    return decoded.startsWith("/") && !decoded.startsWith("//") && !decoded.includes("\\");
+    return (
+      decoded.startsWith("/") &&
+      !decoded.startsWith("//") &&
+      !decoded.includes("\\") &&
+      ![...decoded].some((character) => {
+        const code = character.charCodeAt(0);
+        return code <= 31 || code === 127;
+      })
+    );
   } catch {
     return false;
   }

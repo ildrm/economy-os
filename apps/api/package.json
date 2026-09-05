@@ -11,6 +11,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@economyos/allocation-planning": "workspace:*",
+    "@economyos/behavioral-economics": "workspace:*",
     "@economyos/capital-allocation": "workspace:*",
     "@economyos/config": "workspace:*",
     "@economyos/contracts": "workspace:*",

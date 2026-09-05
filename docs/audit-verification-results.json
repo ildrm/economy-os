@@ -1,0 +1,424 @@
+{
+  "date": "2026-09-05",
+  "baseRevision": "15b985ba825e529a61610f4bfa7b66913a974b3c",
+  "sourceTree": "uncommitted_local_changes",
+  "scope": "local_verification_not_production_acceptance",
+  "consecutiveFullRuns": 3,
+  "gateExecutions": 57,
+  "failedGates": 0,
+  "perRun": {
+    "unitTestsPassed": 1168,
+    "unitTestFiles": 93,
+    "browserTestsPassed": 106,
+    "temporalTestsPassed": 2,
+    "migrationsVerified": 40,
+    "skippedUnitOrBrowserTests": 0
+  },
+  "coveragePercent": {
+    "statements": 91.58,
+    "branches": 84.51,
+    "functions": 97.79,
+    "lines": 93.36
+  },
+  "commands": [
+    {
+      "run": 1,
+      "command": "install",
+      "exitCode": 0,
+      "seconds": 0.54,
+      "log": "/tmp/economyos-audit/final/run-1-install.log"
+    },
+    {
+      "run": 1,
+      "command": "repository",
+      "exitCode": 0,
+      "seconds": 0.46,
+      "log": "/tmp/economyos-audit/final/run-1-repository.log"
+    },
+    {
+      "run": 1,
+      "command": "policy",
+      "exitCode": 0,
+      "seconds": 0.34,
+      "log": "/tmp/economyos-audit/final/run-1-policy.log"
+    },
+    {
+      "run": 1,
+      "command": "licenses",
+      "exitCode": 0,
+      "seconds": 0.85,
+      "log": "/tmp/economyos-audit/final/run-1-licenses.log"
+    },
+    {
+      "run": 1,
+      "command": "release-automation",
+      "exitCode": 0,
+      "seconds": 0.52,
+      "log": "/tmp/economyos-audit/final/run-1-release-automation.log"
+    },
+    {
+      "run": 1,
+      "command": "check",
+      "exitCode": 0,
+      "seconds": 25.85,
+      "log": "/tmp/economyos-audit/final/run-1-check.log"
+    },
+    {
+      "run": 1,
+      "command": "coverage",
+      "exitCode": 0,
+      "seconds": 7.05,
+      "log": "/tmp/economyos-audit/final/run-1-coverage.log"
+    },
+    {
+      "run": 1,
+      "command": "build",
+      "exitCode": 0,
+      "seconds": 19.33,
+      "log": "/tmp/economyos-audit/final/run-1-build.log"
+    },
+    {
+      "run": 1,
+      "command": "database",
+      "exitCode": 0,
+      "seconds": 11.67,
+      "log": "/tmp/economyos-audit/final/run-1-database.log"
+    },
+    {
+      "run": 1,
+      "command": "temporal",
+      "exitCode": 0,
+      "seconds": 4.87,
+      "log": "/tmp/economyos-audit/final/run-1-temporal.log"
+    },
+    {
+      "run": 1,
+      "command": "storage",
+      "exitCode": 0,
+      "seconds": 2.06,
+      "log": "/tmp/economyos-audit/final/run-1-storage.log"
+    },
+    {
+      "run": 1,
+      "command": "accessibility",
+      "exitCode": 0,
+      "seconds": 12.88,
+      "log": "/tmp/economyos-audit/final/run-1-accessibility.log"
+    },
+    {
+      "run": 1,
+      "command": "intelligence",
+      "exitCode": 0,
+      "seconds": 10.27,
+      "log": "/tmp/economyos-audit/final/run-1-intelligence.log"
+    },
+    {
+      "run": 1,
+      "command": "research-ui",
+      "exitCode": 0,
+      "seconds": 8.37,
+      "log": "/tmp/economyos-audit/final/run-1-research-ui.log"
+    },
+    {
+      "run": 1,
+      "command": "pit-benchmark",
+      "exitCode": 0,
+      "seconds": 4.88,
+      "log": "/tmp/economyos-audit/final/run-1-pit-benchmark.log"
+    },
+    {
+      "run": 1,
+      "command": "research-benchmark",
+      "exitCode": 0,
+      "seconds": 1.2,
+      "log": "/tmp/economyos-audit/final/run-1-research-benchmark.log"
+    },
+    {
+      "run": 1,
+      "command": "db-benchmark",
+      "exitCode": 0,
+      "seconds": 122.18,
+      "log": "/tmp/economyos-audit/final/run-1-db-benchmark.log"
+    },
+    {
+      "run": 1,
+      "command": "release-evidence-generate",
+      "exitCode": 0,
+      "seconds": 1.96,
+      "log": "/tmp/economyos-audit/final/run-1-release-evidence-generate.log"
+    },
+    {
+      "run": 1,
+      "command": "release-evidence-verify",
+      "exitCode": 0,
+      "seconds": 1.26,
+      "log": "/tmp/economyos-audit/final/run-1-release-evidence-verify.log"
+    },
+    {
+      "run": 2,
+      "command": "install",
+      "exitCode": 0,
+      "seconds": 0.27,
+      "log": "/tmp/economyos-audit/final/run-2-install.log"
+    },
+    {
+      "run": 2,
+      "command": "repository",
+      "exitCode": 0,
+      "seconds": 0.37,
+      "log": "/tmp/economyos-audit/final/run-2-repository.log"
+    },
+    {
+      "run": 2,
+      "command": "policy",
+      "exitCode": 0,
+      "seconds": 0.31,
+      "log": "/tmp/economyos-audit/final/run-2-policy.log"
+    },
+    {
+      "run": 2,
+      "command": "licenses",
+      "exitCode": 0,
+      "seconds": 0.67,
+      "log": "/tmp/economyos-audit/final/run-2-licenses.log"
+    },
+    {
+      "run": 2,
+      "command": "release-automation",
+      "exitCode": 0,
+      "seconds": 0.48,
+      "log": "/tmp/economyos-audit/final/run-2-release-automation.log"
+    },
+    {
+      "run": 2,
+      "command": "check",
+      "exitCode": 0,
+      "seconds": 24.91,
+      "log": "/tmp/economyos-audit/final/run-2-check.log"
+    },
+    {
+      "run": 2,
+      "command": "coverage",
+      "exitCode": 0,
+      "seconds": 6.73,
+      "log": "/tmp/economyos-audit/final/run-2-coverage.log"
+    },
+    {
+      "run": 2,
+      "command": "build",
+      "exitCode": 0,
+      "seconds": 20.92,
+      "log": "/tmp/economyos-audit/final/run-2-build.log"
+    },
+    {
+      "run": 2,
+      "command": "database",
+      "exitCode": 0,
+      "seconds": 10.0,
+      "log": "/tmp/economyos-audit/final/run-2-database.log"
+    },
+    {
+      "run": 2,
+      "command": "temporal",
+      "exitCode": 0,
+      "seconds": 3.74,
+      "log": "/tmp/economyos-audit/final/run-2-temporal.log"
+    },
+    {
+      "run": 2,
+      "command": "storage",
+      "exitCode": 0,
+      "seconds": 1.64,
+      "log": "/tmp/economyos-audit/final/run-2-storage.log"
+    },
+    {
+      "run": 2,
+      "command": "accessibility",
+      "exitCode": 0,
+      "seconds": 12.57,
+      "log": "/tmp/economyos-audit/final/run-2-accessibility.log"
+    },
+    {
+      "run": 2,
+      "command": "intelligence",
+      "exitCode": 0,
+      "seconds": 9.94,
+      "log": "/tmp/economyos-audit/final/run-2-intelligence.log"
+    },
+    {
+      "run": 2,
+      "command": "research-ui",
+      "exitCode": 0,
+      "seconds": 10.85,
+      "log": "/tmp/economyos-audit/final/run-2-research-ui.log"
+    },
+    {
+      "run": 2,
+      "command": "pit-benchmark",
+      "exitCode": 0,
+      "seconds": 5.44,
+      "log": "/tmp/economyos-audit/final/run-2-pit-benchmark.log"
+    },
+    {
+      "run": 2,
+      "command": "research-benchmark",
+      "exitCode": 0,
+      "seconds": 1.21,
+      "log": "/tmp/economyos-audit/final/run-2-research-benchmark.log"
+    },
+    {
+      "run": 2,
+      "command": "db-benchmark",
+      "exitCode": 0,
+      "seconds": 117.05,
+      "log": "/tmp/economyos-audit/final/run-2-db-benchmark.log"
+    },
+    {
+      "run": 2,
+      "command": "release-evidence-generate",
+      "exitCode": 0,
+      "seconds": 1.86,
+      "log": "/tmp/economyos-audit/final/run-2-release-evidence-generate.log"
+    },
+    {
+      "run": 2,
+      "command": "release-evidence-verify",
+      "exitCode": 0,
+      "seconds": 1.27,
+      "log": "/tmp/economyos-audit/final/run-2-release-evidence-verify.log"
+    },
+    {
+      "run": 3,
+      "command": "install",
+      "exitCode": 0,
+      "seconds": 0.29,
+      "log": "/tmp/economyos-audit/final/run-3-install.log"
+    },
+    {
+      "run": 3,
+      "command": "repository",
+      "exitCode": 0,
+      "seconds": 0.39,
+      "log": "/tmp/economyos-audit/final/run-3-repository.log"
+    },
+    {
+      "run": 3,
+      "command": "policy",
+      "exitCode": 0,
+      "seconds": 0.33,
+      "log": "/tmp/economyos-audit/final/run-3-policy.log"
+    },
+    {
+      "run": 3,
+      "command": "licenses",
+      "exitCode": 0,
+      "seconds": 0.76,
+      "log": "/tmp/economyos-audit/final/run-3-licenses.log"
+    },
+    {
+      "run": 3,
+      "command": "release-automation",
+      "exitCode": 0,
+      "seconds": 0.55,
+      "log": "/tmp/economyos-audit/final/run-3-release-automation.log"
+    },
+    {
+      "run": 3,
+      "command": "check",
+      "exitCode": 0,
+      "seconds": 28.38,
+      "log": "/tmp/economyos-audit/final/run-3-check.log"
+    },
+    {
+      "run": 3,
+      "command": "coverage",
+      "exitCode": 0,
+      "seconds": 8.16,
+      "log": "/tmp/economyos-audit/final/run-3-coverage.log"
+    },
+    {
+      "run": 3,
+      "command": "build",
+      "exitCode": 0,
+      "seconds": 20.89,
+      "log": "/tmp/economyos-audit/final/run-3-build.log"
+    },
+    {
+      "run": 3,
+      "command": "database",
+      "exitCode": 0,
+      "seconds": 10.43,
+      "log": "/tmp/economyos-audit/final/run-3-database.log"
+    },
+    {
+      "run": 3,
+      "command": "temporal",
+      "exitCode": 0,
+      "seconds": 4.01,
+      "log": "/tmp/economyos-audit/final/run-3-temporal.log"
+    },
+    {
+      "run": 3,
+      "command": "storage",
+      "exitCode": 0,
+      "seconds": 1.52,
+      "log": "/tmp/economyos-audit/final/run-3-storage.log"
+    },
+    {
+      "run": 3,
+      "command": "accessibility",
+      "exitCode": 0,
+      "seconds": 12.87,
+      "log": "/tmp/economyos-audit/final/run-3-accessibility.log"
+    },
+    {
+      "run": 3,
+      "command": "intelligence",
+      "exitCode": 0,
+      "seconds": 12.55,
+      "log": "/tmp/economyos-audit/final/run-3-intelligence.log"
+    },
+    {
+      "run": 3,
+      "command": "research-ui",
+      "exitCode": 0,
+      "seconds": 10.99,
+      "log": "/tmp/economyos-audit/final/run-3-research-ui.log"
+    },
+    {
+      "run": 3,
+      "command": "pit-benchmark",
+      "exitCode": 0,
+      "seconds": 4.84,
+      "log": "/tmp/economyos-audit/final/run-3-pit-benchmark.log"
+    },
+    {
+      "run": 3,
+      "command": "research-benchmark",
+      "exitCode": 0,
+      "seconds": 1.22,
+      "log": "/tmp/economyos-audit/final/run-3-research-benchmark.log"
+    },
+    {
+      "run": 3,
+      "command": "db-benchmark",
+      "exitCode": 0,
+      "seconds": 115.79,
+      "log": "/tmp/economyos-audit/final/run-3-db-benchmark.log"
+    },
+    {
+      "run": 3,
+      "command": "release-evidence-generate",
+      "exitCode": 0,
+      "seconds": 1.73,
+      "log": "/tmp/economyos-audit/final/run-3-release-evidence-generate.log"
+    },
+    {
+      "run": 3,
+      "command": "release-evidence-verify",
+      "exitCode": 0,
+      "seconds": 1.44,
+      "log": "/tmp/economyos-audit/final/run-3-release-evidence-verify.log"
+    }
+  ]
+}

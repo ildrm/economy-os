@@ -1,4 +1,10 @@
-import { organizationId, type Principal, subjectId, workspaceId } from "@economyos/contracts";
+import {
+  type Classification,
+  organizationId,
+  type Principal,
+  subjectId,
+  workspaceId,
+} from "@economyos/contracts";
 import { describe, expect, it } from "vitest";
 import { authorize, type Grant } from "./policy.js";
 
@@ -132,6 +138,74 @@ describe("authorization policy", () => {
         entitlement,
       ),
     ).toMatchObject({ allowed: false, code: "INPUT_INVALID" });
+  });
+
+  it.each(["toString", "constructor", "__proto__"])(
+    "rejects prototype property names as classifications: %s",
+    (classification) => {
+      const unrestricted: Grant = {
+        subjectId: subject,
+        action: "observation.*",
+        resourceType: "observation",
+        workspaceId: workspaceA,
+      };
+      expect(
+        authorize(
+          {
+            ...request,
+            resource: { ...request.resource, classification: classification as Classification },
+          },
+          [unrestricted],
+          entitlement,
+        ),
+      ).toMatchObject({ allowed: false, code: "INPUT_INVALID" });
+      expect(
+        authorize(
+          request,
+          [
+            {
+              ...baseGrant,
+              maximumClassification: classification as Classification,
+            },
+          ],
+          entitlement,
+        ),
+      ).toMatchObject({ allowed: false, code: "INPUT_INVALID" });
+    },
+  );
+
+  it("preserves submillisecond entitlement and grant boundaries", () => {
+    const at = "2026-01-01T00:30:00.000001Z";
+    expect(
+      authorize({ ...request, at }, grants, {
+        ...entitlement,
+        effectiveFrom: "2026-01-01T00:30:00.000002Z",
+      }),
+    ).toMatchObject({ allowed: false, code: "ENTITLEMENT_INACTIVE" });
+    expect(
+      authorize(
+        { ...request, at },
+        [
+          {
+            ...baseGrant,
+            expiresAt: "2026-01-01T00:30:00.000002Z",
+          },
+        ],
+        entitlement,
+      ),
+    ).toMatchObject({ allowed: true, code: "ALLOW" });
+    expect(
+      authorize(
+        { ...request, at: "2026-01-01T00:30:00.000002Z" },
+        [
+          {
+            ...baseGrant,
+            expiresAt: "2026-01-01T00:30:00.000002Z",
+          },
+        ],
+        entitlement,
+      ),
+    ).toMatchObject({ allowed: false, code: "GRANT_EXPIRED" });
   });
 
   it("selects a valid grant even when an earlier matching grant is unusable", () => {

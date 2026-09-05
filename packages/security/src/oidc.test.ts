@@ -53,6 +53,57 @@ const verifierConfig = {
 const verifier = new OidcAccessTokenVerifier(verifierConfig, fakeFetch);
 
 describe("OIDC access-token verifier", () => {
+  it.each([
+    { crit: ["tenant-policy"], "tenant-policy": "required" },
+    { crit: [] },
+    { crit: "tenant-policy" },
+    { crit: null },
+    { b64: false },
+  ])("rejects unsupported critical or payload encoding headers: %j", async (header) => {
+    let fetchCount = 0;
+    const strictVerifier = new OidcAccessTokenVerifier(verifierConfig, async () => {
+      fetchCount += 1;
+      return fakeFetch();
+    });
+    await expect(strictVerifier.verify(token({}, header), now)).rejects.toMatchObject({
+      code: "TOKEN_HEADER_EXTENSION_UNSUPPORTED",
+    });
+    expect(fetchCount).toBe(0);
+  });
+
+  it.each([undefined, "1"])(
+    "cancels oversized JWKS streams despite content-length %s",
+    async (contentLength) => {
+      let cancelled = false;
+      let pulled = 0;
+      const body = new ReadableStream<Uint8Array>(
+        {
+          pull(controller) {
+            pulled += 1;
+            controller.enqueue(new Uint8Array(262_144));
+            if (pulled === 12) controller.close();
+          },
+          cancel() {
+            cancelled = true;
+          },
+        },
+        { highWaterMark: 0 },
+      );
+      const boundedVerifier = new OidcAccessTokenVerifier(
+        verifierConfig,
+        async () =>
+          new Response(body, {
+            headers: contentLength === undefined ? {} : { "content-length": contentLength },
+          }),
+      );
+      await expect(boundedVerifier.verify(token(), now)).rejects.toMatchObject({
+        code: "JWKS_INVALID",
+      });
+      expect(cancelled).toBe(true);
+      expect(pulled).toBe(5);
+    },
+  );
+
   it("verifies signature, temporal claims, issuer, audience, and tenant context", async () => {
     const principal = await verifier.verify(token(), now);
     expect(principal.organizationId).toBe(organization);

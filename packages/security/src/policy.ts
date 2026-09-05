@@ -63,7 +63,7 @@ function matches(pattern: string, value: string): boolean {
   );
 }
 
-function parseInstant(value: string): number | undefined {
+function parseInstant(value: string): bigint | undefined {
   const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,9}))?Z$/.exec(value);
   if (!match) return undefined;
   const [, yearText, monthText, dayText, hourText, minuteText, secondText, fraction] = match;
@@ -86,11 +86,11 @@ function parseInstant(value: string): number | undefined {
   ) {
     return undefined;
   }
-  const parseable = fraction
-    ? `${value.slice(0, value.indexOf("."))}.${fraction.padEnd(3, "0").slice(0, 3)}Z`
-    : value;
+  const parseable = fraction ? `${value.slice(0, value.indexOf("."))}Z` : value;
   const parsed = Date.parse(parseable);
-  return Number.isFinite(parsed) ? parsed : undefined;
+  return Number.isFinite(parsed)
+    ? BigInt(parsed) * 1_000_000n + BigInt((fraction ?? "0").padEnd(9, "0"))
+    : undefined;
 }
 
 export function authorize(
@@ -112,17 +112,17 @@ export function authorize(
     principalIssuedAt === undefined ||
     principalExpiresAt === undefined ||
     principalExpiresAt <= principalIssuedAt ||
-    classificationRank[request.resource.classification] === undefined
+    !Object.hasOwn(classificationRank, request.resource.classification)
   ) {
     return deny("INPUT_INVALID");
   }
   if (at < principalIssuedAt || at >= principalExpiresAt) return deny("PRINCIPAL_INACTIVE");
 
-  const grantExpiries = new Map<Grant, number | undefined>();
+  const grantExpiries = new Map<Grant, bigint | undefined>();
   for (const grant of grants) {
     if (
       grant.maximumClassification !== undefined &&
-      classificationRank[grant.maximumClassification] === undefined
+      !Object.hasOwn(classificationRank, grant.maximumClassification)
     ) {
       return deny("INPUT_INVALID");
     }
@@ -133,8 +133,8 @@ export function authorize(
     }
   }
 
-  let entitlementEffectiveFrom: number | undefined;
-  let entitlementEffectiveUntil: number | undefined;
+  let entitlementEffectiveFrom: bigint | undefined;
+  let entitlementEffectiveUntil: bigint | undefined;
   if (entitlement !== undefined) {
     entitlementEffectiveFrom = parseInstant(entitlement.effectiveFrom);
     if (entitlementEffectiveFrom === undefined) return deny("INPUT_INVALID");

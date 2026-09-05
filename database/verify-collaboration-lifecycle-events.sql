@@ -229,7 +229,10 @@ BEGIN
       OR NOT EXISTS (
         SELECT 1 FROM pg_proc procedure
         WHERE procedure.oid = signature::regprocedure AND procedure.prosecdef
-          AND procedure.proconfig @> ARRAY['search_path=pg_catalog, app']
+          AND procedure.proconfig @> CASE
+            WHEN signature LIKE 'app.get_%' THEN ARRAY['search_path=pg_catalog, app, evidence']
+            ELSE ARRAY['search_path=pg_catalog, app']
+          END
       )
     THEN RAISE EXCEPTION '% has unsafe execution metadata', signature;
     END IF;
@@ -456,3 +459,170 @@ INSERT INTO p14_payloads VALUES
     '14700000-0000-4000-8000-000000000703',
     '2026-08-10T10:30:00Z', 'c'
   ));
+
+SET LOCAL app.organization_id = '14700000-0000-4000-8000-000000000001';
+SET LOCAL app.subject_id = '14700000-0000-4000-8000-000000000201';
+SET LOCAL ROLE economyos_app_local;
+SELECT app.register_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'credential.a';
+SELECT app.register_integration_webhook_endpoint('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.a';
+SELECT app.register_developer_portal_entry('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'portal.a';
+
+-- Role checks run against the event's historical time as well as caller scope.
+SET LOCAL app.subject_id = '14700000-0000-4000-8000-000000000203';
+SELECT pg_temp.p14_expect_failure('analyst cannot revoke',
+  $test$SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'credential.a.analyst'$test$, '42501');
+SET LOCAL app.subject_id = '14700000-0000-4000-8000-000000000204';
+SELECT pg_temp.p14_expect_failure('late membership cannot authorize prior event',
+  $test$SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'credential.a.late-admin'$test$, '42501');
+SET LOCAL app.subject_id = '14700000-0000-4000-8000-000000000201';
+SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'credential.a.revoked';
+SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'credential.a.revoked';
+SELECT pg_temp.p14_expect_failure('changed revocation replay',
+  $test$SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'credential.a.conflict'$test$, '23514');
+
+SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.a.disabled';
+SELECT pg_temp.p14_expect_failure('delivery while disabled at event time',
+  $test$SELECT app.append_integration_webhook_delivery_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'delivery.a.disabled'$test$, '23514');
+SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.a.enabled';
+SELECT app.append_integration_webhook_delivery_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'delivery.a.enabled';
+SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.a.rotated';
+SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.a.rotated';
+SELECT pg_temp.p14_expect_failure('webhook backward chronology',
+  $test$SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'webhook.a.backward'$test$, '23514');
+SELECT pg_temp.p14_expect_failure('webhook signing key reuse',
+  $test$SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'webhook.a.reused-key'$test$, '23514');
+SELECT pg_temp.p14_expect_failure('webhook sequence gap',
+  $test$SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'webhook.a.gap'$test$, '23514');
+
+SELECT app.append_developer_portal_entry_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'portal.a.suspended';
+SELECT pg_temp.p14_expect_failure('equal-time portal transition',
+  $test$SELECT app.append_developer_portal_entry_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'portal.a.retired.same-time'$test$, '23514');
+SELECT app.append_developer_portal_entry_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'portal.a.retired';
+SELECT app.append_developer_portal_entry_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+FROM p14_payloads WHERE payload_key = 'portal.a.retired';
+SELECT pg_temp.p14_expect_failure('retirement is terminal',
+  $test$SELECT app.append_developer_portal_entry_lifecycle_event('14700000-0000-4000-8000-000000000101', payload)
+  FROM p14_payloads WHERE payload_key = 'portal.a.after-retired'$test$, '23514');
+
+DO $tenant_a_effective_state$
+BEGIN
+  IF (SELECT count(*) FROM app.get_integration_api_credential_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000401')
+    WHERE status = 'revoked' AND revoked_by = '14700000-0000-4000-8000-000000000201'
+      AND revoked_at = '2026-08-10T10:00:00Z'::timestamptz) <> 1
+  THEN RAISE EXCEPTION 'credential revocation state/provenance missing'; END IF;
+  IF (SELECT count(*) FROM app.get_integration_webhook_endpoint_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000501')
+    WHERE active AND signing_key_id = 'webhook.key.a.v2' AND lifecycle_sequence = 3) <> 1
+  THEN RAISE EXCEPTION 'webhook rotation state incorrect'; END IF;
+  IF (SELECT count(*) FROM app.get_developer_portal_entry_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000601')
+    WHERE status = 'retired' AND lifecycle_sequence = 2) <> 1
+  THEN RAISE EXCEPTION 'portal retirement state incorrect'; END IF;
+  -- The exact getter intentionally retains nonpublished administrative history.
+  -- It must expose the effective lifecycle status, not the manifest's original
+  -- published status, so a consumer cannot mistake the entry for active content.
+  IF (SELECT count(*) FROM app.get_developer_portal_entry(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000601')
+    WHERE status = 'retired') <> 1
+  THEN RAISE EXCEPTION 'exact portal read failed to preserve retired effective status'; END IF;
+END
+$tenant_a_effective_state$;
+
+RESET ROLE;
+SET LOCAL app.organization_id = '14700000-0000-4000-8000-000000000002';
+SET LOCAL app.subject_id = '14700000-0000-4000-8000-000000000202';
+SET LOCAL ROLE economyos_app_local;
+SELECT app.register_integration_api_credential('14700000-0000-4000-8000-000000000102', payload)
+FROM p14_payloads WHERE payload_key = 'credential.b';
+SELECT app.register_integration_webhook_endpoint('14700000-0000-4000-8000-000000000102', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.b';
+SELECT app.register_developer_portal_entry('14700000-0000-4000-8000-000000000102', payload)
+FROM p14_payloads WHERE payload_key = 'portal.b';
+SELECT pg_temp.p14_expect_failure('revocation before credential issuance',
+  $test$SELECT app.revoke_integration_api_credential('14700000-0000-4000-8000-000000000102', payload)
+  FROM p14_payloads WHERE payload_key = 'credential.b.before-issued'$test$, '23514');
+SELECT app.append_integration_webhook_endpoint_lifecycle_event('14700000-0000-4000-8000-000000000102', payload)
+FROM p14_payloads WHERE payload_key = 'webhook.b.enabled';
+SELECT app.append_integration_webhook_delivery_event('14700000-0000-4000-8000-000000000102', payload)
+FROM p14_payloads WHERE payload_key = 'delivery.b.enabled';
+SELECT pg_temp.p14_expect_failure('cross-tenant lifecycle mutation',
+  $test$SELECT app.revoke_integration_api_credential(
+    '14700000-0000-4000-8000-000000000101',
+    pg_temp.p14_credential_event(
+      '14700000-0000-4000-8000-000000000002',
+      '14700000-0000-4000-8000-000000000101',
+      '14700000-0000-4000-8000-000000000202', 1, NULL,
+      '2026-08-10T10:00:00Z', 'Current actor attempts a foreign workspace.'
+    )
+  )$test$, '42501');
+SELECT pg_temp.p14_expect_failure('direct lifecycle table read',
+  $test$SELECT count(*) FROM app.integration_api_credential_lifecycle_events$test$, '42501');
+
+DO $tenant_b_isolation$
+BEGIN
+  IF EXISTS (SELECT 1 FROM app.get_integration_api_credential_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000401'))
+    OR EXISTS (SELECT 1 FROM app.get_integration_webhook_endpoint_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000501'))
+    OR EXISTS (SELECT 1 FROM app.get_developer_portal_entry_state(
+    '14700000-0000-4000-8000-000000000101','14700000-0000-4000-8000-000000000601'))
+    OR EXISTS (SELECT 1 FROM app.get_integration_api_credential_state(
+    '14700000-0000-4000-8000-000000000102','14700000-0000-4000-8000-000000000499'))
+  THEN RAISE EXCEPTION 'lifecycle getter enumerates foreign or missing resources'; END IF;
+  IF (SELECT count(*) FROM app.get_integration_api_credential_state(
+    '14700000-0000-4000-8000-000000000102','14700000-0000-4000-8000-000000000401')
+    WHERE status IN ('active','expired') AND revoked_at IS NULL) <> 1
+  THEN RAISE EXCEPTION 'tenant A revocation contaminated tenant B credential'; END IF;
+  IF (SELECT count(*) FROM app.get_integration_webhook_endpoint_state(
+    '14700000-0000-4000-8000-000000000102','14700000-0000-4000-8000-000000000501')
+    WHERE active AND signing_key_id = 'webhook.key.b.v1' AND lifecycle_sequence = 1) <> 1
+  THEN RAISE EXCEPTION 'tenant B endpoint activation failed'; END IF;
+END
+$tenant_b_isolation$;
+
+SET LOCAL app.subject_id = '';
+SELECT pg_temp.p14_expect_failure('registrar defaults cannot supply missing identity',
+  $test$SELECT app.register_integration_webhook_endpoint('14700000-0000-4000-8000-000000000102', payload)
+  FROM p14_payloads WHERE payload_key = 'webhook.b'$test$, '42501');
+RESET ROLE;
+
+DO $immutable_lifecycle_counts$
+BEGIN
+  IF (SELECT count(*) FROM app.integration_api_credential_lifecycle_events
+      WHERE organization_id IN ('14700000-0000-4000-8000-000000000001','14700000-0000-4000-8000-000000000002')) <> 1
+    OR (SELECT count(*) FROM app.integration_webhook_endpoint_lifecycle_events
+      WHERE organization_id IN ('14700000-0000-4000-8000-000000000001','14700000-0000-4000-8000-000000000002')) <> 4
+    OR (SELECT count(*) FROM app.developer_portal_entry_lifecycle_events
+      WHERE organization_id IN ('14700000-0000-4000-8000-000000000001','14700000-0000-4000-8000-000000000002')) <> 2
+  THEN RAISE EXCEPTION 'failed writes or identical replays changed lifecycle history'; END IF;
+END
+$immutable_lifecycle_counts$;
+SELECT pg_temp.p14_expect_failure('owner cannot rewrite lifecycle history',
+  $test$UPDATE app.integration_webhook_endpoint_lifecycle_events SET reason = 'rewritten'
+  WHERE organization_id = '14700000-0000-4000-8000-000000000001'$test$, '55000');
+SELECT pg_temp.p14_expect_failure('owner cannot delete lifecycle history',
+  $test$DELETE FROM app.integration_api_credential_lifecycle_events
+  WHERE organization_id = '14700000-0000-4000-8000-000000000001'$test$, '55000');
+
+ROLLBACK;

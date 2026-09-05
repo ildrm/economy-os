@@ -114,6 +114,25 @@ export class GovernedAuthorizationService {
     );
   }
 
+  async assertResearchWorkspaceAccess(
+    principal: Principal,
+    requestedWorkspaceId: string,
+    access: "read" | "execute",
+    transaction: TenantTransaction,
+  ): Promise<void> {
+    const result = await transaction.query<ResourceAuthorizationRow>(ECONOMIC_STATE_CONTEXT_SQL, [
+      requestedWorkspaceId,
+    ]);
+    await this.assertAuthorized(
+      principal,
+      result.rows[0],
+      `model.${access}`,
+      "model",
+      requestedWorkspaceId,
+      transaction,
+    );
+  }
+
   private async assertAuthorized(
     principal: Principal,
     context: ResourceAuthorizationRow | undefined,

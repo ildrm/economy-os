@@ -32,6 +32,8 @@ import {
   ReleaseSubscriptionController,
 } from "./release-notifications.controller.js";
 import { ReleaseNotificationService } from "./release-notifications.js";
+import { ResearchWorkbenchController } from "./research-workbench.controller.js";
+import { ResearchWorkbenchService } from "./research-workbench.js";
 import {
   PostgresWorkspaceMembershipRepository,
   WORKSPACE_MEMBERSHIPS,
@@ -46,6 +48,7 @@ export class AppModule {
       module: AppModule,
       controllers: [
         HealthController,
+        ResearchWorkbenchController,
         IdentityController,
         WorkspacesController,
         EvidenceController,
@@ -66,6 +69,7 @@ export class AppModule {
           useFactory: () => createPostgresPool(databaseUrl),
         },
         PostgresRuntime,
+        ResearchWorkbenchService,
         PostgresWorkspaceMembershipRepository,
         {
           provide: WORKSPACE_MEMBERSHIPS,

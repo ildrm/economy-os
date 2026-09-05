@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { workbenchCopy } from "../_lib/copy";
+import { researchCopy } from "../_lib/research-copy";
 
 export function WorkbenchShell({
   locale,
@@ -81,11 +82,24 @@ export function WorkbenchShell({
                 {translate(locale, "nav.countries")}
               </Link>
             </li>
+            <li>
+              <Link
+                className="moduleLink"
+                aria-current={pathname.endsWith("/research") ? "page" : undefined}
+                href={intelligenceHref(locale, "/intelligence/research", query)}
+                prefetch={false}
+              >
+                <span className="navIndex" aria-hidden="true">
+                  03
+                </span>
+                {researchCopy(locale).title}
+              </Link>
+            </li>
             {(["evidence", "models", "scenarios"] as const).map((item, index) => (
               <li key={item}>
                 <span className="moduleStatus" aria-disabled="true">
                   <span className="navIndex" aria-hidden="true">
-                    0{index + 3}
+                    0{index + 4}
                   </span>
                   {translate(locale, `nav.${item}`)}
                 </span>

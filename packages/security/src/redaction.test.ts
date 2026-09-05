@@ -16,6 +16,13 @@ describe("security utilities", () => {
     expect(isSafeRelativeRedirect("/safe%5c..%5cevil")).toBe(false);
   });
 
+  it.each(["/\n/evil.test", "/\r/evil.test", "/\t/evil.test", "/%0a/evil.test", "/%00safe"])(
+    "rejects control characters before browser URL normalization: %j",
+    (target) => {
+      expect(isSafeRelativeRedirect(target)).toBe(false);
+    },
+  );
+
   it("does not cache responses across authorization or legal-state changes", () => {
     expect(SECURITY_HEADERS["cache-control"]).toBe("private, no-store");
   });

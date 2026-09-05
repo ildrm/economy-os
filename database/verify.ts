@@ -122,10 +122,12 @@ for (const verification of [
   "verify-crisis-forecast-persistence.sql",
   "verify-capital-allocation-persistence.sql",
   "verify-collaboration-ecosystem-persistence.sql",
+  "verify-collaboration-lifecycle-events.sql",
+  "verify-behavioral-allocation-research.sql",
   "verify-timescale.sql",
 ]) {
   psql(readFileSync(new URL(`./${verification}`, import.meta.url), "utf8"));
 }
 process.stdout.write(
-  `${migrationFiles.length} database migrations; two-tenant RLS, append-only, PIT, ingestion, terminal admission, governance, economic-state, model lifecycle, authorization, release monitoring, durable notifications, bound catalog, lineage security, temporal relationship graph, crisis forecast persistence, capital-allocation persistence, collaboration ecosystem persistence, and Timescale verification passed.\n`,
+  `${migrationFiles.length} database migrations; two-tenant RLS, append-only, PIT, ingestion, terminal admission, governance, economic-state, model lifecycle, authorization, release monitoring, durable notifications, bound catalog, lineage security, temporal relationship graph, crisis forecast persistence, capital-allocation persistence, collaboration ecosystem persistence, behavioral/allocation research, and Timescale verification passed.\n`,
 );

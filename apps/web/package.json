@@ -9,6 +9,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@economyos/behavioral-economics": "workspace:*",
     "@economyos/design-tokens": "workspace:*",
     "@economyos/i18n": "workspace:*",
     "next": "16.3.2",

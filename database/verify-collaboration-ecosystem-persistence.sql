@@ -981,6 +981,56 @@ END
 $phase14_tenant_isolation$;
 RESET ROLE;
 
+-- The 0038 provenance columns must be supplied by actual caller context even
+-- though the public manifests contain no registrar. A publisher/owner is not a
+-- substitute for the administrator who performed registration.
+DO $phase14_durable_registrar_provenance$
+DECLARE
+  caller_id uuid := '14000000-0000-4000-8000-000000000201';
+  tenant_id uuid := '14000000-0000-4000-8000-000000000001';
+  relation_name text;
+  actor_column text;
+  row_count integer;
+  invalid_count integer;
+BEGIN
+  FOR relation_name, actor_column IN
+    SELECT * FROM (VALUES
+      ('integration_quota_policies', 'registered_by'),
+      ('integration_webhook_endpoints', 'registered_by'),
+      ('integration_webhook_delivery_events', 'actor_id'),
+      ('integration_extension_manifests', 'registered_by'),
+      ('developer_portal_entries', 'registered_by')
+    ) AS relations(relation_name, actor_column)
+  LOOP
+    EXECUTE format(
+      'SELECT count(*), count(*) FILTER (WHERE %I IS DISTINCT FROM $1) FROM app.%I WHERE organization_id = $2',
+      actor_column, relation_name
+    ) INTO row_count, invalid_count USING caller_id, tenant_id;
+    IF row_count = 0 OR invalid_count <> 0 THEN
+      RAISE EXCEPTION '% omitted or misattributed caller provenance', relation_name;
+    END IF;
+  END LOOP;
+  IF EXISTS (
+    SELECT 1 FROM app.integration_quota_policies
+    WHERE organization_id = tenant_id
+      AND (registered_at < transaction_timestamp() OR registered_at > clock_timestamp())
+  ) OR EXISTS (
+    SELECT 1 FROM app.integration_webhook_endpoints
+    WHERE organization_id = tenant_id
+      AND (registered_at < transaction_timestamp() OR registered_at > clock_timestamp())
+  ) THEN
+    RAISE EXCEPTION 'registration time was inferred from historical client content';
+  END IF;
+  IF NOT EXISTS (
+    SELECT 1 FROM app.integration_extension_manifests
+    WHERE organization_id = tenant_id AND registered_by = caller_id
+      AND publisher_id <> registered_by
+  ) THEN
+    RAISE EXCEPTION 'fixture failed to distinguish registering caller from publisher';
+  END IF;
+END
+$phase14_durable_registrar_provenance$;
+
 SELECT pg_temp.phase14_expect_failure(
   'oversized manifest',
   $test$SELECT app.collaboration_assert_manifest(

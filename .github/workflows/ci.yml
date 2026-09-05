@@ -98,6 +98,12 @@ jobs:
       - name: Economic-intelligence browser acceptance tests
         run: corepack pnpm test:intelligence
 
+      - name: Behavioral and allocation research browser tests
+        run: corepack pnpm test:research
+
+      - name: Research kernel capacity gate
+        run: corepack pnpm benchmark:research
+
       - name: Point-in-time performance gate
         run: corepack pnpm benchmark:pit
 

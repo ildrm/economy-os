@@ -2,13 +2,13 @@
 
 ## Declaration
 
-As of 2026-09-01:
+As of 2026-09-05:
 
 - Phase 0 — discovery, audit, and specification: `accepted`.
 - Phase 1 — foundation: `accepted`.
 - Phase 2 — canonical economic data platform: `accepted`.
 - Phase 3 — economic state and global/country intelligence: `in_progress`.
-- Phases 4–15: `not_started`.
+- Phases 4–15: `in_progress` (research cores and selected integrations; acceptance gates remain open).
 
 Acceptance is scoped to the repository implementation and its pinned local integration profile. It is not a production-readiness claim for the complete EconomyOS product, a production cloud provider qualification, or approval of a research model for decision-making.
 
@@ -24,7 +24,13 @@ Acceptance is scoped to the repository implementation and its pinned local integ
 - Durable Temporal ingestion workflow with fetch, byte-identical landing, parse/reparse, quality, quarantine, promotion, lineage, checkpoint, reconciliation, retry, and terminal replay semantics.
 - Approved World Bank WDI connector binding for source `2`, strict identity/schema/pagination/range handling, arbitrary-precision values, and exact provider bytes. The local governance fixture records the catalog's [CC BY 4.0 license](https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators), attribution, permitted actions, and review evidence.
 
-## Current verification matrix
+## Current local verification (2026-09-05)
+
+Three consecutive full runs passed all 57 command gates. Each run passed 1,168 unit/contract tests, 106 browser tests, 2 Temporal tests, all 40 migrations/SQL verifiers, storage checks, strict checks/builds and unchanged performance gates. Coverage: 91.58% statements / 84.51% branches / 97.79% functions / 93.36% lines. [Exact results and limits](audit-remediation-report.md#final-measured-verification-results) and [machine-readable exits](audit-verification-results.json) supersede the historical counts below. Research browser tests use synthetic responses; production authentication/deployment and empirical acceptance remain open.
+
+## Historical Phase 2 verification matrix (2026-09-01)
+
+These measurements describe the earlier 29-migration snapshot, not the current checkout. Current audit evidence and limitations are recorded in [the September audit report](audit-remediation-report.md).
 
 | Gate | Evidence | Result |
 |---|---|---|
@@ -77,10 +83,18 @@ The release decision was driven by the executable gate rather than feature count
 
 ## Why Phase 3 remains in progress
 
-- Vector discovery, global/country comparison views, interactive evidence drill-down UI, and durable release notifications/workflow automation are not implemented. The delivered vector primitive is exact-ID detail only, and monitoring remains polling-only over persisted canonical data.
+- Vector discovery, global/country comparisons, interactive evidence drill-down and durable release notifications have code, API and regression fixtures. Earlier absence claims were obsolete. Their product/empirical acceptance remains separate from local implementation verification.
 - The five dimensions have a governed engine contract, but accepted real-data model definitions, coverage and sensitivity studies, economic review, and decision-use validation remain outstanding.
-- Artifact lifecycle in the vector response is frozen manifest identity, not a current production-approval decision. A governed effective model-status history and geography-neutral comparison contract remain required before lifecycle-aware serving or numeric cross-country comparison can be claimed.
+- Migration `0030` and discovery/comparison APIs implement effective model-status history and comparison compatibility. These mechanisms do not constitute production approval or validate cross-country research models empirically.
 - Composite outputs are research baselines, not forecasts, causal estimates, welfare judgments, probabilities, or investment/policy advice.
 - Production Temporal persistence/recovery, production S3 qualification, cloud deployment, HA/DR, and representative multi-user scale remain later hardening work.
 
 These are explicit remaining Phase 3 and production-scope gates; they are not claimed as completed functionality.
+
+## Behavioral and allocation research increment
+
+Two bounded contexts now implement behavioral research and economic allocation/planning. The former provides governed studies and replication assessments, exact source-span candidate extraction, explicit-parameter decision kernels, state/graph/forecast bridges, and model cards. The latter provides multidimensional ownership/pricing/allocation/decision rights, plans and target/actual disagreement, exact material balances and bottlenecks, and a one-period planner/enterprise scenario.
+
+`POST /api/v1/research/runs` executes authorized hypothetical intertemporal, governed choice, public-source candidate detection or planner/material-balance work. Migration `0039` preserves immutable, tenant/workspace-scoped scenario results. Raw detection source text is omitted from stored/returned inputs; snapshot/hash bindings remain. `GET /api/v1/research/runs/{id}` requires explicit knowledge and system cutoffs. The localized `/[locale]/intelligence/research` UI provides intertemporal and material-balance forms plus a theory explorer.
+
+This increment does not establish empirical calibration, intervention effectiveness, a complete planning optimizer, a live behavioral feed, full research CRUD/product workflows, systemic behavioral contagion, or production model approval. [Product coverage](audit-product-coverage.md) tracks the outstanding acceptance criteria. No roadmap phase is promoted by this increment.

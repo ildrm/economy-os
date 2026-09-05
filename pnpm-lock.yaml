@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@nestjs/platform-fastify>fastify': 5.12.1
+
 importers:
 
   .:
@@ -32,6 +35,12 @@ importers:
 
   apps/api:
     dependencies:
+      '@economyos/allocation-planning':
+        specifier: workspace:*
+        version: link:../../packages/allocation-planning
+      '@economyos/behavioral-economics':
+        specifier: workspace:*
+        version: link:../../packages/behavioral-economics
       '@economyos/capital-allocation':
         specifier: workspace:*
         version: link:../../packages/capital-allocation
@@ -99,6 +108,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@economyos/behavioral-economics':
+        specifier: workspace:*
+        version: link:../../packages/behavioral-economics
       '@economyos/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens
@@ -127,6 +139,31 @@ importers:
       typescript:
         specifier: 6.0.3
         version: 6.0.3
+
+  packages/allocation-planning:
+    devDependencies:
+      '@types/node':
+        specifier: 26.3.0
+        version: 26.3.0
+
+  packages/behavioral-economics:
+    dependencies:
+      '@economyos/causal-graph':
+        specifier: workspace:*
+        version: link:../causal-graph
+      '@economyos/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@economyos/forecasting-engine':
+        specifier: workspace:*
+        version: link:../forecasting-engine
+      '@economyos/narrative-intelligence':
+        specifier: workspace:*
+        version: link:../narrative-intelligence
+    devDependencies:
+      '@types/node':
+        specifier: 26.3.0
+        version: 26.3.0
 
   packages/canonical-data:
     dependencies:
@@ -2145,9 +2182,6 @@ packages:
   fastify-plugin@6.0.0:
     resolution: {integrity: sha512-fZOty7z3O7vOliF6d8bHE3wiEh1KcNnKEQensSgTk9C1DvN6nRLS++XVd86v33Hw/8u9Un8A1zDrQ8ujcQDHEg==}
 
-  fastify@5.11.3:
-    resolution: {integrity: sha512-W6hzDP8s0iSeL7LGwY6Oc/ZxuXWOvFEMs6p2L0Si415YRo27W5pBKdOTXxhemBDeSTAcpYf5evRA9onF2OYhPA==}
-
   fastify@5.12.1:
     resolution: {integrity: sha512-FWi+tQvwxR/PeRX7Z2mhfEF5ozJ3jn9asiiclzKXNSzJRHAYcU924aIOKAdHFJ+YIKieh3cqr1IwCOvTr41B3Q==}
 
@@ -4100,7 +4134,7 @@ snapshots:
       '@nestjs/common': 11.2.1(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(reflect-metadata@0.2.2)(rxjs@7.8.2)
       fast-querystring: 1.1.2
-      fastify: 5.11.3
+      fastify: 5.12.1
       fastify-plugin: 6.0.0
       find-my-way: 9.7.0
       light-my-request: 6.6.0
@@ -5153,24 +5187,6 @@ snapshots:
   fastify-plugin@5.1.0: {}
 
   fastify-plugin@6.0.0: {}
-
-  fastify@5.11.3:
-    dependencies:
-      '@fastify/ajv-compiler': 4.0.6
-      '@fastify/error': 4.2.0
-      '@fastify/fast-json-stringify-compiler': 5.1.0
-      '@fastify/proxy-addr': 5.1.0
-      abstract-logging: 2.0.1
-      avvio: 9.3.0
-      fast-json-stringify: 7.0.1
-      find-my-way: 9.7.0
-      light-my-request: 6.6.0
-      pino: 10.3.1
-      process-warning: 5.1.0
-      rfdc: 1.4.1
-      secure-json-parse: 4.1.0
-      semver: 7.8.5
-      toad-cache: 3.7.4
 
   fastify@5.12.1:
     dependencies:

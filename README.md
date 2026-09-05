@@ -12,6 +12,8 @@ EconomyOS is an evidence-first, point-in-time economic intelligence and causal w
 
 No Phase 3–15 status is promoted from package tests alone. Persistence, APIs, workers, UI, empirical validation, and external operational evidence remain phase-specific gates. The normative roadmap is in [`docs/16-roadmap.md`](docs/16-roadmap.md), current evidence is in [`docs/21-implementation-status.md`](docs/21-implementation-status.md), capability mapping is in [`docs/TRACEABILITY.md`](docs/TRACEABILITY.md), and the product release procedure is in [`docs/49-product-release-gate-runbook.md`](docs/49-product-release-gate-runbook.md).
 
+The behavioral and allocation research increment adds explicit-assumption decision models, source-span intervention candidates, multidimensional planning contracts, exact material-balance kernels, and a localized research workspace at `/en/intelligence/research` (all 12 locales supported). Results remain hypothetical or unvalidated research. See the [audit report](docs/audit-remediation-report.md) and [coverage gaps](docs/audit-product-coverage.md).
+
 ## Repository layout
 
 ```text
@@ -51,6 +53,8 @@ corepack pnpm object-storage:verify
 corepack pnpm ingestion:temporal:verify
 corepack pnpm test:a11y
 corepack pnpm test:intelligence
+corepack pnpm test:research
+corepack pnpm benchmark:research
 corepack pnpm benchmark:pit
 corepack pnpm release:evidence:generate
 corepack pnpm release:evidence:verify

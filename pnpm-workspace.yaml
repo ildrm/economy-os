@@ -11,3 +11,7 @@ allowBuilds:
 catalogMode: strict
 enableGlobalVirtualStore: false
 verifyDepsBeforeRun: error
+
+# Keep Nest's internal Fastify copy on the same patched release as the API.
+overrides:
+  '@nestjs/platform-fastify>fastify': '5.12.1'

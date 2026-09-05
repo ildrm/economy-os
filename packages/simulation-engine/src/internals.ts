@@ -152,8 +152,9 @@ export function canonicalDecimal(value: number, field = "simulation output"): st
   if (!Number.isFinite(value) || Math.abs(value) > 1_000_000_000) {
     throw new TypeError(`${field} exceeded its finite numeric bound`);
   }
-  const rounded = Math.abs(value) < 5e-13 ? 0 : Number(value.toFixed(12));
-  return String(rounded);
+  const fixed = Math.abs(value) < 5e-13 ? "0" : value.toFixed(12);
+  const rounded = fixed.includes(".") ? fixed.replace(/0+$/, "").replace(/\.$/, "") : fixed;
+  return rounded === "-0" ? "0" : rounded;
 }
 
 function canonicalize(value: unknown, path: string, seen: WeakSet<object>): string {

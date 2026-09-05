@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import pg from "pg";
@@ -85,7 +85,9 @@ export function resolveLocalBootstrapContract(environment) {
     throw new Error("Local database bootstrap is disabled when NODE_ENV=production");
   }
   if (environment.ECONOMYOS_LOCAL_BOOTSTRAP_CONFIRM !== "local-only") {
-    throw new Error("Local database bootstrap requires ECONOMYOS_LOCAL_BOOTSTRAP_CONFIRM=local-only");
+    throw new Error(
+      "Local database bootstrap requires ECONOMYOS_LOCAL_BOOTSTRAP_CONFIRM=local-only",
+    );
   }
   const migration = resolveMigrationContract(environment);
   const application = parsePostgresUrl(environment.DATABASE_URL, "DATABASE_URL");
@@ -135,7 +137,9 @@ async function connectedClient(connection) {
     row?.transaction_read_only !== "off"
   ) {
     await client.end();
-    throw new Error("Migration connection identity is read-only, a replica, or not the confirmed target");
+    throw new Error(
+      "Migration connection identity is read-only, a replica, or not the confirmed target",
+    );
   }
   return client;
 }
@@ -228,9 +232,7 @@ async function ensureLocalRole(client, roleName, password, inheritedRole, statem
   }
   await client.query(`GRANT "${inheritedRole}" TO "${roleName}"`);
   await client.query(`ALTER ROLE "${roleName}" SET statement_timeout = '${statementTimeout}'`);
-  await client.query(
-    `ALTER ROLE "${roleName}" SET idle_in_transaction_session_timeout = '10s'`,
-  );
+  await client.query(`ALTER ROLE "${roleName}" SET idle_in_transaction_session_timeout = '10s'`);
 }
 
 async function bootstrapLocalRoles(contract) {

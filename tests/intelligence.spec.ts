@@ -41,7 +41,10 @@ for (const [locale, direction, title, trustBoundary] of locales) {
     await expect(page.locator("html")).toHaveAttribute("dir", direction);
     await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
     await expect(page.locator(".trustStrip li")).toHaveText([/.+/, /.+/, trustBoundary]);
-    await expect(page.locator(".workbenchSidebar .moduleLink")).toHaveCount(2);
+    await expect(page.locator(".workbenchSidebar .moduleLink")).toHaveCount(3);
+    await expect(
+      page.locator(`.workbenchSidebar a[href="/${locale}/intelligence/research"]`),
+    ).toBeVisible();
     await expect(page.locator(".workbenchSidebar .moduleStatus")).toHaveCount(3);
     await expect(page.locator(`.localeList a[href^="/${locale}/intelligence/global"]`)).toHaveCount(
       1,

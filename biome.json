@@ -9,6 +9,7 @@
       "!test-results",
       "!playwright-report",
       "!blob-report",
+      "!artifacts/release-evidence",
       "!pnpm-lock.yaml"
     ]
   },

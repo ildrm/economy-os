@@ -88,6 +88,11 @@ function decodeObject(segment: string): JsonObject {
 }
 
 function parseHeader(value: JsonObject): JwtHeader {
+  // No critical JOSE extensions are implemented. Never ignore a sender's
+  // mandatory processing requirements or an alternate payload encoding.
+  if (value.crit !== undefined || (value.b64 !== undefined && value.b64 !== true)) {
+    throw new AuthenticationError("TOKEN_HEADER_EXTENSION_UNSUPPORTED");
+  }
   if (
     (value.alg !== "RS256" && value.alg !== "ES256") ||
     typeof value.kid !== "string" ||
@@ -186,6 +191,38 @@ function stringClaim(claims: JsonObject, name: string): string {
   if (typeof value !== "string" || value.length === 0)
     throw new AuthenticationError("TOKEN_CLAIM_INVALID");
   return value;
+}
+
+async function readJwksBody(response: Response): Promise<string> {
+  if (!response.body) throw new AuthenticationError("JWKS_INVALID");
+  const declaredLength = Number(response.headers.get("content-length") ?? "0");
+  if (
+    !Number.isSafeInteger(declaredLength) ||
+    declaredLength < 0 ||
+    declaredLength > MAX_JWKS_BYTES
+  ) {
+    await response.body.cancel().catch(() => undefined);
+    throw new AuthenticationError("JWKS_INVALID");
+  }
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let length = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      length += value.byteLength;
+      if (length > MAX_JWKS_BYTES) throw new AuthenticationError("JWKS_INVALID");
+      chunks.push(value);
+    }
+    return Buffer.concat(chunks, length).toString("utf8");
+  } catch (error) {
+    await reader.cancel().catch(() => undefined);
+    if (error instanceof AuthenticationError) throw error;
+    throw new AuthenticationError("JWKS_UNAVAILABLE");
+  } finally {
+    reader.releaseLock();
+  }
 }
 
 export class OidcAccessTokenVerifier {
@@ -422,17 +459,7 @@ export class OidcAccessTokenVerifier {
       throw new AuthenticationError("JWKS_UNAVAILABLE");
     }
     if (!response.ok) throw new AuthenticationError("JWKS_UNAVAILABLE");
-    const declaredLength = Number(response.headers.get("content-length") ?? "0");
-    if (declaredLength > MAX_JWKS_BYTES) throw new AuthenticationError("JWKS_INVALID");
-    let body: string;
-    try {
-      body = await response.text();
-    } catch {
-      throw new AuthenticationError("JWKS_UNAVAILABLE");
-    }
-    if (Buffer.byteLength(body) > MAX_JWKS_BYTES) {
-      throw new AuthenticationError("JWKS_INVALID");
-    }
+    const body = await readJwksBody(response);
     let document: unknown;
     try {
       document = JSON.parse(body);
