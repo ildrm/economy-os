@@ -57,6 +57,36 @@ for (const [locale, direction, title, trustBoundary] of locales) {
   });
 }
 
+test("Armenian branding reflows on narrow screens with expanded text spacing", async ({ page }) => {
+  await page.setViewportSize({ width: 385, height: 839 });
+  await page.goto("/hy/intelligence/global");
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Համաշխարհային տնտեսական վիճակ" }),
+  ).toBeVisible();
+  await page.addStyleTag({ content: "html { letter-spacing: 0.12em; }" });
+
+  for (const width of [385, 412]) {
+    await page.setViewportSize({ width, height: 839 });
+    const mode = page.locator(".workbenchTopbar .productMode");
+    await expect(mode).toBeVisible();
+    await expect(mode).toHaveText("Տնտեսական վերլուծություն");
+    const layout = await page.evaluate(() => {
+      const brand = document.querySelector(".workbenchTopbar .brand");
+      if (!brand) throw new Error("Workbench branding is missing");
+      const bounds = brand.getBoundingClientRect();
+      return {
+        viewportWidth: document.documentElement.clientWidth,
+        contentWidth: document.documentElement.scrollWidth,
+        brandLeft: bounds.left,
+        brandRight: bounds.right,
+      };
+    });
+    expect(layout.contentWidth).toBeLessThanOrEqual(layout.viewportWidth);
+    expect(layout.brandLeft).toBeGreaterThanOrEqual(0);
+    expect(layout.brandRight).toBeLessThanOrEqual(layout.viewportWidth);
+  }
+});
+
 const loadingCases = [
   {
     locale: "en",

@@ -990,6 +990,9 @@
   }
   .workbenchTopbar .brand {
     align-self: flex-start;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
   }
   .workbenchSidebar {
     border-block-end: 1px solid var(--border-default);
