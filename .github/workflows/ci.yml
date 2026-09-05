@@ -86,9 +86,6 @@ jobs:
       - name: Verify immutable S3 object-storage behavior
         run: corepack pnpm object-storage:verify
 
-      - name: Governed database point-in-time performance gate
-        run: corepack pnpm benchmark:db
-
       - name: Install Chromium runtime
         run: corepack pnpm exec playwright install --with-deps chromium
 
@@ -100,6 +97,9 @@ jobs:
 
       - name: Behavioral and allocation research browser tests
         run: corepack pnpm test:research
+
+      - name: Governed database point-in-time performance gate
+        run: corepack pnpm benchmark:db
 
       - name: Research kernel capacity gate
         run: corepack pnpm benchmark:research
