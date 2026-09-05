@@ -24,7 +24,9 @@ export default async function LocaleLayout({
   const locale = resolveRouteLocale(candidate);
   return (
     <html lang={locale} dir={LOCALE_METADATA[locale].direction}>
-      <body>{children}</body>
+      {/* Browser extensions can inject body attributes before hydration (e.g. cz-shortcut-listen).
+          Suppression is limited to this element; child hydration checks remain enabled. */}
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
