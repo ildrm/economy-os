@@ -2,9 +2,19 @@
 
 EconomyOS is an evidence-first economic intelligence and research platform. It connects economic observations to their sources, preserves what was knowable at a particular time, and provides governed tools for economic-state analysis, causal research, forecasting, and hypothetical scenarios.
 
-The project is designed for analysts, researchers, and organizations that need to inspect how a result was produced: which data release it used, which assumptions it made, which model version ran, and which access and usage rules applied. It is a TypeScript monorepo with a Next.js web application, a NestJS/Fastify API, a Temporal ingestion worker, and PostgreSQL/TimescaleDB persistence.
+The project serves the general public, businesses, economists, analysts, researchers, and organizations. Its public learning experience explains economic concepts through guided choices and interactive examples. Its governed research tools let specialists inspect how a result was produced: which data release it used, which assumptions it made, which model version ran, and which access and usage rules applied. It is a TypeScript monorepo with a Next.js web application, a NestJS/Fastify API, a Temporal ingestion worker, and PostgreSQL/TimescaleDB persistence.
 
 **Status:** the foundation and canonical data platform have passed their declared local acceptance gates. Analytical product phases remain in progress, and the complete product is **not cleared for production release**. Working research kernels and local tests do not establish empirical model validity or production readiness.
+
+The public platform includes **217 economy profiles, 40 World Development Indicators and 180,656 reported annual values for 2000–2025**, retrieved on 6 September 2026. It opens with real world statistics and populated country comparisons. Users select countries, observation years, economic topics and model presets; no technical identifiers or typed numbers are required. Historical charts, source definitions, plain-language comparisons and CSV downloads retain their data provenance.
+
+The [data-source selection policy](docs/data-source-policy.md) defines official-source priority, ten distinct price types, timing/access requirements, raw provenance and separate currency conversion. Public snapshots and CSV exports validate complete observation metadata. The supplied 87-entry catalog is preserved with pending-review status; catalog entries are not represented as connected feeds.
+
+The scientific evidence page connects **20 behavioral theory families, 12 cited study summaries and seven interactive model explorations** to the existing behavioral economics package. It sits alongside 36 plain-language economic concepts and five broader what-if examples. These are separate kinds of evidence: published statistics can include source estimates and revisions; research findings have study-specific limits; hypothetical model outputs are explicitly labeled. The collection is curated and does not claim to cover all scientific literature. English and Persian content is implemented; other supported navigation languages clearly use English for new public content.
+
+Public data is a versioned reference snapshot, available without database setup or login. It is not admitted into the protected point-in-time report store and cannot support historical-as-known claims or calibrated crisis forecasts. The original authenticated tools remain available through **Research workspace** and complete authorized report links. See the [data-platform review](docs/reviews/2026-09-06-data-platform.md) and [data provenance/refresh guide](data/public-economy/README.md).
+
+See the [role-based review and redesign evidence](docs/reviews/2026-09-06-public-experience.md) for scope, findings, screenshots and remaining integration work.
 
 ## Contents
 
@@ -36,11 +46,11 @@ Capabilities have different levels of integration. A domain package may contain 
 | Crisis, relationships, and capital research | Domain engines and selected persisted, protected read APIs | Package implementation does not mean all analyst workflows are delivered |
 | Behavioral economics | Theory registry, study/evidence contracts, source-span intervention candidates, explicit-parameter choice models, and bounded forecast/graph integration | Intervention matches are lexical candidates; model outputs are hypothetical or unvalidated research |
 | Allocation and planning | Independent regime dimensions, plan/target/control contracts, exact material balance, shortages, fulfillment, and a one-period planner/enterprise simulation | Full plan management, national allocation optimization, and multi-period enterprise dynamics are not implemented |
-| Research workspace | Authenticated immutable research runs; localized intertemporal-choice and material-balance forms; theory exploration and provenance display | The API supports four research kinds; the UI exposes two calculation flows. Full study/review/planning workspaces remain open |
+| Research workspace | Authenticated immutable research runs; localized intertemporal-choice and material-balance forms; theory exploration and provenance display | The API supports four research kinds; the advanced workspace exposes two saved calculation flows, while the public lab provides five educational examples. Full study/review/planning workspaces remain open |
 | Additional research and governance | Narrative intelligence, forecasting, causal inference, simulation, scenarios, systemic risk, model governance, collaboration, and enterprise-hardening packages | Integration and release acceptance are tracked separately for each phase |
 | Platform controls | OIDC/JWKS verification, tenant/workspace authorization, PostgreSQL row-level security, immutable scientific records, structured errors, tracing, accessibility, and localization | Production identity, deployment, recovery, security, and operational evidence are still required |
 
-The interface supports 12 locale identifiers: `en`, `fa`, `de`, `fr`, `zh-Hans`, `ru`, `es`, `pt`, `hi`, `ar`, `hy`, and `tr`. Persian and Arabic use right-to-left layouts. Technical theory metadata may retain explicitly marked English text; automated locale coverage does not replace human translation and accessibility review.
+The interface supports 12 locale identifiers: `en`, `fa`, `de`, `fr`, `zh-Hans`, `ru`, `es`, `pt`, `hi`, `ar`, `hy`, and `tr`. Persian and Arabic use right-to-left layouts. New learning content is available in English and Persian; other locales retain translated navigation and explicitly marked English guides. Technical theory metadata may retain explicitly marked English text; automated locale coverage does not replace human translation and accessibility review.
 
 For precise completion claims, use the [implementation status](docs/21-implementation-status.md), [roadmap](docs/16-roadmap.md), [capability traceability](docs/TRACEABILITY.md), and [audit coverage and remaining gaps](docs/audit-product-coverage.md).
 
@@ -152,6 +162,35 @@ The expected Node/Corepack/pnpm outputs are `v26.5.0`, `0.34.6`, and `11.15.1`. 
 
 ## Local setup
 
+### Automatic Windows and Linux launchers
+
+After installing the pinned Node.js and Corepack versions above, use [run.bat](run.bat) on Windows or [run.sh](run.sh) on Linux. They work from any current directory, install the locked dependencies, build shared packages, and start the public web application at `http://127.0.0.1:3000/en` (Persian: `/fa`). Wait for the server's **Ready** message before opening it. The first run requires internet access.
+
+```bat
+rem Windows: double-click run.bat, or run it from Command Prompt / PowerShell.
+.\run.bat
+```
+
+```bash
+# Linux
+./run.sh
+# If executable permissions were lost while downloading the checkout:
+bash run.sh
+```
+
+Pass `--full` to additionally start the Compose PostgreSQL/S3Mock services, create `.env` only when absent, apply the existing guarded local database bootstrap, build the API, and start it at `http://127.0.0.1:4000`:
+
+```text
+Windows: .\run.bat --full
+Linux:   ./run.sh --full
+```
+
+Full mode requires a running Docker engine with Compose v2. The launcher binds both applications to localhost; its API uses port 4000 regardless of `.env` host/port settings. Existing configuration is preserved, and the database bootstrap's local-only restrictions still apply. It does not provision identity, browser authentication, live data, or a Temporal worker. See [Authentication and API access](#authentication-and-api-access) and [Running in development](#running-in-development) for those integrations.
+
+Use `--port 3001` to choose another web port or `--help` for usage. `Ctrl+C` stops the applications started by the launcher. Docker services and database data remain intact; stop the services with `docker compose stop postgres s3mock`. Windows keeps startup errors visible until a key is pressed; set `CI=1` to disable that pause in automation. Both wrappers share [the local runner](scripts/run-local.mjs) so their setup and shutdown behavior stay consistent.
+
+### Manual setup
+
 Run commands from the repository root unless a step explicitly says otherwise. Examples use a POSIX-compatible shell, such as Bash or Zsh.
 
 ### 1. Clone and install
@@ -230,7 +269,7 @@ Web with development reload:
 corepack pnpm --filter @economyos/web dev --hostname 127.0.0.1 --port 3000
 ```
 
-Open `http://127.0.0.1:3000/en`. Useful routes include `/en/intelligence/global`, `/en/intelligence/countries`, `/en/intelligence/compare`, and `/en/intelligence/research`. Replace `en` with a supported locale to inspect localization and RTL behavior.
+Open `http://127.0.0.1:3000/en`. Useful routes include `/en/intelligence/global`, `/en/intelligence/countries`, `/en/intelligence/compare`, `/en/intelligence/science`, and `/en/intelligence/research`. Replace `en` with a supported locale to inspect localization and RTL behavior.
 
 The web shell and theory explorer can be viewed without a populated API. Live governed reads and research execution need the [authentication and same-origin integration](#authentication-and-api-access) described below. Starting both servers on separate ports does not automatically wire the browser to the API.
 
@@ -439,6 +478,8 @@ corepack pnpm build
 corepack pnpm test:a11y
 corepack pnpm test:intelligence
 corepack pnpm test:research
+corepack pnpm test:public
+corepack pnpm data:verify
 ```
 
 On Linux CI, use `corepack pnpm exec playwright install --with-deps chromium` to install required browser system libraries as well.
@@ -600,7 +641,8 @@ Application commands use workspace filters: `--filter @economyos/api dev` or `st
 | Web renders, but `/api/v1/*` returns 404 | Standalone Next.js has no API proxy. Configure the documented same-origin gateway or exercise the API directly |
 | Protected API returns 401 | Supply a valid bearer token from the configured provider; check issuer, audience, claim mappings, expiry, and signature. Example OIDC addresses cannot authenticate |
 | Authenticated API returns 403 or hides a record | Check active membership, role grants, entitlements, source permissions, and requested tenant/workspace/PIT scope; token claims do not create database access |
-| UI is empty or says data is unavailable | Bootstrap does not seed live observations or research history. Missing data and denied access must not be replaced with demo results |
+| Public country data fails to load | Keep `apps/web/public/economy/` and its manifest in the same revision; rebuild after refreshing. The UI reports fetch or integrity errors with retry. “Not reported” means the provider has no observation for the selected year; use a common or earlier year |
+| Specialist report tools have no data | The protected report store needs admitted data and an authorized session; the public reference snapshot does not seed it |
 | Identity-provider-unavailable response | Check JWKS reachability, provider configuration, and valid key responses; malformed or unavailable JWKS can produce 503 |
 | Worker cannot connect to Temporal | Start/configure a separate Temporal service; verify address, namespace, TLS/identity, and explicit loopback opt-in in development |
 | Object-storage check fails | Confirm S3Mock health and the `economyos-local` bucket; verification uses `S3_VERIFY_*` overrides, not the runtime `S3_ENDPOINT` variable |

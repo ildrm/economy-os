@@ -2,6 +2,7 @@ node_modules/
 .pnpm-store/
 dist/
 .next/
+apps/web/next-env.d.ts
 coverage/
 test-results/
 playwright-report/

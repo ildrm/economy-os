@@ -10,7 +10,9 @@
       "!playwright-report",
       "!blob-report",
       "!artifacts/release-evidence",
-      "!pnpm-lock.yaml"
+      "!pnpm-lock.yaml",
+      "!apps/web/public/economy",
+      "!data/public-economy/raw"
     ]
   },
   "formatter": {
@@ -21,13 +23,21 @@
   },
   "linter": {
     "enabled": true,
-    "rules": { "preset": "recommended" }
+    "rules": {
+      "preset": "recommended"
+    }
   },
   "assist": {
     "enabled": true,
-    "actions": { "source": { "organizeImports": "on" } }
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "javascript": {
-    "parser": { "unsafeParameterDecoratorsEnabled": true }
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   }
 }

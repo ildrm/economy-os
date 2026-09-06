@@ -29,8 +29,8 @@ export const DEFAULT_INGESTION_AUTHORIZATION_TTL_MS = 5 * 60 * 1_000;
  */
 export const WORLD_BANK_WDI_PARSER_IDENTITY: ParserIdentity = Object.freeze({
   name: "world-bank-wdi",
-  version: "1.0.0",
-  codeSha256: "b68d8e249d57cf6fab6f51382edef1101d19056bcb2b75ac89c8daf054925a8d",
+  version: "1.0.1",
+  codeSha256: "21b5bec54100f96255c88184e2073245227bb0114c8e86655e08085997b610f8",
   configuration: Object.freeze({ sourceId: 2 }),
   configurationSha256: "2a35dbceb04e1b04c77a6276c4ac799ca5370d0ffeea44707db97cdcd1b7b383",
 });

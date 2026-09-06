@@ -1,0 +1,825 @@
+/* Public economic evidence surfaces: readable values, source context and native controls. */
+.dataHeader {
+  margin-block-end: 1.3rem;
+}
+.publicMain .dataHeader h1 {
+  max-width: 28ch;
+  font-size: clamp(1.9rem, 2.9vw, 2.65rem);
+  line-height: 1.17;
+}
+.dataHeader p {
+  max-width: 70ch;
+}
+.sourceNote {
+  color: #475467;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.sourceNote a {
+  color: #175cd3;
+  text-decoration: underline;
+}
+.dataCoverage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.3rem;
+  color: #475467;
+  font-size: 0.9rem;
+  align-items: center;
+}
+.dataCoverage strong {
+  color: #173b63;
+}
+.dataToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  margin-block: 1.2rem;
+  min-width: 0;
+}
+.dataToolbar > h2 {
+  margin-inline-end: auto;
+}
+.dataSelect {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1 1 13rem;
+  min-width: 0;
+  font-size: 0.8rem;
+  color: #475467;
+  font-weight: 600;
+}
+.dataSelect select {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.65rem 0.75rem;
+  background: white;
+  color: #101828;
+  border: 1px solid #98a2b3;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.91rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+.comparisonControls .dataToolbar {
+  margin-block: 0.75rem;
+}
+.comparisonControls .sourceNote {
+  margin-block: 0.25rem 0;
+}
+.comparisonControls {
+  background: white;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  padding: 1.2rem;
+}
+.countrySelectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+}
+.countrySelection {
+  flex: 1 1 11rem;
+  min-width: 0;
+  display: flex;
+  align-items: end;
+  gap: 0.4rem;
+}
+.removeCountry {
+  min-width: 2.1rem;
+  min-height: 2.8rem;
+  font-size: 1.35rem;
+}
+.comparisonPresets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  color: #475467;
+}
+.comparisonPresets button {
+  background: none;
+  border: 0;
+  padding: 0.5rem 0;
+  text-align: start;
+  text-decoration: underline;
+  color: #175cd3;
+  cursor: pointer;
+  font: inherit;
+}
+.comparisonMethod {
+  font-size: 0.86rem;
+  color: #475467;
+  margin-block: 1rem;
+}
+.dataTableWrap {
+  position: relative;
+  overflow: auto;
+  max-width: 100%;
+  min-width: 0;
+  background: white;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+}
+.economicTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+  font-size: 0.91rem;
+}
+.economicTable caption {
+  caption-side: bottom;
+  text-align: start;
+  padding: 0.85rem 1rem;
+  color: #475467;
+  font-size: 0.77rem;
+  border-block-start: 1px solid #e4e7ec;
+}
+.economicTable thead {
+  background: #f0f4f8;
+}
+.economicTable th,
+.economicTable td {
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid #e4e7ec;
+  padding: 0.6rem 1rem;
+}
+.economicTable thead th {
+  color: #173b63;
+  font-weight: 650;
+}
+.economicTable tbody th {
+  width: 16rem;
+  font-weight: 500;
+}
+.economicTable :where(th) > small {
+  display: block;
+  color: #475467;
+  font-size: 0.76rem;
+  margin-block-start: 0.3rem;
+  font-weight: 400;
+}
+.economicValue {
+  font-size: 1.05rem;
+  font-weight: 650;
+  white-space: nowrap;
+  display: block;
+}
+.observationYear {
+  font-size: 0.76rem;
+  color: #475467;
+  display: block;
+  margin-block-start: 0.4rem;
+}
+.missingValue {
+  color: #667085;
+  font-size: 0.83rem;
+}
+.comparabilityNote {
+  display: block;
+  color: #854b0a;
+  font-size: 0.72rem;
+  margin-block-start: 0.4rem;
+}
+.metricDetails {
+  font-weight: 400;
+  font-size: 0.8rem;
+  margin-block-start: 0.65rem;
+}
+.metricDetails summary {
+  cursor: pointer;
+  color: #175cd3;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.metricDetails p {
+  line-height: 1.7;
+  font-size: 0.83rem;
+  margin-block: 0.65rem;
+}
+.metricDetails a {
+  color: #175cd3;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.metricDetails ul {
+  padding-inline-start: 1.1rem;
+  line-height: 1.8;
+}
+.analysisGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 1.2rem;
+  margin-block: 1.4rem;
+  align-items: start;
+  min-width: 0;
+}
+.historyPanel,
+.insightPanel,
+.associationPanel,
+.rankingPanel,
+.relatedResearch,
+.studyPanel,
+.theoryPanel {
+  min-width: 0;
+  background: white;
+  padding: 1.3rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+}
+.publicMain
+  :is(
+    .historyPanel,
+    .insightPanel,
+    .associationPanel,
+    .rankingPanel,
+    .relatedResearch,
+    .studyPanel,
+    .theoryPanel
+  )
+  h2 {
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: #173b63;
+  margin-block: 0 0.8rem;
+}
+.chartToolbar {
+  align-items: center;
+  gap: 0.7rem;
+}
+.chartToolbar .choiceButtons {
+  gap: 0.2rem;
+}
+.chartToolbar .choiceButtons button {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.76rem;
+  min-height: 2.5rem;
+}
+.economicChart {
+  display: block;
+  width: 100%;
+  height: auto;
+  direction: ltr;
+  overflow: visible;
+}
+.economicChart text {
+  fill: #475467;
+  font-size: 13px;
+  font-family: inherit;
+}
+.chartGrid {
+  stroke: #d0d5dd;
+  stroke-dasharray: 3 4;
+}
+.chartLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+  font-size: 0.79rem;
+}
+.chartLegend li {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.chartLegend span {
+  width: 1rem;
+  height: 0.2rem;
+  display: inline-block;
+}
+.historyData {
+  margin-block-start: 1rem;
+}
+.historyData summary {
+  cursor: pointer;
+  color: #175cd3;
+  font-size: 0.85rem;
+}
+.historyData .dataTableWrap {
+  margin-block-start: 0.7rem;
+}
+.historyData .economicTable {
+  min-width: 28rem;
+}
+.insightPanel p,
+.associationPanel p,
+.relatedResearch p {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: #344054;
+}
+.insightNumber,
+.associationNumber {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #173b63;
+  display: block;
+  margin-block: 1.25rem;
+}
+.relatedResearch a {
+  color: #175cd3;
+  text-decoration: underline;
+  line-height: 1.8;
+}
+.economyDirectory {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.economyTile {
+  background: white;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  padding: 1.2rem;
+}
+.publicMain .economyTile h2 {
+  margin: 0;
+  font-size: 1.17rem;
+}
+.economyTile h2 a {
+  color: #173b63;
+  text-decoration: none;
+}
+.economyTile > p {
+  font-size: 0.75rem;
+  color: #475467;
+  min-height: 2.5em;
+  line-height: 1.6;
+}
+.economyTile dl {
+  margin-block: 1rem;
+}
+.economyTile :where(dl) > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-block: 0.6rem;
+  font-size: 0.81rem;
+}
+.economyTile dt {
+  color: #475467;
+}
+.economyTile dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: end;
+}
+.economyTile dd small {
+  display: block;
+  font-weight: 400;
+  color: #667085;
+}
+.countryReadMore {
+  color: #175cd3;
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+.dataPagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block: 1.4rem;
+}
+.economicFacts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 1.4rem;
+}
+.economicFacts article {
+  min-width: 0;
+  border: 1px solid #d0d5dd;
+  background: white;
+  border-radius: 6px;
+  padding: 1.2rem;
+}
+.publicMain .economicFacts h2,
+.publicMain :where(.economicFacts) h3 {
+  font-size: 0.88rem;
+  color: #344054;
+  margin: 0;
+  line-height: 1.5;
+  min-height: 2.7em;
+}
+.economicFacts bdi {
+  display: block;
+  color: #173b63;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 700;
+  margin-block: 0.5rem;
+}
+.economicFacts small {
+  color: #475467;
+  font-size: 0.72rem;
+  display: block;
+  line-height: 1.6;
+}
+.plainInsights {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.plainInsights li + li {
+  border-block-start: 1px solid #e4e7ec;
+  padding-block-start: 0.8rem;
+}
+.plainInsights strong {
+  color: #173b63;
+  font-size: 0.85rem;
+}
+.methodWarning {
+  padding: 1rem;
+  border-inline-start: 3px solid #a66000;
+  background: #fff8e9;
+  color: #684108;
+  font-size: 0.84rem;
+  line-height: 1.8;
+}
+.dataError {
+  border: 1px solid #b42318;
+  background: #fff1f0;
+  padding: 1rem;
+  margin-block: 1rem;
+}
+.worldHeading {
+  font-size: 1.25rem;
+  margin-block-start: 1.7rem;
+}
+.audiencePanel .choiceButtons {
+  flex-wrap: wrap;
+}
+.audiencePanel .choiceButtons button {
+  padding: 0.6rem 0.7rem;
+  font-size: 0.8rem;
+}
+.audiencePanel h3 {
+  font-size: 1rem;
+  margin-block-start: 1.5rem;
+}
+.audiencePanel ul {
+  padding-inline-start: 1.2rem;
+  line-height: 2;
+  font-size: 0.9rem;
+}
+.audiencePanel a {
+  color: #175cd3;
+}
+.audiencePanel a.primaryAction {
+  color: white;
+  margin-block-start: 1rem;
+}
+.countryRanking {
+  margin: 0;
+  padding-inline-start: 1.2rem;
+}
+.countryRanking li {
+  padding: 0.85rem 0.2rem;
+  border-block-end: 1px solid #e4e7ec;
+  font-size: 0.93rem;
+}
+.countryRanking a {
+  color: #173b63;
+}
+.countryRanking bdi {
+  float: inline-end;
+  color: #344054;
+  font-weight: 600;
+}
+.economicTopicLinks > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-block-start: 1px solid #d0d5dd;
+}
+.economicTopicLinks a {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.3rem;
+  border-block-end: 1px solid #d0d5dd;
+  color: #173b63;
+  text-decoration: none;
+}
+.economicTopicLinks a span {
+  color: #475467;
+  font-size: 0.85rem;
+}
+.scienceGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.3rem;
+  align-items: start;
+  margin-block: 1.4rem;
+}
+.studyArticle {
+  padding-block: 0.9rem;
+  border-block-start: 1px solid #e4e7ec;
+}
+.studyArticle h3 {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #173b63;
+  margin: 0;
+}
+.studyArticle > p {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin-block: 0.55rem;
+}
+.studyArticle .studyCitation {
+  font-size: 0.76rem;
+  color: #475467;
+}
+.studyArticle a {
+  font-size: 0.83rem;
+  color: #175cd3;
+  text-decoration: underline;
+}
+.behaviorModel {
+  padding: 1.4rem;
+  min-width: 0;
+}
+.behaviorModel h2 {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  margin-block: 0 1rem;
+}
+.behaviorModel .dataSelect {
+  color: #e8f0ff;
+}
+.behaviorModel > p,
+.modelResult p {
+  font-size: 0.85rem;
+  line-height: 1.85;
+}
+.behaviorModel .choiceButtons {
+  flex-wrap: wrap;
+  margin-block: 1rem;
+}
+.behaviorModel .choiceButtons button {
+  color: white;
+  background: transparent;
+  border: 1px solid #a4b9d4;
+  font-size: 0.78rem;
+  padding: 0.6rem;
+}
+.behaviorModel .choiceButtons button[aria-pressed="true"] {
+  color: #173b63;
+  background: white;
+}
+.modelResult {
+  margin-block: 1.4rem;
+}
+.modelResult h3 {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+.modelResult dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-block-end: 1px solid #5d7695;
+  padding-block: 0.9rem;
+  font-size: 0.86rem;
+}
+.modelResult dd {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+.modelResult .modelBigNumber {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.modelBars {
+  margin-block: 1rem;
+}
+.modelBars > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-block: 1rem;
+}
+.modelBars span {
+  display: block;
+  width: 100%;
+  font-size: 0.85rem;
+}
+.modelBars > div > div {
+  height: 1rem;
+  background: #8cbbff;
+  max-width: 80%;
+}
+.modelBars bdi {
+  font-weight: 650;
+}
+.modelAssumptions {
+  font-size: 0.8rem;
+  line-height: 1.8;
+  margin-block-start: 1.5rem;
+  border-block-start: 1px solid #5d7695;
+  padding-block-start: 1rem;
+}
+.modelAssumptions summary {
+  cursor: pointer;
+}
+.modelAssumptions pre {
+  font-size: 0.7rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.theoryPanel {
+  margin-block: 1.5rem;
+}
+.theoryPanel > p {
+  color: #475467;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.theoryDirectory {
+  width: 100%;
+  min-width: 52rem;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.theoryDirectory th,
+.theoryDirectory td {
+  text-align: start;
+  vertical-align: top;
+  padding: 0.85rem;
+  border-block-end: 1px solid #e4e7ec;
+}
+.theoryDirectory thead {
+  background: #f0f4f8;
+  color: #173b63;
+}
+.theoryDirectory tbody th {
+  width: 22%;
+  color: #173b63;
+  font-weight: 650;
+}
+.theoryDirectory td:nth-child(2) {
+  width: 36%;
+}
+.theoryDirectory td:last-child {
+  width: 24%;
+}
+.theoryDirectory td p {
+  font-size: 0.83rem;
+  line-height: 1.7;
+  margin: 0;
+}
+.theoryDirectory .metricDetails {
+  margin: 0;
+}
+.theoryStatus {
+  font-size: 0.78rem;
+  color: #475467;
+}
+.publicMain[lang="fa"] .dataHeader h1 {
+  line-height: 1.55;
+}
+@media (max-width: 75rem) {
+  .economyDirectory {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .economicFacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .analysisGrid,
+  .scienceGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scienceGrid .behaviorModel {
+    max-width: none;
+  }
+}
+@media (max-width: 48rem) {
+  .dataHeader {
+    margin-block-start: 0.8rem;
+  }
+  .publicMain .dataHeader h1 {
+    font-size: 1.85rem;
+  }
+  .dataToolbar {
+    gap: 0.7rem;
+  }
+  .dataSelect {
+    flex-basis: 100%;
+  }
+  .countrySelection {
+    flex-basis: 100%;
+  }
+  .comparisonControls .dataToolbar {
+    margin-block: 0.75rem;
+  }
+  .comparisonControls .sourceNote {
+    margin-block: 0.25rem 0;
+  }
+  .comparisonControls {
+    padding: 0.9rem;
+  }
+  .comparisonPresets {
+    display: block;
+  }
+  .comparisonPresets button {
+    display: block;
+  }
+  .economicFacts {
+    gap: 0.6rem;
+  }
+  .economicFacts article {
+    padding: 0.85rem;
+  }
+  .economicFacts bdi {
+    font-size: 1.45rem;
+  }
+  .historyPanel,
+  .insightPanel,
+  .associationPanel,
+  .rankingPanel,
+  .relatedResearch,
+  .studyPanel,
+  .theoryPanel {
+    padding: 1rem;
+  }
+  .economicTable th,
+  .economicTable td {
+    padding: 0.85rem;
+  }
+  .economyDirectory,
+  .theoryDirectory,
+  .economicTopicLinks > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .economyTile > p {
+    min-height: 0;
+  }
+  .dataCoverage {
+    font-size: 0.81rem;
+  }
+  .historyPanel .dataSelect {
+    flex-basis: 100%;
+  }
+}
+
+.sourceCatalog {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.sourceCatalog article {
+  border-block-end: 1px solid var(--border, #dce3ed);
+  padding-block: 1rem;
+  min-width: 0;
+}
+.sourceCatalog p {
+  color: #526176;
+  font-size: 0.86rem;
+}
+.labRange {
+  display: grid;
+  gap: 0.7rem;
+  margin-block: 1.2rem;
+}
+.labRange > span {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 650;
+}
+.labRange input {
+  width: 100%;
+  accent-color: #194b6b;
+}
+@media (max-width: 48rem) {
+  .sourceCatalog {
+    grid-template-columns: 1fr;
+  }
+}
+
+.economicTable .metricDetails {
+  margin-block-start: 0.25rem;
+}
+.economicTable .observationYear {
+  display: inline;
+  margin-inline-start: 0.5rem;
+}
+.economicTable .economicValue {
+  display: inline;
+}
+.publicMain .comparisonMethod {
+  margin-block: 0.75rem;
+}
+.publicMain .historyPanel {
+  gap: 0;
+}

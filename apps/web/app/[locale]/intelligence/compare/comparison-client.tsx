@@ -13,6 +13,7 @@ import {
   TemporalLens,
 } from "../_components/context-panel";
 import { PageHeader } from "../_components/page-header";
+import { PublicExperience } from "../_components/public-experience";
 import { workbenchCopy, workbenchDimension } from "../_lib/copy";
 import {
   type ComparisonResult,
@@ -60,6 +61,9 @@ export function ComparisonClient({ locale }: { readonly locale: Locale }) {
       .catch(() => undefined);
     return () => controller.abort();
   }, [context, vectorIds, reload]);
+
+  if (!context && search.get("advanced") !== "1" && !validation.attempted)
+    return <PublicExperience locale={locale} view="compare" />;
 
   return (
     <main id="main-content" className="intelligenceMain" tabIndex={-1}>

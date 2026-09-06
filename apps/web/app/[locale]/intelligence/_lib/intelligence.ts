@@ -250,7 +250,9 @@ export async function requestJson<T>(
       cache: "no-store",
       credentials: "include",
       headers: { accept: "application/json" },
-      ...(signal ? { signal } : {}),
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(15_000)])
+        : AbortSignal.timeout(15_000),
     });
     const body = await response.json().catch(() => null);
     if (!response.ok) {
@@ -298,7 +300,7 @@ export function parseVectorPage(value: unknown): VectorPage | null {
   const vectors = rawVectors.map(parseSummary);
   if (vectors.some((vector) => vector === null)) return null;
   const nextCursor = nullableText(input.nextCursor);
-  if (nextCursor === undefined) return null;
+  if (nextCursor === undefined || (nextCursor !== null && !uuid(nextCursor))) return null;
   return {
     schemaVersion: 1,
     methodologyScope: "research_baseline",

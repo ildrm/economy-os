@@ -13,6 +13,7 @@ import {
   TemporalLens,
 } from "../_components/context-panel";
 import { PageHeader } from "../_components/page-header";
+import { PublicExperience } from "../_components/public-experience";
 import { workbenchCopy, workbenchDimension } from "../_lib/copy";
 import {
   contextParams,
@@ -27,10 +28,15 @@ import {
   type VectorSummary,
   validateContext,
 } from "../_lib/intelligence";
+import { words } from "../_lib/public-copy";
 
 type LoadState =
   | { readonly status: "loading" }
-  | { readonly status: "ready"; readonly vectors: readonly VectorSummary[] }
+  | {
+      readonly status: "ready";
+      readonly vectors: readonly VectorSummary[];
+      readonly nextCursor: string | null;
+    }
   | {
       readonly status: "failed";
       readonly kind: RequestFailureKind;
@@ -51,17 +57,23 @@ export function GlobalClient({
   const [state, setState] = useState<LoadState>({ status: "loading" });
   const copy = workbenchCopy(locale);
   const context = validation.context;
+  const cursor = search.get("cursor") ?? undefined;
 
   useEffect(() => {
     void reload;
     if (!context) return;
     const controller = new AbortController();
     setState({ status: "loading" });
-    void loadVectors(context, controller.signal)
-      .then(setState)
+    void loadVectors(context, controller.signal, cursor)
+      .then((result) => {
+        if (!controller.signal.aborted) setState(result);
+      })
       .catch(() => undefined);
     return () => controller.abort();
-  }, [context, reload]);
+  }, [context, reload, cursor]);
+
+  if (!context && search.get("advanced") !== "1" && !validation.attempted)
+    return <PublicExperience locale={locale} view={directoryMode ? "countries" : "overview"} />;
 
   return (
     <main id="main-content" className="intelligenceMain" tabIndex={-1}>
@@ -105,6 +117,29 @@ export function GlobalClient({
               selection={selection}
               onSelection={setSelection}
             />
+          ) : null}
+          {state.status === "ready" && (state.nextCursor || cursor) ? (
+            <nav
+              className="nextSteps"
+              aria-label={words(locale, "Country result pages", "صفحات نتایج کشورها")}
+            >
+              {cursor ? (
+                <Link
+                  className="secondaryAction"
+                  href={`/${locale}/intelligence/${directoryMode ? "countries" : "global"}?${contextParams(context)}`}
+                >
+                  {words(locale, "First page", "صفحه اول")}
+                </Link>
+              ) : null}
+              {state.nextCursor ? (
+                <Link
+                  className="primaryAction"
+                  href={`/${locale}/intelligence/${directoryMode ? "countries" : "global"}?${contextParams(context)}&cursor=${encodeURIComponent(state.nextCursor)}`}
+                >
+                  {words(locale, "Next countries", "کشورهای بعدی")}
+                </Link>
+              ) : null}
+            </nav>
           ) : null}
         </>
       )}
@@ -291,10 +326,14 @@ function GlobalResults({
   );
 }
 
-async function loadVectors(context: QueryContext, signal: AbortSignal): Promise<LoadState> {
-  const page = await requestJson(listUrl(context), parseVectorPage, signal);
+async function loadVectors(
+  context: QueryContext,
+  signal: AbortSignal,
+  cursor?: string,
+): Promise<LoadState> {
+  const page = await requestJson(listUrl(context, cursor), parseVectorPage, signal);
   if (!page.ok) return { status: "failed", kind: page.kind, traceId: page.traceId };
-  return { status: "ready", vectors: page.data.vectors };
+  return { status: "ready", vectors: page.data.vectors, nextCursor: page.data.nextCursor };
 }
 
 function toggle(values: readonly string[], value: string): readonly string[] {

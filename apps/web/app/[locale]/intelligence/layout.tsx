@@ -4,6 +4,8 @@ import { type ReactNode, Suspense } from "react";
 import { WorkbenchShell } from "./_components/workbench-shell";
 import { workbenchCopy } from "./_lib/copy";
 import "./intelligence.css";
+import "./public.css";
+import "./economy.css";
 
 export default async function IntelligenceLayout({
   children,

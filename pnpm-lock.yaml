@@ -108,9 +108,15 @@ importers:
 
   apps/web:
     dependencies:
+      '@economyos/allocation-planning':
+        specifier: workspace:*
+        version: link:../../packages/allocation-planning
       '@economyos/behavioral-economics':
         specifier: workspace:*
         version: link:../../packages/behavioral-economics
+      '@economyos/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       '@economyos/design-tokens':
         specifier: workspace:*
         version: link:../../packages/design-tokens

@@ -13,6 +13,7 @@ import {
   TemporalLens,
 } from "../../_components/context-panel";
 import { PageHeader } from "../../_components/page-header";
+import { PublicExperience } from "../../_components/public-experience";
 import { workbenchCopy, workbenchDimension } from "../../_lib/copy";
 import {
   contextParams,
@@ -52,6 +53,7 @@ export function CountryClient({
   const [reload, setReload] = useState(0);
   const [state, setState] = useState<State>({ status: "loading" });
   const context = validation.context;
+  const requestedVectorId = search.get("vectorId");
   const copy = workbenchCopy(locale);
 
   useEffect(() => {
@@ -59,14 +61,19 @@ export function CountryClient({
     if (!context) return;
     const controller = new AbortController();
     setState({ status: "loading" });
-    void loadCountry(context, countryCode, controller.signal)
-      .then(setState)
+    void loadCountry(context, countryCode, controller.signal, requestedVectorId)
+      .then((result) => {
+        if (!controller.signal.aborted) setState(result);
+      })
       .catch(() => undefined);
     return () => controller.abort();
-  }, [context, countryCode, reload]);
+  }, [context, countryCode, reload, requestedVectorId]);
 
   const title =
     state.status === "ready" && state.detail ? state.detail.geography.name : copy.countriesTitle;
+  if (!context && search.get("advanced") !== "1" && !validation.attempted)
+    return <PublicExperience locale={locale} view="country" countryCode={countryCode} />;
+
   return (
     <main id="main-content" className="intelligenceMain" tabIndex={-1}>
       <nav className="breadcrumbs" aria-label={copy.breadcrumb}>
@@ -330,6 +337,7 @@ async function loadCountry(
   context: QueryContext,
   countryCode: string,
   signal: AbortSignal,
+  requestedVectorId: string | null,
 ): Promise<State> {
   let cursor: string | undefined;
   for (let pageNumber = 0; pageNumber < 20; pageNumber += 1) {
@@ -337,7 +345,9 @@ async function loadCountry(
     if (!page.ok) return { status: "failed", kind: page.kind, traceId: page.traceId };
     const summary = page.data.vectors.find(
       (vector) =>
-        vector.geography.code.toLocaleUpperCase("en-US") === countryCode.toLocaleUpperCase("en-US"),
+        vector.geography.code.toLocaleUpperCase("en-US") ===
+          countryCode.toLocaleUpperCase("en-US") &&
+        (!requestedVectorId || vector.id === requestedVectorId),
     );
     if (summary) {
       const url = detailUrl(summary.links.self, context.workspaceId);

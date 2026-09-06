@@ -1,0 +1,72 @@
+[
+  {
+    "route": "compare",
+    "locale": "en",
+    "viewport": {
+      "width": 1373,
+      "height": 1145
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "countries/IR",
+    "locale": "en",
+    "viewport": {
+      "width": 1402,
+      "height": 1122
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "science",
+    "locale": "en",
+    "viewport": {
+      "width": 1402,
+      "height": 1122
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "compare",
+    "locale": "fa",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "countries/IR",
+    "locale": "fa",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "science",
+    "locale": "fa",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "errors": [],
+    "overflow": false
+  },
+  {
+    "route": "overview",
+    "locale": "en",
+    "viewport": {
+      "width": 1536,
+      "height": 1024
+    },
+    "errors": [],
+    "overflow": false
+  }
+]

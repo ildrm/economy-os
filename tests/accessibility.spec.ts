@@ -16,7 +16,7 @@ const locales = [
   { locale: "tr", direction: "ltr", tagline: "İddiadan önce kanıt" },
 ] as const;
 
-for (const { locale, direction, tagline } of locales) {
+for (const { locale, direction } of locales) {
   test(`${locale} shell is translated, secure, accessible, and keyboard reachable`, async ({
     page,
   }) => {
@@ -35,29 +35,17 @@ for (const { locale, direction, tagline } of locales) {
 
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("html")).toHaveAttribute("dir", direction);
-    await expect(page.getByRole("heading", { level: 1, name: tagline })).toBeVisible();
-    expect(await page.title()).toContain(tagline);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      locale === "fa" ? "اقتصاد را با شواهد بشناسید" : "Understand the economy",
+    );
+    expect(await page.title()).toContain("EconomyOS");
     await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /.+/);
 
-    const languageLinks = page.locator(".localeList a");
-    await expect(languageLinks).toHaveCount(locales.length);
-    expect(
-      await languageLinks.evaluateAll((links) =>
-        links.every((link) => link.getClientRects().length > 0),
-      ),
-    ).toBe(true);
-    await expect(page.locator('.localeList a[aria-current="page"]')).toHaveAttribute(
-      "href",
-      `/${locale}`,
-    );
-
-    await expect(page.locator(".moduleStatus")).toHaveCount(3);
-    await expect(page.locator(".sidebar a")).toHaveCount(2);
-    expect(
-      await page
-        .locator(".moduleStatus")
-        .evaluateAll((items) => items.every((item) => !item.hasAttribute("tabindex"))),
-    ).toBe(true);
+    await expect(page.locator(".languageSelect option")).toHaveCount(locales.length);
+    await expect(page.locator(".languageSelect select")).toHaveValue(locale);
+    await expect(page.locator(".moduleStatus")).toHaveCount(0);
+    await expect(page.locator(".sidebar a")).toHaveCount(8);
+    await expect(page.locator('input:not([type="range"])')).toHaveCount(0);
 
     const accessibility = await new AxeBuilder({ page }).analyze();
     expect(accessibility.violations, JSON.stringify(accessibility.violations, null, 2)).toEqual([]);

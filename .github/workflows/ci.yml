@@ -68,6 +68,9 @@ jobs:
       - name: Coverage gates
         run: corepack pnpm test:coverage
 
+      - name: Verify public economic data provenance and research citations
+        run: corepack pnpm data:verify
+
       - name: Production build
         run: corepack pnpm build
 
@@ -97,6 +100,9 @@ jobs:
 
       - name: Behavioral and allocation research browser tests
         run: corepack pnpm test:research
+
+      - name: Public data, comparison and scientific-model browser tests
+        run: corepack pnpm test:public
 
       - name: Governed database point-in-time performance gate
         run: corepack pnpm benchmark:db

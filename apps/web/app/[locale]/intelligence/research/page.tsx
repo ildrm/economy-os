@@ -2,6 +2,7 @@ import { BEHAVIORAL_THEORIES } from "@economyos/behavioral-economics";
 import { isLocale } from "@economyos/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { buildLabPresets } from "../_lib/lab-presets";
 import { researchCopy } from "../_lib/research-copy";
 import { ResearchClient } from "./research-client";
 
@@ -29,5 +30,5 @@ export default async function ResearchPage({
     implementation: theory.implementation,
     boundaryConditions: [...theory.boundaryConditions],
   }));
-  return <ResearchClient locale={locale} theories={theories} />;
+  return <ResearchClient locale={locale} theories={theories} presets={buildLabPresets()} />;
 }

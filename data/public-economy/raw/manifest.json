@@ -1,0 +1,572 @@
+{
+  "retrievedAt": "2026-09-06T05:12:07.533Z",
+  "payloads": [
+    {
+      "path": "data/public-economy/raw/agriculture.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NV.AGR.TOTL.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "03839ca20cb1646b16daaeafc3fc73451310b8efb840b5d094aec16db9a898db",
+      "retrievedAt": "2026-09-06T05:12:13.771Z",
+      "bytes": 1738610
+    },
+    {
+      "path": "data/public-economy/raw/agriculture-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format=json&source=2&per_page=100",
+      "sha256": "f7332c2f654bb402d1fd739de3a761f51b128aab906299bace4e76b1d1c847b1",
+      "retrievedAt": "2026-09-06T05:12:13.158Z",
+      "bytes": 1513
+    },
+    {
+      "path": "data/public-economy/raw/consumption.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NE.CON.PRVT.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "f7117566e62912740e0d395394f5681fc3f1c6f3b93ff51f714dcbc1fee85169",
+      "retrievedAt": "2026-09-06T05:12:21.999Z",
+      "bytes": 1757546
+    },
+    {
+      "path": "data/public-economy/raw/consumption-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NE.CON.PRVT.ZS?format=json&source=2&per_page=100",
+      "sha256": "890ea1c4c86d929f896a11c14489233a58e384a8015f76a59acacf37e5d61228",
+      "retrievedAt": "2026-09-06T05:12:21.303Z",
+      "bytes": 909
+    },
+    {
+      "path": "data/public-economy/raw/countries.json.gz",
+      "url": "https://api.worldbank.org/v2/country?format=json&per_page=500",
+      "sha256": "4bca8777553d4e674df745b0628cbb8bf5efe838ef8f5cb606ad3b15d48b3302",
+      "retrievedAt": "2026-09-06T05:12:08.574Z",
+      "bytes": 113590
+    },
+    {
+      "path": "data/public-economy/raw/current-account.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/BN.CAB.XOKA.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "5ca40701cfd2b21dfcad22d66bce2be100cf371cdafb7048f18f2317ba1897a5",
+      "retrievedAt": "2026-09-06T05:12:16.599Z",
+      "bytes": 1576512
+    },
+    {
+      "path": "data/public-economy/raw/current-account-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/BN.CAB.XOKA.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "141e9de83f4a44c5a8e3359f343ae7d5dd16dc7498d6be29000758eb04f7befe",
+      "retrievedAt": "2026-09-06T05:12:16.064Z",
+      "bytes": 1169
+    },
+    {
+      "path": "data/public-economy/raw/debt-service.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/DT.TDS.DECT.EX.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "75b95504818e97ddaf83f66d9f8b442db16aafffeddb85b7ecf5de11c1a2e9cf",
+      "retrievedAt": "2026-09-06T05:12:18.008Z",
+      "bytes": 1810589
+    },
+    {
+      "path": "data/public-economy/raw/debt-service-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/DT.TDS.DECT.EX.ZS?format=json&source=2&per_page=100",
+      "sha256": "a9d405a3d6728dca05bdf29e8be021285432a6c9996042c5862e39b0a385c04f",
+      "retrievedAt": "2026-09-06T05:12:17.478Z",
+      "bytes": 686
+    },
+    {
+      "path": "data/public-economy/raw/education.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SE.XPD.TOTL.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "deb0dc1bca3343bc9fa5155c1e2414acfb4de8ee73a214de503ffd41ba685ec2",
+      "retrievedAt": "2026-09-06T05:12:20.574Z",
+      "bytes": 1701829
+    },
+    {
+      "path": "data/public-economy/raw/education-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SE.XPD.TOTL.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "69e86400c7e833a27f0638f05e1ea89b7ee39405b416dfc053bfd92b3897eeeb",
+      "retrievedAt": "2026-09-06T05:12:20.127Z",
+      "bytes": 948
+    },
+    {
+      "path": "data/public-economy/raw/electricity.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/EG.ELC.ACCS.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "a33a1ba0de8adb3f6da3ef4fa0e4eb07a31099cf112a8ce72bdc7a18c6a5e533",
+      "retrievedAt": "2026-09-06T05:12:19.528Z",
+      "bytes": 1543549
+    },
+    {
+      "path": "data/public-economy/raw/electricity-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/EG.ELC.ACCS.ZS?format=json&source=2&per_page=100",
+      "sha256": "c911d851f43bb7c6c7827db768de1d3ca94ad02a1b99e06d02dd227848c4d685",
+      "retrievedAt": "2026-09-06T05:12:19.106Z",
+      "bytes": 813
+    },
+    {
+      "path": "data/public-economy/raw/employment.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.EMP.TOTL.SP.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "3570e32ee8d6e3832a16f226f55716b8570df578a9ae1ce20be59807b2843caa",
+      "retrievedAt": "2026-09-06T05:12:15.057Z",
+      "bytes": 1784225
+    },
+    {
+      "path": "data/public-economy/raw/employment-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SL.EMP.TOTL.SP.ZS?format=json&source=2&per_page=100",
+      "sha256": "1a76befdd91aa931fb75db4b6d52a66d41cdcd64bcc5e5378db1dff83db53a7d",
+      "retrievedAt": "2026-09-06T05:12:14.342Z",
+      "bytes": 622
+    },
+    {
+      "path": "data/public-economy/raw/exchange.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/PA.NUS.FCRF?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "1fd79d1519ea2670920fc4252040a69ac133bd781668641ee6643182442836a9",
+      "retrievedAt": "2026-09-06T05:12:17.417Z",
+      "bytes": 1648294
+    },
+    {
+      "path": "data/public-economy/raw/exchange-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/PA.NUS.FCRF?format=json&source=2&per_page=100",
+      "sha256": "7fb65e8857becc3fdacf957dbab16b8f42fe21ad47c0fae9744aed315bd318e5",
+      "retrievedAt": "2026-09-06T05:12:16.964Z",
+      "bytes": 686
+    },
+    {
+      "path": "data/public-economy/raw/exports.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NE.EXP.GNFS.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "bce326ae833cff6ad37311a78b6edd33099906e105eb2d86ad76f165b0b736d7",
+      "retrievedAt": "2026-09-06T05:12:16.054Z",
+      "bytes": 1607846
+    },
+    {
+      "path": "data/public-economy/raw/exports-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NE.EXP.GNFS.ZS?format=json&source=2&per_page=100",
+      "sha256": "669b54f63c28def3e5d3f4b6bc9d65959439a18f6bf55ec6579b665de5dfa9b1",
+      "retrievedAt": "2026-09-06T05:12:15.373Z",
+      "bytes": 944
+    },
+    {
+      "path": "data/public-economy/raw/fdi.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/BX.KLT.DINV.WD.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "7e139b114135c27524c4b4b5b6ab54fa9478f2190b032c03ba09329d2ba4a1ae",
+      "retrievedAt": "2026-09-06T05:12:17.150Z",
+      "bytes": 1717706
+    },
+    {
+      "path": "data/public-economy/raw/fdi-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/BX.KLT.DINV.WD.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "1944d51ffffbc4d9bc233bf0c5b9867e37b98c7ea6ea77a56635089e63c2a6d1",
+      "retrievedAt": "2026-09-06T05:12:16.407Z",
+      "bytes": 1166
+    },
+    {
+      "path": "data/public-economy/raw/female-participation.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.TLF.CACT.FE.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "545c35a7fb19bae8ccd94b71f2cd39faa80c28ab856a19e0b62af03d052ff3c2",
+      "retrievedAt": "2026-09-06T05:12:14.804Z",
+      "bytes": 1963313
+    },
+    {
+      "path": "data/public-economy/raw/female-participation-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SL.TLF.CACT.FE.ZS?format=json&source=2&per_page=100",
+      "sha256": "ca4da251b402e2e93a7fdc1770de1d27ce79d490ffa7f12fc60980ffa86e1c6b",
+      "retrievedAt": "2026-09-06T05:12:14.257Z",
+      "bytes": 834
+    },
+    {
+      "path": "data/public-economy/raw/gdp.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "bcfa216bb30dc76802b89c2fcaa7a34388d7cf59cb45adb502e35f692f2b4d03",
+      "retrievedAt": "2026-09-06T05:12:10.813Z",
+      "bytes": 1457512
+    },
+    {
+      "path": "data/public-economy/raw/gdp-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.CD?format=json&source=2&per_page=100",
+      "sha256": "8a3a64776ca6a7bb8042dcfbd4c58fa257217c70e6237e4ae2323ab9dcb8126c",
+      "retrievedAt": "2026-09-06T05:12:10.125Z",
+      "bytes": 939
+    },
+    {
+      "path": "data/public-economy/raw/gdp-person.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "fe7f0125198185b0921c76e448974200360d178ce59a3e78c7d2a4651b540aa7",
+      "retrievedAt": "2026-09-06T05:12:11.711Z",
+      "bytes": 1536344
+    },
+    {
+      "path": "data/public-economy/raw/gdp-person-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.CD?format=json&source=2&per_page=100",
+      "sha256": "f6c9e12db4c1d6327d40f03e475428ef5ca1bbca7da9451d242a3b0be85af70d",
+      "retrievedAt": "2026-09-06T05:12:11.191Z",
+      "bytes": 1045
+    },
+    {
+      "path": "data/public-economy/raw/government-debt.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/GC.DOD.TOTL.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "6e758c24abd3c7272be1fd70dce245448962297aba3fab7ee9a3e2322e020662",
+      "retrievedAt": "2026-09-06T05:12:20.239Z",
+      "bytes": 1582526
+    },
+    {
+      "path": "data/public-economy/raw/government-debt-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/GC.DOD.TOTL.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "f6ac0503f9729e455999ca1499c722e4e4bfc30134dc49746eaf18a938b931fb",
+      "retrievedAt": "2026-09-06T05:12:19.856Z",
+      "bytes": 1441
+    },
+    {
+      "path": "data/public-economy/raw/growth.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.KD.ZG?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "f6636a1cd3f9c0618875d3e696a735e5e2a774b9344699d7e6fdaa215bb3f53a",
+      "retrievedAt": "2026-09-06T05:12:10.890Z",
+      "bytes": 1509462
+    },
+    {
+      "path": "data/public-economy/raw/growth-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD.ZG?format=json&source=2&per_page=100",
+      "sha256": "a7669dce796765e3377a7b24e2fc7b9bd3fb24ac7bc54484bbb7a8076f56b902",
+      "retrievedAt": "2026-09-06T05:12:10.302Z",
+      "bytes": 910
+    },
+    {
+      "path": "data/public-economy/raw/health.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SH.XPD.CHEX.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "59ff262516901b0f456158463092053784852b48a0cce1298f55a74b772b0ed9",
+      "retrievedAt": "2026-09-06T05:12:20.990Z",
+      "bytes": 1580798
+    },
+    {
+      "path": "data/public-economy/raw/health-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SH.XPD.CHEX.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "f29d4524127ed35c4f8ae0256b5e3931df34756e4662e560d81fd8adfbf05568",
+      "retrievedAt": "2026-09-06T05:12:20.420Z",
+      "bytes": 734
+    },
+    {
+      "path": "data/public-economy/raw/imports.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NE.IMP.GNFS.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "aea1881d32a36196fe6ff9e4e50fb29a93aa9e17661bf66485b5b0c5fd99b037",
+      "retrievedAt": "2026-09-06T05:12:16.394Z",
+      "bytes": 1608261
+    },
+    {
+      "path": "data/public-economy/raw/imports-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NE.IMP.GNFS.ZS?format=json&source=2&per_page=100",
+      "sha256": "35d0b4d4e16bbbbb6904b52dd48ab80e3314d81944f9e3298ff54363f929c6a6",
+      "retrievedAt": "2026-09-06T05:12:15.718Z",
+      "bytes": 972
+    },
+    {
+      "path": "data/public-economy/raw/industry.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NV.IND.TOTL.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "5e25455b42c66eba83997acdb3ed4f0b04e331df3621a2f5166e4ff05f69a99a",
+      "retrievedAt": "2026-09-06T05:12:12.908Z",
+      "bytes": 1731388
+    },
+    {
+      "path": "data/public-economy/raw/industry-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NV.IND.TOTL.ZS?format=json&source=2&per_page=100",
+      "sha256": "4e2eb4984a2e7d4476b3aac3cb2e619751bc99962f56399aff0a827f294c9f06",
+      "retrievedAt": "2026-09-06T05:12:12.234Z",
+      "bytes": 1105
+    },
+    {
+      "path": "data/public-economy/raw/inequality.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SI.POV.GINI?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "97a10de645856e9fb62b20582d35c2705119446f15937ba27bb5559fb7efbb55",
+      "retrievedAt": "2026-09-06T05:12:18.738Z",
+      "bytes": 1312336
+    },
+    {
+      "path": "data/public-economy/raw/inequality-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SI.POV.GINI?format=json&source=2&per_page=100",
+      "sha256": "4fee8b123d2b81234a774e85e2bada64a89933230bfdfeda3dbb9c67c56c2950",
+      "retrievedAt": "2026-09-06T05:12:18.314Z",
+      "bytes": 1495
+    },
+    {
+      "path": "data/public-economy/raw/inflation.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/FP.CPI.TOTL.ZG?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "8982c015c0f292aefc7d0d450d48ced27d3007bc135cafd9cb0b33efd25af454",
+      "retrievedAt": "2026-09-06T05:12:09.967Z",
+      "bytes": 1590571
+    },
+    {
+      "path": "data/public-economy/raw/inflation-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/FP.CPI.TOTL.ZG?format=json&source=2&per_page=100",
+      "sha256": "b06ac086a2d35fd3723d215bb26979c95274291a2a4fdeda57c14888066d8515",
+      "retrievedAt": "2026-09-06T05:12:08.947Z",
+      "bytes": 633
+    },
+    {
+      "path": "data/public-economy/raw/internet.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/IT.NET.USER.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "4cc5fd6e62b138f4eb70e9b31c4d674958374ea77b822f48e0d9ed13c5c4075f",
+      "retrievedAt": "2026-09-06T05:12:19.710Z",
+      "bytes": 1627003
+    },
+    {
+      "path": "data/public-economy/raw/internet-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/IT.NET.USER.ZS?format=json&source=2&per_page=100",
+      "sha256": "b0c58eac53799ac562dedfde0757f6ff090f8d960a8e1012ac11baef34850196",
+      "retrievedAt": "2026-09-06T05:12:19.193Z",
+      "bytes": 630
+    },
+    {
+      "path": "data/public-economy/raw/investment.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NE.GDI.TOTL.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "1268746741c4a3c99cd5c91a4ae6527f3ab0f94c3415e6d85f659dacbcf98a2a",
+      "retrievedAt": "2026-09-06T05:12:12.830Z",
+      "bytes": 1563591
+    },
+    {
+      "path": "data/public-economy/raw/investment-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NE.GDI.TOTL.ZS?format=json&source=2&per_page=100",
+      "sha256": "a4759468bb199ba44ff25adfb79fa867ca4b396889ea5af5deaa3371d41074ac",
+      "retrievedAt": "2026-09-06T05:12:12.098Z",
+      "bytes": 853
+    },
+    {
+      "path": "data/public-economy/raw/life-expectancy.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "ffeb1b80709171dd38e4cdc3cca0d1e01db11152f60aefbe23f50576b63be950",
+      "retrievedAt": "2026-09-06T05:12:19.098Z",
+      "bytes": 1570498
+    },
+    {
+      "path": "data/public-economy/raw/life-expectancy-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SP.DYN.LE00.IN?format=json&source=2&per_page=100",
+      "sha256": "7c7d0646ef3f8706ff7aa0af14da550124d1bcdc4f79c7c13bb7884749e2a963",
+      "retrievedAt": "2026-09-06T05:12:18.618Z",
+      "bytes": 970
+    },
+    {
+      "path": "data/public-economy/raw/money-growth.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/FM.LBL.BMNY.ZG?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "a153e662e8219c56aed18fe42fec07610b3dd33c453782b4f80f884594c17c59",
+      "retrievedAt": "2026-09-06T05:12:10.983Z",
+      "bytes": 1510701
+    },
+    {
+      "path": "data/public-economy/raw/money-growth-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/FM.LBL.BMNY.ZG?format=json&source=2&per_page=100",
+      "sha256": "cfcd83e05860033a1e8bf549c0de6d843309965a26f2bfbc6c037936919d35f3",
+      "retrievedAt": "2026-09-06T05:12:09.998Z",
+      "bytes": 762
+    },
+    {
+      "path": "data/public-economy/raw/participation.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.TLF.CACT.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "a4a87105eba8b4c1c41a119fc93b5fc67f5e0f35ce0d02d1f424268d8d229a3c",
+      "retrievedAt": "2026-09-06T05:12:15.316Z",
+      "bytes": 1928790
+    },
+    {
+      "path": "data/public-economy/raw/participation-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SL.TLF.CACT.ZS?format=json&source=2&per_page=100",
+      "sha256": "5017a239b28426c67183f59d17cf59dcb34c5aec8a9b9393ecb06d3b102b41a9",
+      "retrievedAt": "2026-09-06T05:12:14.418Z",
+      "bytes": 760
+    },
+    {
+      "path": "data/public-economy/raw/person-growth.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD.ZG?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "4a5aba591c677f53711c4683bb5fb49562f6aedffc3c451c3cf8c40df08e4df2",
+      "retrievedAt": "2026-09-06T05:12:11.961Z",
+      "bytes": 1586552
+    },
+    {
+      "path": "data/public-economy/raw/person-growth-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.KD.ZG?format=json&source=2&per_page=100",
+      "sha256": "b81340e9c149b2c8156e8dd6903b8ee2ff861de2d6e67e05e4e322de6445cbbf",
+      "retrievedAt": "2026-09-06T05:12:11.309Z",
+      "bytes": 1016
+    },
+    {
+      "path": "data/public-economy/raw/population.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "9f5b06621149da8759afaa661311af7aab5c8b4d29bf1ae9a76197ab543b9f65",
+      "retrievedAt": "2026-09-06T05:12:18.265Z",
+      "bytes": 1384770
+    },
+    {
+      "path": "data/public-economy/raw/population-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SP.POP.TOTL?format=json&source=2&per_page=100",
+      "sha256": "9e0a2e98c92b4dfba5df33d15eef0eaac266f093cbde1dad66e2950ad3b43efd",
+      "retrievedAt": "2026-09-06T05:12:17.725Z",
+      "bytes": 1100
+    },
+    {
+      "path": "data/public-economy/raw/poverty.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SI.POV.NAHC?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "c9fc8f6d7740a513fb9a49142cc69768a428fa82a310f7c238a1509068822c83",
+      "retrievedAt": "2026-09-06T05:12:18.879Z",
+      "bytes": 1705104
+    },
+    {
+      "path": "data/public-economy/raw/poverty-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SI.POV.NAHC?format=json&source=2&per_page=100",
+      "sha256": "4b74b56fdd23b6323e215e43f343ad681917a7e4dac7751837e55e4234141cb3",
+      "retrievedAt": "2026-09-06T05:12:18.418Z",
+      "bytes": 1001
+    },
+    {
+      "path": "data/public-economy/raw/ppp-person.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.PP.KD?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "71b6d51ad0b451ea410cb8948bfb04ac9f42b31ec80148a3c8902ffe7b48072f",
+      "retrievedAt": "2026-09-06T05:12:11.889Z",
+      "bytes": 1711448
+    },
+    {
+      "path": "data/public-economy/raw/ppp-person-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.PP.KD?format=json&source=2&per_page=100",
+      "sha256": "f3eb0a9e0969af8d7c0d783ffd9331d24163a87cb2e89f323ac3122614147cf4",
+      "retrievedAt": "2026-09-06T05:12:11.280Z",
+      "bytes": 2445
+    },
+    {
+      "path": "data/public-economy/raw/price-index.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/FP.CPI.TOTL?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "f5c9a7a50f3f22e59b44019c4dbe2b359c10182274f8d491b3e361c83f1f4ec6",
+      "retrievedAt": "2026-09-06T05:12:09.660Z",
+      "bytes": 1524585
+    },
+    {
+      "path": "data/public-economy/raw/price-index-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/FP.CPI.TOTL?format=json&source=2&per_page=100",
+      "sha256": "bf0b7036d24db73f24a505f7e987dcdf12b6d0380facbbcfbe2cc0345433e07c",
+      "retrievedAt": "2026-09-06T05:12:08.986Z",
+      "bytes": 460
+    },
+    {
+      "path": "data/public-economy/raw/real-interest.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/FR.INR.RINR?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "40a8e7b637a75b68a5de31e2f79ab5f6bfa46faaa29b958eb545a38d1c73ee52",
+      "retrievedAt": "2026-09-06T05:12:09.799Z",
+      "bytes": 1433394
+    },
+    {
+      "path": "data/public-economy/raw/real-interest-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/FR.INR.RINR?format=json&source=2&per_page=100",
+      "sha256": "498aa4df6dd0a335b4a72b7fca9881c5152ec3d58b10c7fbb15fcbf0ce63c6ff",
+      "retrievedAt": "2026-09-06T05:12:08.903Z",
+      "bytes": 902
+    },
+    {
+      "path": "data/public-economy/raw/remittances.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/BX.TRF.PWKR.DT.GD.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "893462625389c83ddef4841fcbaabfde1b1f6805b992c079f4de05fc60f6adaa",
+      "retrievedAt": "2026-09-06T05:12:18.088Z",
+      "bytes": 1656713
+    },
+    {
+      "path": "data/public-economy/raw/remittances-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/BX.TRF.PWKR.DT.GD.ZS?format=json&source=2&per_page=100",
+      "sha256": "cba6e64eb7b5e070bcf7dd449ce6b9938d58fa13e50dc2bfef07730e3e550ac1",
+      "retrievedAt": "2026-09-06T05:12:17.597Z",
+      "bytes": 1249
+    },
+    {
+      "path": "data/public-economy/raw/renewables.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/EG.FEC.RNEW.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "8edb806de9afb79cc0708fba22959a6dce709e0e324bd235d708fc2741e3937c",
+      "retrievedAt": "2026-09-06T05:12:21.121Z",
+      "bytes": 1727864
+    },
+    {
+      "path": "data/public-economy/raw/renewables-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/EG.FEC.RNEW.ZS?format=json&source=2&per_page=100",
+      "sha256": "8a1e954365935320d132a9eb2a2edf350b69185acf4609a011505daca2a63ee7",
+      "retrievedAt": "2026-09-06T05:12:20.639Z",
+      "bytes": 711
+    },
+    {
+      "path": "data/public-economy/raw/reserves.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/FI.RES.TOTL.MO?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "d183b003f006efa3e748b42f3501896d14920075e81a4df83c8977db4da65025",
+      "retrievedAt": "2026-09-06T05:12:17.273Z",
+      "bytes": 1568689
+    },
+    {
+      "path": "data/public-economy/raw/reserves-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/FI.RES.TOTL.MO?format=json&source=2&per_page=100",
+      "sha256": "063c60c49656b612491076e36d81f9468cca030cab694d8e0a56dc4356a892a9",
+      "retrievedAt": "2026-09-06T05:12:16.720Z",
+      "bytes": 985
+    },
+    {
+      "path": "data/public-economy/raw/sanitation.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SH.STA.BASS.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "04d0e903c52f4f6f2eebd8d6c2e4c17e73a1b5875c731885c208be8f4e281e3b",
+      "retrievedAt": "2026-09-06T05:12:20.121Z",
+      "bytes": 1783694
+    },
+    {
+      "path": "data/public-economy/raw/sanitation-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SH.STA.BASS.ZS?format=json&source=2&per_page=100",
+      "sha256": "18a33bf30d7227ed85e4d53fe149b08ddab5b79bfa9413cbb419c298e04454f5",
+      "retrievedAt": "2026-09-06T05:12:19.597Z",
+      "bytes": 1258
+    },
+    {
+      "path": "data/public-economy/raw/services.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NV.SRV.TOTL.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "ddc2bd74dcb263ad0aacca4fab72d79876b742159ae4e7cb93ef9d312707f655",
+      "retrievedAt": "2026-09-06T05:12:12.979Z",
+      "bytes": 1558459
+    },
+    {
+      "path": "data/public-economy/raw/services-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NV.SRV.TOTL.ZS?format=json&source=2&per_page=100",
+      "sha256": "9a06d899d2283ac081ad1aadd30614a93234e105abeffd14beadbcb3b1156c7b",
+      "retrievedAt": "2026-09-06T05:12:12.341Z",
+      "bytes": 1415
+    },
+    {
+      "path": "data/public-economy/raw/trade.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NE.TRD.GNFS.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "9f8d26feacd08f18b0c8ee41d96189e34c5c34295658d1e4a8d61cae2f31947f",
+      "retrievedAt": "2026-09-06T05:12:15.714Z",
+      "bytes": 1441555
+    },
+    {
+      "path": "data/public-economy/raw/trade-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/NE.TRD.GNFS.ZS?format=json&source=2&per_page=100",
+      "sha256": "6911a5bf5dc999683d85de09bca98f45f9bb97b99255835c00eb3d2f230c80d8",
+      "retrievedAt": "2026-09-06T05:12:15.329Z",
+      "bytes": 779
+    },
+    {
+      "path": "data/public-economy/raw/unemployment.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.UEM.TOTL.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "5b3397948a6822706d276eadb8880494d882074041f02c52385fd50cf09e799b",
+      "retrievedAt": "2026-09-06T05:12:14.022Z",
+      "bytes": 1745552
+    },
+    {
+      "path": "data/public-economy/raw/unemployment-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SL.UEM.TOTL.ZS?format=json&source=2&per_page=100",
+      "sha256": "1a961b9bf668a7d63f92c8c1b249571235dab4b471781c01a6dfdf2ec0b1459a",
+      "retrievedAt": "2026-09-06T05:12:13.533Z",
+      "bytes": 671
+    },
+    {
+      "path": "data/public-economy/raw/urban.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.URB.TOTL.IN.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "8fd11140e65a802a137745dfd3dba911e1458f89b48db6295c2abb2ce94963ee",
+      "retrievedAt": "2026-09-06T05:12:21.457Z",
+      "bytes": 1638427
+    },
+    {
+      "path": "data/public-economy/raw/urban-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SP.URB.TOTL.IN.ZS?format=json&source=2&per_page=100",
+      "sha256": "027e4f6e148c6f99d03ec04e015131daa4be5cab8481e4b1746fcb3726153733",
+      "retrievedAt": "2026-09-06T05:12:20.993Z",
+      "bytes": 720
+    },
+    {
+      "path": "data/public-economy/raw/youth-unemployment.json.gz",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.UEM.1524.ZS?format=json&source=2&date=2000:2025&per_page=20000",
+      "sha256": "2a6f7b8ade032a8805528ebe3c5fd23536f35e9b79c8d52c83ab162104c5d2f1",
+      "retrievedAt": "2026-09-06T05:12:13.894Z",
+      "bytes": 1865187
+    },
+    {
+      "path": "data/public-economy/raw/youth-unemployment-metadata.json.gz",
+      "url": "https://api.worldbank.org/v2/indicator/SL.UEM.1524.ZS?format=json&source=2&per_page=100",
+      "sha256": "878be4c6923d77ea316eec4b9d4226df3e295cdd779619d605bdf31f6e44a4b4",
+      "retrievedAt": "2026-09-06T05:12:13.434Z",
+      "bytes": 665
+    }
+  ]
+}

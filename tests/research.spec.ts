@@ -60,7 +60,7 @@ for (const locale of [
   "tr",
 ] as const) {
   test(`${locale}: research starts without fabricated quantities`, async ({ page }) => {
-    await page.goto(`/${locale}/intelligence/research`);
+    await page.goto(`/${locale}/intelligence/research?advanced=1`);
     await expect(
       page.getByRole("heading", { level: 1, name: researchCopy(locale).title }),
     ).toBeVisible();
@@ -87,7 +87,7 @@ test("intertemporal research preserves result context, provenance, and accessibl
     submitted = route.request().postDataJSON() as Record<string, unknown>;
     await route.fulfill({ status: 201, json: fixture(submitted, behavioralResult) });
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await behavioral(page);
   await page.getByRole("button", { name: "Run and save research" }).click();
   await expect(page.getByRole("status")).toContainText("Immutable research record");
@@ -133,7 +133,7 @@ test("material balance submits unknown quantities as null and renders explicit m
       }),
     });
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await page.getByRole("radio", { name: "Material balance" }).check();
   await context(page);
   await page.getByLabel("Commodity", { exact: true }).fill("Synthetic commodity");
@@ -161,7 +161,7 @@ test("identical denied retries preserve id while changed inputs use a new identi
         : { status: 201, json: fixture(command, behavioralResult) },
     );
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await behavioral(page);
   await page.getByRole("button", { name: "Run and save research" }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("does not confirm whether");
@@ -191,7 +191,7 @@ test("editing context while a request is pending cannot display its late result"
     await gate;
     await route.fulfill({ status: 201, json: fixture(command, behavioralResult) });
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await behavioral(page);
   await page.getByRole("button", { name: "Run and save research" }).click();
   await requestSeen;
@@ -213,7 +213,7 @@ test("response scope mismatch fails closed", async ({ page }) => {
       },
     });
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await behavioral(page);
   await page.getByRole("button", { name: "Run and save research" }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("Unable to run");
@@ -228,7 +228,7 @@ test("response knowledge cutoff rejects a hidden microsecond difference", async 
       json: { ...fixture(command, behavioralResult), knownAt: "2026-01-01T00:00:00.000001Z" },
     });
   });
-  await page.goto("/en/intelligence/research");
+  await page.goto("/en/intelligence/research?advanced=1");
   await behavioral(page);
   await page.getByRole("button", { name: "Run and save research" }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("Unable to run");

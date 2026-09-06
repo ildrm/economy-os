@@ -108,6 +108,9 @@ function checkRepositoryContracts() {
   const nodeVersion = read(".node-version").trim();
   const gitignore = read(".gitignore");
   const compose = read("docker-compose.yml");
+  const attributes = read(".gitattributes");
+  assert.match(attributes, /^apps\/web\/public\/economy\/\*\.json text eol=lf$/m);
+  assert.match(attributes, /^packages\/canonical-data\/src\/world-bank\.ts text eol=lf$/m);
 
   assert.equal(rootManifest.engines.node, nodeVersion);
   assert.equal(rootManifest.packageManager, `pnpm@${rootManifest.engines.pnpm}`);
@@ -159,6 +162,19 @@ function checkRepositoryContracts() {
     "release evidence must be verified after generation",
   );
   assert.match(gitignore, /^artifacts\/release-evidence\/$/m);
+  assert.match(gitignore, /^apps\/web\/next-env\.d\.ts$/m);
+  const webManifest = JSON.parse(read("apps/web/package.json"));
+  assert.match(webManifest.scripts.typecheck, /^next typegen && /);
+  const trackedGeneratedTypes = spawnSync("git", ["ls-files", "--", "apps/web/next-env.d.ts"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  });
+  assert.equal(trackedGeneratedTypes.status, 0);
+  assert.equal(
+    trackedGeneratedTypes.stdout.trim(),
+    "",
+    "Next.js generated types must be untracked so builds cannot dirty the release source tree",
+  );
 
   const imageLines = compose
     .split("\n")

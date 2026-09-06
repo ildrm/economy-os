@@ -35,20 +35,18 @@ const query = new URLSearchParams({
 
 for (const [locale, direction, title, trustBoundary] of locales) {
   test(`${locale} global intelligence shell preserves locale and reflows`, async ({ page }) => {
-    const response = await page.goto(`/${locale}/intelligence/global`);
+    const response = await page.goto(`/${locale}/intelligence/global?advanced=1`);
     expect(response?.ok()).toBe(true);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("html")).toHaveAttribute("dir", direction);
     await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
     await expect(page.locator(".trustStrip li")).toHaveText([/.+/, /.+/, trustBoundary]);
-    await expect(page.locator(".workbenchSidebar .moduleLink")).toHaveCount(3);
+    await expect(page.locator(".workbenchSidebar .moduleLink")).toHaveCount(8);
     await expect(
       page.locator(`.workbenchSidebar a[href="/${locale}/intelligence/research"]`),
     ).toBeVisible();
-    await expect(page.locator(".workbenchSidebar .moduleStatus")).toHaveCount(3);
-    await expect(page.locator(`.localeList a[href^="/${locale}/intelligence/global"]`)).toHaveCount(
-      1,
-    );
+    await expect(page.locator(".workbenchSidebar .moduleStatus")).toHaveCount(0);
+    await expect(page.locator(`.languageSelect option[value="${locale}"]`)).toHaveCount(1);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
@@ -59,7 +57,7 @@ for (const [locale, direction, title, trustBoundary] of locales) {
 
 test("Armenian branding reflows on narrow screens with expanded text spacing", async ({ page }) => {
   await page.setViewportSize({ width: 385, height: 839 });
-  await page.goto("/hy/intelligence/global");
+  await page.goto("/hy/intelligence/global?advanced=1");
   await expect(
     page.getByRole("heading", { level: 1, name: "Համաշխարհային տնտեսական վիճակ" }),
   ).toBeVisible();
@@ -67,9 +65,9 @@ test("Armenian branding reflows on narrow screens with expanded text spacing", a
 
   for (const width of [385, 412]) {
     await page.setViewportSize({ width, height: 839 });
-    const mode = page.locator(".workbenchTopbar .productMode");
+    const mode = page.locator(".workbenchTopbar .brand");
     await expect(mode).toBeVisible();
-    await expect(mode).toHaveText("Տնտեսական վերլուծություն");
+    await expect(mode).toContainText("EconomyOS");
     const layout = await page.evaluate(() => {
       const brand = document.querySelector(".workbenchTopbar .brand");
       if (!brand) throw new Error("Workbench branding is missing");
@@ -297,7 +295,7 @@ test("invalid setup sends no governed request and valid form context persists in
       body: JSON.stringify({ ...listFixture(), vectors: [], count: 0 }),
     });
   });
-  await page.goto("/en/intelligence/global");
+  await page.goto("/en/intelligence/global?advanced=1");
   await expect(page.getByRole("heading", { name: "Set the research context" })).toBeVisible();
   await expect(page.locator(".contextIssues")).toHaveCount(0);
   await expect(page.getByLabel("As known at")).not.toHaveAttribute("aria-invalid");
@@ -348,10 +346,68 @@ test("offline failure preserves governed context and offers a safe retry", async
   await expect(page.getByRole("heading", { name: "Network unavailable" })).toBeVisible();
   await expect(page.getByText(/point-in-time context is preserved/i)).toBeVisible();
   await expect(page.getByRole("button", { name: "Retry safely" })).toBeVisible();
+  await page.getByText("Source context & reproducibility details", { exact: true }).click();
   await expect(page.locator(".querySummary")).toBeVisible();
   await expect(
     page.getByText(/does not confirm whether the requested resource exists/i),
   ).toHaveCount(0);
+});
+
+test("country directory follows pagination without losing the report context", async ({ page }) => {
+  await page.route("**/api/v1/economic-state/vectors?*", (route) => {
+    const cursor = new URL(route.request().url()).searchParams.get("cursor");
+    const fixture = listFixture();
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ...fixture,
+        count: 1,
+        nextCursor: cursor ? null : VECTOR_A,
+        vectors: [fixture.vectors[cursor ? 1 : 0]],
+      }),
+    });
+  });
+  await page.goto(`/en/intelligence/global?${query}`);
+  await expect(page.locator(".matrixCountry")).toContainText("Testland");
+  await page.getByRole("link", { name: "Next countries", exact: true }).click();
+  await expect(page.locator(".matrixCountry")).toContainText("Alternia");
+  await expect(page).toHaveURL(new RegExp(`workspaceId=${WORKSPACE}`));
+  await page.getByRole("link", { name: "First page", exact: true }).click();
+  await expect(page.locator(".matrixCountry")).toContainText("Testland");
+});
+
+test("a country opens the selected report when several reports share its country code", async ({
+  page,
+}) => {
+  let loadedId = "";
+  await page.route("**/api/v1/economic-state/vectors?*", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ...listFixture(),
+        vectors: [
+          summary(VECTOR_A, GEOGRAPHY_A, "TST", "First report"),
+          summary(VECTOR_B, GEOGRAPHY_A, "TST", "Selected report"),
+        ],
+      }),
+    }),
+  );
+  await page.route("**/api/v1/economic-state/vectors/*", (route) => {
+    loadedId = new URL(route.request().url()).pathname.split("/").pop() ?? "";
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ...detailFixture(),
+        ...summary(VECTOR_B, GEOGRAPHY_A, "TST", "Selected report"),
+      }),
+    });
+  });
+  await page.goto(`/en/intelligence/countries/TST?${query}&vectorId=${VECTOR_B}`);
+  await expect(page.getByRole("heading", { level: 1, name: "Selected report" })).toBeVisible();
+  expect(loadedId).toBe(VECTOR_B);
 });
 
 async function mockEconomicState(page: Page): Promise<void> {

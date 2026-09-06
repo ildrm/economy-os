@@ -2,10 +2,10 @@
 
 import { LOCALE_METADATA, LOCALES, type Locale, translate } from "@economyos/i18n";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import { workbenchCopy } from "../_lib/copy";
-import { researchCopy } from "../_lib/research-copy";
+import { contextParams, validateContext } from "../_lib/intelligence";
+import { PUBLIC_NAV, publicHref, publicLanguage, publicNavLabel, words } from "../_lib/public-copy";
 
 export function WorkbenchShell({
   locale,
@@ -16,13 +16,22 @@ export function WorkbenchShell({
 }) {
   const pathname = usePathname();
   const search = useSearchParams();
+  const router = useRouter();
   const suffix = pathname.replace(/^\/[A-Za-z-]+/, "");
   const query = search.toString();
-  const globalHref = intelligenceHref(locale, "/intelligence/global", query);
-  const countriesHref = intelligenceHref(locale, "/intelligence/countries", query);
-  const copy = workbenchCopy(locale);
+  const context = validateContext(search).context;
+  const advanced = search.get("advanced") === "1";
+  const current = pathname.includes("/countries")
+    ? "countries"
+    : pathname.endsWith("/compare")
+      ? "compare"
+      : pathname.endsWith("/science")
+        ? "science"
+        : pathname.endsWith("/research")
+          ? "lab"
+          : (search.get("view") ?? "overview");
   return (
-    <div className="workbenchShell">
+    <div className="workbenchShell publicShell">
       <a className="skipLink" href="#main-content">
         {translate(locale, "a11y.skipToContent")}
       </a>
@@ -31,24 +40,26 @@ export function WorkbenchShell({
           <span className="brandMark" aria-hidden="true">
             E
           </span>
-          <span>{translate(locale, "app.name")}</span>
-          <span className="productMode">{copy.intelligence}</span>
+          <span>EconomyOS</span>
         </Link>
-        <nav aria-label={translate(locale, "a11y.language")} className="languageRail">
-          <ul className="localeList">
+        <span className="brandPromise" lang={publicLanguage(locale)}>
+          {words(locale, "Economics, made understandable", "اقتصاد، به زبان قابل فهم")}
+        </span>
+        <label className="languageSelect">
+          <span className="srOnly">{translate(locale, "a11y.language")}</span>
+          <select
+            value={locale}
+            onChange={(event) =>
+              router.push(`/${event.target.value}${suffix}${query ? `?${query}` : ""}`)
+            }
+          >
             {LOCALES.map((candidate) => (
-              <li key={candidate}>
-                <Link
-                  href={`${`/${candidate}${suffix}`}${query ? `?${query}` : ""}`}
-                  hrefLang={candidate}
-                  aria-current={candidate === locale ? "page" : undefined}
-                >
-                  {LOCALE_METADATA[candidate].nativeName}
-                </Link>
-              </li>
+              <option key={candidate} value={candidate} lang={candidate}>
+                {LOCALE_METADATA[candidate].nativeName}
+              </option>
             ))}
-          </ul>
-        </nav>
+          </select>
+        </label>
       </header>
       <aside
         className="workbenchSidebar sidebar"
@@ -56,64 +67,37 @@ export function WorkbenchShell({
       >
         <nav aria-label={translate(locale, "a11y.primary")}>
           <ul>
-            <li>
-              <Link
-                className="moduleLink"
-                aria-current={pathname.endsWith("/global") ? "page" : undefined}
-                href={globalHref}
-                prefetch={false}
-              >
-                <span className="navIndex" aria-hidden="true">
-                  01
-                </span>
-                {translate(locale, "nav.global")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="moduleLink"
-                aria-current={pathname.includes("/countries") ? "page" : undefined}
-                href={countriesHref}
-                prefetch={false}
-              >
-                <span className="navIndex" aria-hidden="true">
-                  02
-                </span>
-                {translate(locale, "nav.countries")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="moduleLink"
-                aria-current={pathname.endsWith("/research") ? "page" : undefined}
-                href={intelligenceHref(locale, "/intelligence/research", query)}
-                prefetch={false}
-              >
-                <span className="navIndex" aria-hidden="true">
-                  03
-                </span>
-                {researchCopy(locale).title}
-              </Link>
-            </li>
-            {(["evidence", "models", "scenarios"] as const).map((item, index) => (
-              <li key={item}>
-                <span className="moduleStatus" aria-disabled="true">
-                  <span className="navIndex" aria-hidden="true">
-                    0{index + 4}
-                  </span>
-                  {translate(locale, `nav.${item}`)}
-                </span>
+            {PUBLIC_NAV.map((view) => (
+              <li key={view}>
+                <Link
+                  className="moduleLink"
+                  href={
+                    context && ["overview", "countries", "compare"].includes(view)
+                      ? `${publicHref(locale, view)}?${contextParams(context)}`
+                      : publicHref(locale, view)
+                  }
+                  aria-current={current === view && !advanced ? "page" : undefined}
+                  prefetch={false}
+                >
+                  {publicNavLabel(locale, view)}
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <p className="sidebarNote">PIT / v1</p>
+        <div className="sidebarResearch" lang={publicLanguage(locale)}>
+          <p>{words(locale, "For deeper analysis", "برای تحلیل عمیق‌تر")}</p>
+          <Link
+            className="moduleLink"
+            aria-current={advanced ? "page" : undefined}
+            href={`/${locale}/intelligence/research?advanced=1`}
+            prefetch={false}
+          >
+            {words(locale, "Research workspace", "فضای پژوهش")}
+          </Link>
+        </div>
       </aside>
       {children}
     </div>
   );
-}
-
-function intelligenceHref(locale: Locale, suffix: string, query: string): string {
-  return `/${locale}${suffix}${query ? `?${query}` : ""}`;
 }

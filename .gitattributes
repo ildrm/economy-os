@@ -1,0 +1,7 @@
+run.sh text eol=lf
+run.bat text eol=crlf
+
+# Preserve bytes of source artifacts and browser data validated by SHA-256.
+apps/web/public/economy/*.json text eol=lf
+packages/canonical-data/src/world-bank.ts text eol=lf
+data/public-economy/raw/*.gz binary

@@ -15,6 +15,8 @@
     }
   },
   "scripts": {
+    "data:refresh": "corepack pnpm --filter @economyos/canonical-data... build && node scripts/refresh-public-data.mjs",
+    "research:refresh": "node scripts/refresh-research-library.mjs",
     "build": "corepack pnpm -r --if-present build",
     "benchmark:db": "node --experimental-strip-types database/benchmark.ts",
     "benchmark:pit": "node scripts/benchmark-pit.mjs",
@@ -40,7 +42,9 @@
     "test:intelligence": "playwright test tests/intelligence.spec.ts",
     "test:coverage": "vitest run --coverage",
     "test:research": "playwright test tests/research.spec.ts",
-    "benchmark:research": "node scripts/benchmark-research.mjs"
+    "benchmark:research": "node scripts/benchmark-research.mjs",
+    "test:public": "playwright test tests/public-experience.spec.ts",
+    "data:verify": "corepack pnpm --filter @economyos/canonical-data... build && node scripts/verify-public-data.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

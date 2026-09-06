@@ -1,4 +1,6 @@
 export type Brand<T, Name extends string> = T & { readonly __brand: Name };
+export * from "./annual-reference.js";
+export * from "./source-policy.js";
 
 export type OrganizationId = Brand<string, "OrganizationId">;
 export type WorkspaceId = Brand<string, "WorkspaceId">;

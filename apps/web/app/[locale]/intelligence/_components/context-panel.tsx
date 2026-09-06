@@ -11,6 +11,7 @@ import {
   type RequestFailureKind,
   validateContext,
 } from "../_lib/intelligence";
+import { words } from "../_lib/public-copy";
 
 const UUID_PATTERN =
   "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}";
@@ -77,134 +78,145 @@ export function TemporalLens({
   };
 
   return (
-    <section className="temporalLens" aria-labelledby="temporal-lens-title">
-      <div className="lensHeading">
-        <p className="sectionKicker">{copy.temporalLens}</p>
-        <h2 id="temporal-lens-title">{copy.queryContext}</h2>
-      </div>
-      <form
-        className="contextForm"
-        action={pathname}
-        method="get"
-        noValidate
-        onInput={handleInput}
-        onSubmit={handleSubmit}
-      >
-        <label>
-          <span>{copy.effectiveAt}</span>
-          <input value={copy.unavailable} disabled aria-describedby="effective-help" />
-          <small id="effective-help">{copy.effectiveHelp}</small>
-        </label>
-        <label>
-          <span>{copy.asKnownAt}</span>
-          <input
-            id={CONTEXT_FIELD_IDS.knownAt}
-            name="knownAt"
-            defaultValue={context?.knownAt ?? params.get("knownAt") ?? ""}
-            placeholder="2026-08-31T12:00:00Z"
-            inputMode="text"
-            pattern={UTC_INSTANT_PATTERN}
-            required
-            dir="ltr"
-            aria-invalid={invalid("knownAt") || undefined}
-            aria-describedby={invalid("knownAt") ? issueId("knownAt") : undefined}
-          />
-          <FieldIssue locale={locale} field="knownAt" visible={invalid("knownAt")} />
-        </label>
-        <label>
-          <span>{copy.systemTime}</span>
-          <input
-            id={CONTEXT_FIELD_IDS.systemAt}
-            name="systemAt"
-            defaultValue={context?.systemAt ?? params.get("systemAt") ?? "null"}
-            placeholder="null / UTC RFC 3339"
-            pattern={`(?:null|${UTC_INSTANT_PATTERN})`}
-            dir="ltr"
-            aria-invalid={invalid("systemAt") || undefined}
-            aria-describedby={invalid("systemAt") ? issueId("systemAt") : undefined}
-          />
-          <FieldIssue locale={locale} field="systemAt" visible={invalid("systemAt")} />
-        </label>
-        <label>
-          <span>{copy.policy}</span>
-          <select
-            id={CONTEXT_FIELD_IDS.policy}
-            name="policy"
-            defaultValue={context?.policy ?? params.get("policy") ?? ""}
-            required
-            aria-invalid={invalid("policy") || undefined}
-            aria-describedby={invalid("policy") ? issueId("policy") : undefined}
-          >
-            <option value="" disabled>
-              {copy.selectPolicy}
-            </option>
-            <option value="true_vintage">true_vintage</option>
-            <option value="reconstructed">reconstructed</option>
-            <option value="latest_revised">latest_revised</option>
-          </select>
-          <FieldIssue locale={locale} field="policy" visible={invalid("policy")} />
-        </label>
-        {feedback.attempted && feedback.issues.length > 0 ? (
-          <div
-            ref={summaryRef}
-            className="contextIssues fieldIssues"
-            role="alert"
-            tabIndex={-1}
-            aria-labelledby="context-issues-title"
-          >
-            <p id="context-issues-title">{copy.checkFields}:</p>
-            <ul>
-              {feedback.issues.map((field) => (
-                <li key={field}>
-                  <a href={`#${CONTEXT_FIELD_IDS[field]}`}>
-                    {workbenchContextField(locale, field)}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-        <details
-          className="contextDisclosure"
-          open={!context || invalid("workspaceId") || invalid("snapshotId")}
+    <details className="technicalContext" open={!context}>
+      <summary>
+        {words(locale, "Report settings & historical perspective", "تنظیمات گزارش و نگاه تاریخی")}
+      </summary>
+      <section className="temporalLens" aria-labelledby="temporal-lens-title">
+        <div className="lensHeading">
+          <p className="sectionKicker">{copy.temporalLens}</p>
+          <h2 id="temporal-lens-title">{copy.queryContext}</h2>
+        </div>
+        <form
+          className="contextForm"
+          action={pathname}
+          method="get"
+          noValidate
+          onInput={handleInput}
+          onSubmit={handleSubmit}
         >
-          <summary>{copy.workspaceAndSnapshot}</summary>
-          <div className="identityFields">
-            <label>
-              <span>{copy.workspaceUuid}</span>
-              <input
-                id={CONTEXT_FIELD_IDS.workspaceId}
-                name="workspaceId"
-                defaultValue={context?.workspaceId ?? params.get("workspaceId") ?? ""}
-                pattern={UUID_PATTERN}
-                required
-                dir="ltr"
-                aria-invalid={invalid("workspaceId") || undefined}
-                aria-describedby={invalid("workspaceId") ? issueId("workspaceId") : undefined}
-              />
-              <FieldIssue locale={locale} field="workspaceId" visible={invalid("workspaceId")} />
-            </label>
-            <label>
-              <span>{copy.snapshotUuid}</span>
-              <input
-                id={CONTEXT_FIELD_IDS.snapshotId}
-                name="snapshotId"
-                defaultValue={context?.snapshotId ?? params.get("snapshotId") ?? ""}
-                pattern={UUID_PATTERN}
-                required
-                dir="ltr"
-                aria-invalid={invalid("snapshotId") || undefined}
-                aria-describedby={invalid("snapshotId") ? issueId("snapshotId") : undefined}
-              />
-              <FieldIssue locale={locale} field="snapshotId" visible={invalid("snapshotId")} />
-            </label>
-          </div>
-        </details>
-        <button className="primaryAction" type="submit">
-          {copy.applyContext}
-        </button>
-      </form>
-    </section>
+          <label>
+            <span>{copy.effectiveAt}</span>
+            <input value={copy.unavailable} disabled aria-describedby="effective-help" />
+            <small id="effective-help">{copy.effectiveHelp}</small>
+          </label>
+          <label>
+            <span>{copy.asKnownAt}</span>
+            <input
+              id={CONTEXT_FIELD_IDS.knownAt}
+              name="knownAt"
+              defaultValue={context?.knownAt ?? params.get("knownAt") ?? ""}
+              placeholder="2026-08-31T12:00:00Z"
+              inputMode="text"
+              pattern={UTC_INSTANT_PATTERN}
+              required
+              dir="ltr"
+              aria-invalid={invalid("knownAt") || undefined}
+              aria-describedby={invalid("knownAt") ? issueId("knownAt") : undefined}
+            />
+            <FieldIssue locale={locale} field="knownAt" visible={invalid("knownAt")} />
+          </label>
+          <label>
+            <span>{copy.systemTime}</span>
+            <input
+              id={CONTEXT_FIELD_IDS.systemAt}
+              name="systemAt"
+              defaultValue={context?.systemAt ?? params.get("systemAt") ?? "null"}
+              placeholder="null / UTC RFC 3339"
+              pattern={`(?:null|${UTC_INSTANT_PATTERN})`}
+              dir="ltr"
+              aria-invalid={invalid("systemAt") || undefined}
+              aria-describedby={invalid("systemAt") ? issueId("systemAt") : undefined}
+            />
+            <FieldIssue locale={locale} field="systemAt" visible={invalid("systemAt")} />
+          </label>
+          <label>
+            <span>{copy.policy}</span>
+            <select
+              id={CONTEXT_FIELD_IDS.policy}
+              name="policy"
+              defaultValue={context?.policy ?? params.get("policy") ?? ""}
+              required
+              aria-invalid={invalid("policy") || undefined}
+              aria-describedby={invalid("policy") ? issueId("policy") : undefined}
+            >
+              <option value="" disabled>
+                {copy.selectPolicy}
+              </option>
+              <option value="true_vintage">
+                {words(locale, "As originally published", "همان اطلاعات منتشرشده در گذشته")}
+              </option>
+              <option value="reconstructed">
+                {words(locale, "Reconstructed historical view", "بازسازی وضعیت اطلاعات گذشته")}
+              </option>
+              <option value="latest_revised">
+                {words(locale, "Latest revised information", "آخرین اطلاعات بازنگری‌شده")}
+              </option>
+            </select>
+            <FieldIssue locale={locale} field="policy" visible={invalid("policy")} />
+          </label>
+          {feedback.attempted && feedback.issues.length > 0 ? (
+            <div
+              ref={summaryRef}
+              className="contextIssues fieldIssues"
+              role="alert"
+              tabIndex={-1}
+              aria-labelledby="context-issues-title"
+            >
+              <p id="context-issues-title">{copy.checkFields}:</p>
+              <ul>
+                {feedback.issues.map((field) => (
+                  <li key={field}>
+                    <a href={`#${CONTEXT_FIELD_IDS[field]}`}>
+                      {workbenchContextField(locale, field)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          <details
+            className="contextDisclosure"
+            open={!context || invalid("workspaceId") || invalid("snapshotId")}
+          >
+            <summary>{copy.workspaceAndSnapshot}</summary>
+            <div className="identityFields">
+              <label>
+                <span>{copy.workspaceUuid}</span>
+                <input
+                  id={CONTEXT_FIELD_IDS.workspaceId}
+                  name="workspaceId"
+                  defaultValue={context?.workspaceId ?? params.get("workspaceId") ?? ""}
+                  pattern={UUID_PATTERN}
+                  required
+                  dir="ltr"
+                  aria-invalid={invalid("workspaceId") || undefined}
+                  aria-describedby={invalid("workspaceId") ? issueId("workspaceId") : undefined}
+                />
+                <FieldIssue locale={locale} field="workspaceId" visible={invalid("workspaceId")} />
+              </label>
+              <label>
+                <span>{copy.snapshotUuid}</span>
+                <input
+                  id={CONTEXT_FIELD_IDS.snapshotId}
+                  name="snapshotId"
+                  defaultValue={context?.snapshotId ?? params.get("snapshotId") ?? ""}
+                  pattern={UUID_PATTERN}
+                  required
+                  dir="ltr"
+                  aria-invalid={invalid("snapshotId") || undefined}
+                  aria-describedby={invalid("snapshotId") ? issueId("snapshotId") : undefined}
+                />
+                <FieldIssue locale={locale} field="snapshotId" visible={invalid("snapshotId")} />
+              </label>
+            </div>
+          </details>
+          <button className="primaryAction" type="submit">
+            {copy.applyContext}
+          </button>
+        </form>
+      </section>
+    </details>
   );
 }
 
@@ -341,23 +353,28 @@ export function ContextSummary({
 }) {
   const copy = workbenchCopy(locale);
   return (
-    <dl className="querySummary">
-      <div>
-        <dt>{copy.snapshotUuid}</dt>
-        <dd dir="ltr">{context.snapshotId}</dd>
-      </div>
-      <div>
-        <dt>{copy.asKnownAt}</dt>
-        <dd dir="ltr">{context.knownAt}</dd>
-      </div>
-      <div>
-        <dt>{copy.policy}</dt>
-        <dd dir="ltr">{context.policy}</dd>
-      </div>
-      <div>
-        <dt>{copy.systemTime}</dt>
-        <dd dir="ltr">{context.systemAt ?? "null"}</dd>
-      </div>
-    </dl>
+    <details className="technicalContext">
+      <summary>
+        {words(locale, "Source context & reproducibility details", "زمینه منبع و جزئیات بازتولید")}
+      </summary>
+      <dl className="querySummary">
+        <div>
+          <dt>{copy.snapshotUuid}</dt>
+          <dd dir="ltr">{context.snapshotId}</dd>
+        </div>
+        <div>
+          <dt>{copy.asKnownAt}</dt>
+          <dd dir="ltr">{context.knownAt}</dd>
+        </div>
+        <div>
+          <dt>{copy.policy}</dt>
+          <dd dir="ltr">{context.policy}</dd>
+        </div>
+        <div>
+          <dt>{copy.systemTime}</dt>
+          <dd dir="ltr">{context.systemAt ?? "null"}</dd>
+        </div>
+      </dl>
+    </details>
   );
 }

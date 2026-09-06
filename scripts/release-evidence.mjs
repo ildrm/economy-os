@@ -560,7 +560,7 @@ function generate() {
   const git = gitState();
   if (git.dirty && !allowDirtyEvidence()) {
     throw new Error(
-      "Refusing release evidence for a dirty source tree; use ECONOMYOS_ALLOW_DIRTY_RELEASE_EVIDENCE=true only for local testing",
+      `Refusing release evidence for a dirty source tree. Changed paths:\n${command("git", ["status", "--short", "--untracked-files=all"])}\nCommit intentional source changes and keep generated files untracked. ECONOMYOS_ALLOW_DIRTY_RELEASE_EVIDENCE=true is only for local testing.`,
     );
   }
   const tools = toolchain();

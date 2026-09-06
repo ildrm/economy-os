@@ -1,9 +1,12 @@
 "use client";
 
 import type { Locale } from "@economyos/i18n";
+import { useSearchParams } from "next/navigation";
 import { type FormEvent, useEffect, useRef, useState } from "react";
+import { LearningLab } from "../_components/learning-lab";
 import { PageHeader } from "../_components/page-header";
 import { workbenchCopy } from "../_lib/copy";
+import type { LabPresets } from "../_lib/lab-presets";
 import { researchCopy } from "../_lib/research-copy";
 import styles from "./research.module.css";
 
@@ -56,6 +59,23 @@ function sameInstant(left: string, right: string): boolean {
 }
 
 export function ResearchClient({
+  locale,
+  theories,
+  presets,
+}: {
+  readonly locale: Locale;
+  readonly theories: readonly Theory[];
+  readonly presets: LabPresets;
+}) {
+  const search = useSearchParams();
+  return search.get("advanced") === "1" ? (
+    <AdvancedResearchClient locale={locale} theories={theories} />
+  ) : (
+    <LearningLab locale={locale} presets={presets} />
+  );
+}
+
+function AdvancedResearchClient({
   locale,
   theories,
 }: {
@@ -149,7 +169,7 @@ export function ResearchClient({
         method: "POST",
         credentials: "include",
         cache: "no-store",
-        signal: controller.signal,
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(15_000)]),
         headers: { "content-type": "application/json", accept: "application/json" },
         body: JSON.stringify({ id, ...command }),
       });

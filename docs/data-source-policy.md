@@ -1,0 +1,51 @@
+# Data source selection and observation policy
+
+The user's rules of 2026-09-06 are the source-of-truth requirements for new data work. They apply to selection, ingestion, storage, transformations, analysis, exports and presentation. The original supplied catalog is retained in `data/source-policy/supplied-catalog.txt`; its 87 rows are also available in `data/source-policy/catalog.json`.
+
+## Selection and access
+
+1. Prefer Grade A (official, free, machine-readable), then B (official with access limitations), C (third party), D (marketplace). Grade describes access/authority, not statistical accuracy or a commercial licence.
+2. Prefer government, statistical-office and exchange-native sources for their own variables. Match variable definition, geography, basket/base, aggregation, period/frequency and unit before comparing sources.
+3. Do not replace an official source that contains the requested variable with a marketplace or third party. A blocked licence remains a coverage gap. The selector conservatively also blocks a downgrade from A to B while the A source's access review is pending.
+4. Preserve distinct types: `transaction_price`, `market_trade_price`, `close_price`, `asking_price`, `reference_price`, `manufacturer_price`, `catalog_price`, `price_index`, `average_price`, `median_price`. Non-price macroeconomic values use separate types (`monetary_amount`, `rate`, `ratio`, `count`, `index`, `duration`, `exchange_rate`, `ppp_amount`). GDP is not a transaction price; a PPP dollar is not an exchange-rate-convertible US dollar.
+5. A price index has a source base and **no monetary currency**. An index of 112.4 is not EUR 112.4. Do not convert an index using an FX rate.
+6. Marketplace property/vehicle observations are `asking_price`, including listings that report a supposed sale price without official transaction evidence.
+7. Individual official completed property sales are `transaction_price`. A published mean/median calculated from many sales retains `average_price`/`median_price` and `aggregation = aggregate`.
+8. FIPE is `reference_price`.
+9. RDW `catalogusprijs` is `catalog_price`; never present it as the current value of a used vehicle.
+10. Exchange observations retain `observation_time`, `retrieval_time`, `delay_minutes`, and the exchange name. The time since the last trade is not the provider's dissemination delay. Keep an unknown delay null.
+11. Never label delayed data real-time. The validator rejects positive delay with `timeliness = real_time`; a real-time label requires an observation timestamp and explicitly zero declared delay.
+12. Review the applicable commercial-display, redistribution and non-display permissions before using exchange data in those contexts. A current reviewed terms URL, review/expiry instants and separate usage decisions are required. This is an admission record, not a mechanism that grants a licence.
+13. Coinbase/Binance are venue-native crypto sources. Each trade must name the venue. CoinGecko is `reference_price`, `aggregation = aggregate`, `is_official = false`, `exchange_name = multiple_exchanges`. This explicit aggregate marker never pretends CoinGecko is an exchange; constituent venues should be retained if supplied. There is no universal official crypto price. Venue-specific variables must include the venue in their identity.
+14. Global commodity collections require World Bank Pink Sheet as primary and IMF Primary Commodity Prices as a separate validation collection. Different specifications, markets, aggregation windows and units must be reconciled before validation; never splice or average them automatically.
+15. Domestic consumer-price collections require the country's national statistics office. Collect Eurostat HICP additionally for EU members, using a dated membership registry and the source's current dataset/base. National CPI and harmonised HICP remain separate variables.
+16. If a suitable official API, SDMX, PxWeb, OData, JSON, CSV, XML, XLSX or bulk interface exists, use it instead of HTML extraction. An access problem is not permission to evade that interface.
+17. Marketplace automation requires a current terms review and robots/access approval. Missing, expired, future-dated or denied approval blocks extraction. Do not activate automation just because a catalog row lists a website.
+18. Preserve raw value, original unit and original currency, plus the immutable source response and provenance. Empty source fields stay empty/unknown, rather than being fabricated from a display label.
+19. Currency conversion is a separate transformation retaining `original_value`, `original_currency`, `fx_rate`, `fx_source`, `converted_value`, `target_currency`, `conversion_timestamp`. Rates are target currency per original currency. Exact decimal arithmetic preserves precision; any rounding is a further explicit operation. Preserve the rate observation's own evidence when supplying `fx_source`.
+20. Every admitted observation must materialize `country_code`, `category`, `source_name`, `source_grade`, `source_type`, `instrument_or_item`, `value`, `value_type`, `currency`, `unit`, `geography`, `observation_date`, `retrieval_timestamp`, `frequency`, `is_official`, `is_preliminary`, `revision_status`. Unknown preliminary status is **null** and an unavailable revision flag is **unknown**, not false/final. Preserve the actual date precision (an annual value has a year, not an invented trading day).
+
+## Implemented boundaries
+
+- `packages/contracts/src/source-policy.ts` provides deterministic source selection, access checks, runtime observation validation and separate exact-decimal FX transformations. Unreviewed catalog rows are not operational `SourceProfile` objects. Build reviewed profiles at dataset/variable level, and use the access guard before any future extraction or publication.
+- The public WDI refresh validates every complete observation before publication. On disk, the country tuple supplies year/value/country, the indicator definition supplies category/unit/value type/currency/base, and the manifest supplies source and retrieval metadata. `annualReferenceObservation` expands these normalized records without duplicating metadata hundreds of thousands of times.
+- The offline verifier checks the expanded records against the immutable raw responses, including raw unit and status. The current feed leaves both raw fields empty. Any newly encountered status or mixed per-row units/statuses stops refresh until an adapter handles them explicitly. Observation-level revision status remains unknown even though the dataset itself is latest-revised.
+- Public comparison CSVs include the complete expanded provenance alongside the existing readable columns. A missing selected-year value is reported as a gap, without inventing an observation. `null` in provenance columns means unknown/not applicable; the empty `original_unit` field reproduces the provider's empty field.
+- Public source pages explain all ten price meanings, grade priority, timing, permissions, conversion, and current collection gaps without asking the visitor to type identifiers.
+- **Connected:** the existing World Bank WDI annual macro reference snapshot. **Not connected by this change:** direct NSO/HICP, property/vehicle, exchange, crypto, Pink Sheet and IMF price adapters. These remain collection requirements, not imported values. WDI is not described as the direct national consumer-price feed.
+- The existing governed database ingestion path has its own normalized schema, authorization, licence and immutable lineage controls. This change does **not** migrate legacy database observations into the new typed observation contract, nor certify those historical rows against these additional requirements. Any new price adapter must use the contract and persist its expanded metadata with the observation before it is enabled; the public snapshot checks do not certify database ingestion.
+
+## Catalog review findings
+
+All 87 supplied rows are preserved, including ambiguous grades such as A/B and combined providers. These claims are pending review; no grade, quota, API or licence has been automatically approved. Numbered references in the pasted Markdown have no URL definitions, so they are stored as unresolved reference labels. Do not invent links. SEC fundamentals must not be used as equity prices; property indices from FHFA, INE, BCB and similar sources must not become monetary house prices. Source availability does not imply every field in a source has the same value type.
+
+Primary documentation checked on 2026-09-06:
+
+- [RDW open data](https://www.rdw.nl/over-rdw/dienstverlening/open-data) and its linked dataset dictionary describe catalogue data; the source type and item meaning must survive presentation.
+- [FIPE's current vehicle page](https://veiculos.fipe.org.br/) offers individual public queries and contracted complete-table access. Do not assume a free bulk API or copy the supplied catalog's access claim into an automation permission.
+- [Eurostat HICP methodology](https://ec.europa.eu/eurostat/cache/metadata/en/ei_cp_esms.htm) describes the 2026 change to the 2025 reference base and ECOICOP version 2. Do not hard-code the former 2015 base into a future adapter.
+- [Coinbase ticker documentation](https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-ticker) identifies a last-trade snapshot with a trade timestamp; it is not a universal crypto valuation.
+- [World Bank commodity data](https://www.worldbank.org/en/research/commodity-markets) supplies the primary Pink Sheet files; forecasts remain separate from historical observations.
+- [Euronext agreement types](https://www.euronext.com/en/data/pricing-specs-agreements/data-agreements-types), [Nasdaq European pricing and policies](https://www.nasdaq.com/products/data/european-pricing-policies), and [LSE market-data licensing](https://www.londonstockexchange.com/equities-trading/market-data/market-data-licensing) are the review entry points for the applicable use. These links are evidence for the need to review terms, **not approved licences** for this project.
+
+Run `corepack pnpm data:verify` for offline public-data/provenance validation, and `corepack pnpm exec vitest run packages/contracts/src/source-policy.test.ts` for the policy regression cases.

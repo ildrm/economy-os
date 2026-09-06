@@ -192,7 +192,8 @@ function canonicalDecimal(value: unknown): string {
   return `${sign}${canonical}`;
 }
 
-function parseDocument(bytes: Uint8Array): unknown {
+/** Decode World Bank JSON without rounding the source's decimal observations. */
+export function parseWorldBankDocument(bytes: Uint8Array): unknown {
   let text: string;
   try {
     text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
@@ -352,7 +353,7 @@ export class WorldBankConnector {
         body: bytes,
       });
 
-      const document = parseDocument(bytes);
+      const document = parseWorldBankDocument(bytes);
       if (!Array.isArray(document) || document.length !== 2) {
         throw invalidResponse("World Bank response shape is invalid");
       }
