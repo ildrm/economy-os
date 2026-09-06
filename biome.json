@@ -12,7 +12,11 @@
       "!artifacts/release-evidence",
       "!pnpm-lock.yaml",
       "!apps/web/public/economy",
-      "!data/public-economy/raw"
+      "!data/public-economy/raw",
+      "!apps/web/public/behavioral",
+      "!data/intelligence/raw",
+      "!data/intelligence/evaluations",
+      "!.cache"
     ]
   },
   "formatter": {

@@ -13,3 +13,6 @@ artifacts/release-evidence/
 *.log
 .DS_Store
 *.tsbuildinfo
+.cache/
+__pycache__/
+*.pyc

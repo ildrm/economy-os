@@ -1,4 +1,5 @@
 import { WorldBankConnector, WorldBankConnectorError } from "@economyos/canonical-data";
+import type { AnnualReferenceDefinition } from "@economyos/contracts";
 import {
   assertSha256,
   assertWorkflowInput,
@@ -21,6 +22,7 @@ import type {
   IngestionAuthorizationGuard,
   TemporalWorkflowExecutionIdentity,
 } from "./authorization.js";
+import { materializeWdiSemantics, type PromotionSemantics } from "./observation-semantics.js";
 import { IngestionConflictError, type IngestionRepository } from "./repository.js";
 
 export interface IngestionActivityDependencies {
@@ -29,6 +31,7 @@ export interface IngestionActivityDependencies {
   readonly repository: IngestionRepository;
   readonly authorization: IngestionAuthorizationGuard;
   readonly clock?: () => Date;
+  readonly observationDefinitions?: readonly AnnualReferenceDefinition[];
 }
 
 function temporalExecutionIdentity(): TemporalWorkflowExecutionIdentity {
@@ -382,12 +385,33 @@ export function createIngestionActivities(
 
     async promote(input) {
       return execute(() =>
-        dependencies.authorization.runAuthorized(input.workflow, temporalExecutionIdentity(), () =>
-          dependencies.repository.promote({
-            ...input,
-            attempt: activityAttempt(),
-            completedAt: clock().toISOString(),
-          }),
+        dependencies.authorization.runAuthorized(
+          input.workflow,
+          temporalExecutionIdentity(),
+          async () => {
+            let semantics: PromotionSemantics | undefined;
+            if (dependencies.observationDefinitions) {
+              const payload = input.landing.payloads[0];
+              if (!payload) throw new TypeError("Observation semantics require a landed payload");
+              const bytes = await dependencies.objectStorage.getVerified({
+                uri: payload.objectUri,
+                key: payload.objectKey,
+                checksumSha256: payload.checksumSha256,
+                byteLength: payload.byteLength,
+              });
+              semantics = materializeWdiSemantics({
+                ...input,
+                bytes,
+                definitions: dependencies.observationDefinitions,
+              });
+            }
+            return dependencies.repository.promote({
+              ...input,
+              attempt: activityAttempt(),
+              completedAt: clock().toISOString(),
+              ...(semantics ? { semantics } : {}),
+            });
+          },
         ),
       );
     },

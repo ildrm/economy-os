@@ -12,6 +12,7 @@
     "test:temporal": "vitest run --config vitest.temporal.config.ts"
   },
   "dependencies": {
+    "@economyos/contracts": "workspace:*",
     "@economyos/canonical-data": "workspace:*",
     "@economyos/data-admission": "workspace:*",
     "@economyos/object-storage": "workspace:*",

@@ -334,6 +334,9 @@ importers:
       '@economyos/canonical-data':
         specifier: workspace:*
         version: link:../../packages/canonical-data
+      '@economyos/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       '@economyos/data-admission':
         specifier: workspace:*
         version: link:../../packages/data-admission
@@ -374,6 +377,8 @@ importers:
       vitest:
         specifier: 4.1.11
         version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.3.0)(@vitest/coverage-v8@4.1.11)(vite@8.2.2(@types/node@26.3.0)(terser@5.51.2)(yaml@2.9.0))
+
+  services/scientific-worker: {}
 
 packages:
 

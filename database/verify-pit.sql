@@ -1391,4 +1391,58 @@ BEGIN
 END
 $verify_later_quality_failure_is_not_backdated$;
 
+-- Contract v2 supplements the original immutable fixture; it does not rewrite it.
+RESET ROLE;
+SET LOCAL ROLE economyos_ingest;
+RESET app.organization_id;
+INSERT INTO evidence.dataset_semantics_versions (dataset_id, version, definition)
+VALUES ('028f47ac-19fc-7c92-ae91-0242ac120002', 'verification-v2', '{"fixture":true}');
+
+DO $verify_versioned_semantics$
+DECLARE
+  document jsonb := jsonb_build_object(
+    'schemaVersion', 2, 'id', '028f47ac-19fc-7c92-ae91-0242ac120012',
+    'datasetId', '028f47ac-19fc-7c92-ae91-0242ac120002', 'semanticsVersion', 'verification-v2',
+    'population', 'Verification-only country', 'vintage', 'latest_revised_only', 'knownAt', NULL,
+    'raw', jsonb_build_object('sha256', repeat('a',64), 'value', '100.25', 'unit', 'index_points', 'locator', 'fixture:2024'),
+    'observation', '{"country_code":"TST","category":"test","source_name":"Verification only","source_grade":"A","source_type":"government","instrument_or_item":"fixture","value":"100.25","value_type":"price_index","currency":null,"unit":"index_points","geography":"TST","observation_date":"2024","retrieval_timestamp":"2025-03-01T09:04:00Z","frequency":"annual","is_official":true,"is_preliminary":null,"revision_status":"unknown","original_value":"100.25","original_unit":"index_points","original_currency":null,"source_id":"fixture","source_url":"https://example.invalid","price_type":"price_index","observation_time":null,"retrieval_time":"2025-03-01T09:04:00Z","delay_minutes":null,"index_base":"2020=100","aggregation":"aggregate","timeliness":"historical","missing_reason":null}'::jsonb
+  );
+  invalid_document jsonb;
+BEGIN
+  FOREACH invalid_document IN ARRAY ARRAY[
+    document #- '{observation,revision_status}',
+    jsonb_set(jsonb_set(document, '{observation,currency}', '"EUR"'), '{observation,original_currency}', '"EUR"'),
+    jsonb_set(document, '{raw,value}', '"999"'),
+    jsonb_set(document, '{observation,value}', '"999"'),
+    jsonb_set(document, '{raw,sha256}', to_jsonb(repeat('b',64)))
+  ] LOOP
+    BEGIN
+      INSERT INTO evidence.observation_semantics (observation_id,dataset_id,semantics_version,contract_version,document,raw_payload_sha256)
+      VALUES ('028f47ac-19fc-7c92-ae91-0242ac120012','028f47ac-19fc-7c92-ae91-0242ac120002','verification-v2',2,invalid_document,repeat('a',64));
+      RAISE EXCEPTION 'Invalid observation metadata was accepted';
+    EXCEPTION WHEN check_violation THEN NULL;
+    END;
+  END LOOP;
+  INSERT INTO evidence.observation_semantics (observation_id,dataset_id,semantics_version,contract_version,document,raw_payload_sha256)
+  VALUES ('028f47ac-19fc-7c92-ae91-0242ac120012','028f47ac-19fc-7c92-ae91-0242ac120002','verification-v2',2,document,repeat('a',64));
+  BEGIN
+    UPDATE evidence.observation_semantics SET document = '{}'::jsonb;
+    RAISE EXCEPTION 'Metadata mutation was accepted';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
+  IF NOT EXISTS (SELECT 1 FROM evidence.observations WHERE id='028f47ac-19fc-7c92-ae91-0242ac120012' AND value_numeric=100.25 AND status='final') THEN
+    RAISE EXCEPTION 'Original observation was changed by enrichment';
+  END IF;
+END $verify_versioned_semantics$;
+RESET ROLE;
+SET LOCAL ROLE economyos_app;
+DO $verify_private_evidence_projection$
+BEGIN
+  BEGIN
+    PERFORM count(*) FROM evidence.observation_semantics;
+    RAISE EXCEPTION 'Application gained raw metadata table access';
+  EXCEPTION WHEN insufficient_privilege THEN NULL;
+  END;
+END $verify_private_evidence_projection$;
+RESET ROLE;
 ROLLBACK;

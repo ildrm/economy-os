@@ -44,7 +44,12 @@
     "test:research": "playwright test tests/research.spec.ts",
     "benchmark:research": "node scripts/benchmark-research.mjs",
     "test:public": "playwright test tests/public-experience.spec.ts",
-    "data:verify": "corepack pnpm --filter @economyos/canonical-data... build && node scripts/verify-public-data.mjs"
+    "data:verify": "corepack pnpm --filter @economyos/canonical-data... build && node scripts/verify-public-data.mjs && node scripts/verify-behavioral-data.mjs",
+    "test:science": "corepack pnpm --filter @economyos/scientific-worker test:science",
+    "behavioral:refresh": "corepack pnpm --filter @economyos/canonical-data... build && node scripts/refresh-behavioral-data.mjs",
+    "science:evaluate": "python3 scripts/evaluate-behavioral-history.py",
+    "science:verify": "python3 scripts/evaluate-behavioral-history.py --verify",
+    "test:expansion": "playwright test tests/expansion.spec.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

@@ -1,0 +1,12 @@
+{
+  "name": "@economyos/scientific-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "main": "dist/economyos-science.pyz",
+  "scripts": {
+    "build": "node build.mjs",
+    "test:science": "node build.mjs --test"
+  }
+}

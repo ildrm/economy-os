@@ -23,6 +23,8 @@ import { EconomicStateDiscoveryController } from "./economic-state-discovery.con
 import { EconomicStateDiscoveryService } from "./economic-state-discovery.js";
 import { GovernedEvidenceService } from "./evidence.js";
 import { GovernedAuthorizationService } from "./governed-authorization.js";
+import { PublicIntelligenceController } from "./public-intelligence.controller.js";
+import { PublicIntelligenceService } from "./public-intelligence.js";
 import { RelationshipGraphController } from "./relationship-graph.controller.js";
 import { RelationshipGraphService } from "./relationship-graph.js";
 import { ReleaseMonitoringController } from "./release-monitoring.controller.js";
@@ -47,6 +49,7 @@ export class AppModule {
     return {
       module: AppModule,
       controllers: [
+        PublicIntelligenceController,
         HealthController,
         ResearchWorkbenchController,
         IdentityController,
@@ -64,6 +67,7 @@ export class AppModule {
         CapitalCountryComparisonController,
       ],
       providers: [
+        PublicIntelligenceService,
         {
           provide: DATABASE_POOL,
           useFactory: () => createPostgresPool(databaseUrl),

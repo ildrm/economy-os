@@ -6,6 +6,7 @@ import { workbenchCopy } from "./_lib/copy";
 import "./intelligence.css";
 import "./public.css";
 import "./economy.css";
+import "./decisions.css";
 
 export default async function IntelligenceLayout({
   children,

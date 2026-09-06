@@ -1,0 +1,583 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T07:30:14.208Z",
+  "source": {
+    "id": "ecb-ces",
+    "name": "European Central Bank — Consumer Expectations Survey",
+    "grade": "A",
+    "type": "government",
+    "is_official": true,
+    "country_codes": [
+      "BE",
+      "DE",
+      "ES",
+      "FI",
+      "FR",
+      "IT",
+      "NL",
+      "AT",
+      "GR",
+      "IE",
+      "PT"
+    ],
+    "variables": [
+      {
+        "key": "expected-inflation-1y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-inflation-3y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-inflation-5y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "perceived-inflation",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-uncertainty",
+        "value_type": "rate",
+        "unit": "percentage-points",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-q25",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-q75",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-home-prices",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-income",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-growth",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-unemployment",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-mortgage-rate",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "perceived-spending",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-spending",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      }
+    ],
+    "interfaces": [
+      "sdmx",
+      "csv"
+    ],
+    "selected_interface": "sdmx",
+    "free_access": true,
+    "review": {
+      "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+      "reviewed_at": "2026-09-06T00:00:00Z",
+      "expires_at": "2027-03-06T00:00:00Z",
+      "automated_access": true,
+      "robots_allowed": false,
+      "commercial_display": true,
+      "non_display": true,
+      "redistribution": true
+    }
+  },
+  "conditions": [
+    "Attribute ECB and link directly to the original data.",
+    "State that source data is available free of charge, including before any subscription payment.",
+    "Identify calculated changes and other modifications.",
+    "Do not imply ECB endorsement."
+  ],
+  "metrics": [
+    {
+      "id": "expected-inflation-1y",
+      "variable": "C1120",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations over the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-inflation-3y",
+      "variable": "C1220",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations 3 years ahead (% change)",
+      "horizonMonths": 36,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-inflation-5y",
+      "variable": "E2020",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations 5 years ahead (% change)",
+      "horizonMonths": 60,
+      "unit": "percent"
+    },
+    {
+      "id": "perceived-inflation",
+      "variable": "C1020",
+      "denominator": "WM",
+      "titlePrefix": "Inflation perceptions over the previous 12 months (% change)",
+      "horizonMonths": null,
+      "unit": "percent"
+    },
+    {
+      "id": "inflation-uncertainty",
+      "variable": "C1150_UNCERT",
+      "denominator": "WM",
+      "titlePrefix": "Inflation uncertainty 12 months ahead (probabilistic bins), implied interquartile range",
+      "horizonMonths": 12,
+      "unit": "percentage-points"
+    },
+    {
+      "id": "inflation-q25",
+      "variable": "C1150_EXP",
+      "denominator": "WP25",
+      "titlePrefix": "Inflation expectations 12 months ahead (probabilistic bins), implied mean",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "inflation-q75",
+      "variable": "C1150_EXP",
+      "denominator": "WP75",
+      "titlePrefix": "Inflation expectations 12 months ahead (probabilistic bins), implied mean",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-home-prices",
+      "variable": "C2120",
+      "denominator": "WM",
+      "titlePrefix": "Home price expectations 12 months ahead (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-income",
+      "variable": "C3220",
+      "denominator": "WM",
+      "titlePrefix": "Household income expectations 12 months ahead (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-growth",
+      "variable": "C4020",
+      "denominator": "WM",
+      "titlePrefix": "Economic growth expectations for the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-unemployment",
+      "variable": "C4031",
+      "denominator": "WA",
+      "titlePrefix": "Expected unemployment rate in the next 12 months (%)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-mortgage-rate",
+      "variable": "C5111",
+      "denominator": "WA",
+      "titlePrefix": "Mortgage interest rate expectations 12 months ahead (%)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "perceived-spending",
+      "variable": "C6020",
+      "denominator": "WM",
+      "titlePrefix": "Household spending perceptions over the previous 12 months (% change)",
+      "horizonMonths": null,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-spending",
+      "variable": "C6120",
+      "denominator": "WM",
+      "titlePrefix": "Household spending expectations over the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    }
+  ],
+  "countries": {
+    "BE": {
+      "sha256": "e78cbeb174ca8c0ffe86faa1dfaa9ff10757934aab5c07b425bf88f1b3c50d2d",
+      "bytes": 1441666,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:31.015Z",
+      "raw": {
+        "path": "data/intelligence/raw/130a5df359583a91bd8db16e4f1504b6003eeae7e1253c609a1c7585829d58e8.csv.gz",
+        "sha256": "130a5df359583a91bd8db16e4f1504b6003eeae7e1253c609a1c7585829d58e8",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.BE.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 630322
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "DE": {
+      "sha256": "75f230de00508a1b10f2eeea36c54d2ffbc37131a0d33684b6efc092250e6c16",
+      "bytes": 1441108,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:31.622Z",
+      "raw": {
+        "path": "data/intelligence/raw/a273e03fb4c421575aace89b31d5c4a746e20b71285e7ac2f3c59a985f86253f.csv.gz",
+        "sha256": "a273e03fb4c421575aace89b31d5c4a746e20b71285e7ac2f3c59a985f86253f",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.DE.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 630054
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "ES": {
+      "sha256": "f2e4765b8ab0e499af0ff723326670c63204eba30fee4877dd6ce060f35bf49f",
+      "bytes": 1441234,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:32.244Z",
+      "raw": {
+        "path": "data/intelligence/raw/917104993bf4a0fc461acb7f67eae3b5899310f52792b628805175d4d2ee067d.csv.gz",
+        "sha256": "917104993bf4a0fc461acb7f67eae3b5899310f52792b628805175d4d2ee067d",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.ES.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 626369
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "FI": {
+      "sha256": "22bfe80c8e7bd421c7b0b11a94652317f6674537216f5a73960e8019674e1009",
+      "bytes": 1012269,
+      "observations": 724,
+      "start": "2022-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:32.712Z",
+      "raw": {
+        "path": "data/intelligence/raw/4030c611f1bef6f055789cb231753e751eb1a95a21a3d6a34b644b56ab0eb591.csv.gz",
+        "sha256": "4030c611f1bef6f055789cb231753e751eb1a95a21a3d6a34b644b56ab0eb591",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.FI.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 442654
+      },
+      "metrics": {
+        "expected-inflation-1y": 52,
+        "expected-inflation-3y": 52,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 52,
+        "inflation-uncertainty": 52,
+        "inflation-q25": 52,
+        "inflation-q75": 52,
+        "expected-home-prices": 52,
+        "expected-income": 52,
+        "expected-growth": 52,
+        "expected-unemployment": 52,
+        "expected-mortgage-rate": 52,
+        "perceived-spending": 52,
+        "expected-spending": 52
+      }
+    },
+    "FR": {
+      "sha256": "edf5de37cbb523252bf2212f528f9c4a10d6bb2d8d3cacc9ce8c7e67dc994e50",
+      "bytes": 1440781,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:33.286Z",
+      "raw": {
+        "path": "data/intelligence/raw/f8bc54f967e909b2657006acad49b0d1e608a450246da64672c186290c09a61d.csv.gz",
+        "sha256": "f8bc54f967e909b2657006acad49b0d1e608a450246da64672c186290c09a61d",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.FR.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 628118
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "IT": {
+      "sha256": "29f4f02e3863198f18402815f7f229e60586128bff782ce17a14b84beb09c8f4",
+      "bytes": 1440976,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:33.972Z",
+      "raw": {
+        "path": "data/intelligence/raw/4fd5b862503c23c5bb185c53f11afda8cc2da838d573242d0d31fe760e9f102a.csv.gz",
+        "sha256": "4fd5b862503c23c5bb185c53f11afda8cc2da838d573242d0d31fe760e9f102a",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.IT.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 626286
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "NL": {
+      "sha256": "9e5e40db78217dc32ec07b691bc8e50d9c1be9b28ff71587e9d37e8800f49722",
+      "bytes": 1441312,
+      "observations": 1031,
+      "start": "2020-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:34.584Z",
+      "raw": {
+        "path": "data/intelligence/raw/5d6e6596624c6c198844d8a0f6a9760294ad08a39b71975d87fb9cba9a3c24b4.csv.gz",
+        "sha256": "5d6e6596624c6c198844d8a0f6a9760294ad08a39b71975d87fb9cba9a3c24b4",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.NL.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 637778
+      },
+      "metrics": {
+        "expected-inflation-1y": 76,
+        "expected-inflation-3y": 76,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 76,
+        "inflation-uncertainty": 76,
+        "inflation-q25": 76,
+        "inflation-q75": 76,
+        "expected-home-prices": 76,
+        "expected-income": 76,
+        "expected-growth": 76,
+        "expected-unemployment": 76,
+        "expected-mortgage-rate": 71,
+        "perceived-spending": 76,
+        "expected-spending": 76
+      }
+    },
+    "AT": {
+      "sha256": "712c82aa891f629102cebbb4c65d25f5cfeaa99fcd772682e27166ce89d36046",
+      "bytes": 1012530,
+      "observations": 724,
+      "start": "2022-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:35.164Z",
+      "raw": {
+        "path": "data/intelligence/raw/6be262bd97c1fb289a2fd1d21244235241263b31c5a713ca26271f4e6a74591d.csv.gz",
+        "sha256": "6be262bd97c1fb289a2fd1d21244235241263b31c5a713ca26271f4e6a74591d",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.AT.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 442688
+      },
+      "metrics": {
+        "expected-inflation-1y": 52,
+        "expected-inflation-3y": 52,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 52,
+        "inflation-uncertainty": 52,
+        "inflation-q25": 52,
+        "inflation-q75": 52,
+        "expected-home-prices": 52,
+        "expected-income": 52,
+        "expected-growth": 52,
+        "expected-unemployment": 52,
+        "expected-mortgage-rate": 52,
+        "perceived-spending": 52,
+        "expected-spending": 52
+      }
+    },
+    "GR": {
+      "sha256": "bf72c34bc8b0f257c4525e23ce5d1787f70bfb17055f6176711099b27668b463",
+      "bytes": 1012848,
+      "observations": 724,
+      "start": "2022-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:35.635Z",
+      "raw": {
+        "path": "data/intelligence/raw/9cc2b81572a35a1a715c43a35ef77491cbf2ef91670d697fe72ab2ab1aa21a08.csv.gz",
+        "sha256": "9cc2b81572a35a1a715c43a35ef77491cbf2ef91670d697fe72ab2ab1aa21a08",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.GR.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 441799
+      },
+      "metrics": {
+        "expected-inflation-1y": 52,
+        "expected-inflation-3y": 52,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 52,
+        "inflation-uncertainty": 52,
+        "inflation-q25": 52,
+        "inflation-q75": 52,
+        "expected-home-prices": 52,
+        "expected-income": 52,
+        "expected-growth": 52,
+        "expected-unemployment": 52,
+        "expected-mortgage-rate": 52,
+        "perceived-spending": 52,
+        "expected-spending": 52
+      }
+    },
+    "IE": {
+      "sha256": "7c2775570b02bdb4bd5cb8208e4ac752d0105948bc1ba66019a1768476902a45",
+      "bytes": 1012281,
+      "observations": 724,
+      "start": "2022-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:36.090Z",
+      "raw": {
+        "path": "data/intelligence/raw/22f5e4cda73a37c29e1dc9ffc301c0bb33539e7497124ab0bce787691a59fbb4.csv.gz",
+        "sha256": "22f5e4cda73a37c29e1dc9ffc301c0bb33539e7497124ab0bce787691a59fbb4",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.IE.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 442573
+      },
+      "metrics": {
+        "expected-inflation-1y": 52,
+        "expected-inflation-3y": 52,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 52,
+        "inflation-uncertainty": 52,
+        "inflation-q25": 52,
+        "inflation-q75": 52,
+        "expected-home-prices": 52,
+        "expected-income": 52,
+        "expected-growth": 52,
+        "expected-unemployment": 52,
+        "expected-mortgage-rate": 52,
+        "perceived-spending": 52,
+        "expected-spending": 52
+      }
+    },
+    "PT": {
+      "sha256": "9218bfb061908e476ef95b21547f5cdc1f82dfb1a76cd682defdfcab69cde619",
+      "bytes": 1012416,
+      "observations": 724,
+      "start": "2022-04",
+      "end": "2026-07",
+      "retrievedAt": "2026-09-06T07:17:36.452Z",
+      "raw": {
+        "path": "data/intelligence/raw/8cd8d38e6ae67611130245a2daf4b0a9391b740e631a60e288fcf8653dddbb12.csv.gz",
+        "sha256": "8cd8d38e6ae67611130245a2daf4b0a9391b740e631a60e288fcf8653dddbb12",
+        "url": "https://data-api.ecb.europa.eu/service/data/CES/M.PT.ALL.T.C1120+C1220+E2020+C1020+C1150_UNCERT+C1150_EXP+C2120+C3220+C4020+C4031+C5111+C6020+C6120.NUM_VAR.WM+WA+WP25+WP75?format=csvdata",
+        "bytes": 443993
+      },
+      "metrics": {
+        "expected-inflation-1y": 52,
+        "expected-inflation-3y": 52,
+        "expected-inflation-5y": 48,
+        "perceived-inflation": 52,
+        "inflation-uncertainty": 52,
+        "inflation-q25": 52,
+        "inflation-q75": 52,
+        "expected-home-prices": 52,
+        "expected-income": 52,
+        "expected-growth": 52,
+        "expected-unemployment": 52,
+        "expected-mortgage-rate": 52,
+        "perceived-spending": 52,
+        "expected-spending": 52
+      }
+    }
+  },
+  "population": "ECB CES covered consumer populations; weighted source aggregates; not all countries",
+  "evidenceType": "descriptive_statistic",
+  "vintage": "latest_revised_only",
+  "publicationStatus": "published",
+  "modelPublication": "none"
+}

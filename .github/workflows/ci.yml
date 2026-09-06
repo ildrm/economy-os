@@ -38,6 +38,11 @@ jobs:
           corepack enable
           corepack pnpm --version
 
+      - name: Set up pinned scientific runtime
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version-file: services/scientific-worker/.python-version
+
       - name: Install dependencies
         run: corepack pnpm install --frozen-lockfile
 
@@ -65,11 +70,17 @@ jobs:
       - name: Unit tests
         run: corepack pnpm test
 
+      - name: Scientific reference calculations and temporal evaluation tests
+        run: corepack pnpm test:science
+
       - name: Coverage gates
         run: corepack pnpm test:coverage
 
       - name: Verify public economic data provenance and research citations
         run: corepack pnpm data:verify
+
+      - name: Reproduce retained empirical evaluations on actual survey data
+        run: corepack pnpm science:verify
 
       - name: Production build
         run: corepack pnpm build
@@ -103,6 +114,9 @@ jobs:
 
       - name: Public data, comparison and scientific-model browser tests
         run: corepack pnpm test:public
+
+      - name: Survey evidence, scenarios and twelve-locale browser acceptance
+        run: corepack pnpm test:expansion
 
       - name: Governed database point-in-time performance gate
         run: corepack pnpm benchmark:db

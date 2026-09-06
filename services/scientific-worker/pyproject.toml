@@ -1,0 +1,11 @@
+[project]
+name = "economyos-scientific-worker"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+description = "Bounded, reproducible economic statistics and chronological evaluation"
+dependencies = []
+
+[tool.economyos]
+runtime = "3.14.5"
+contract-version = 1
+dependency-policy = "standard-library-only; review and lock third-party dependencies before introduction"

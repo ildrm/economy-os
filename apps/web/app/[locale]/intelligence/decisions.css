@@ -1,0 +1,386 @@
+.decisionRoom {
+  max-width: 1500px;
+}
+.behavioralHeadlines {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-block: 2rem;
+}
+.behavioralHeadlines button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  color: #224c3b;
+}
+.behavioralHeadlines button[aria-pressed="true"] {
+  border: 2px solid #2d7355;
+  background: #f1f7f1;
+}
+.behavioralHeadlines span {
+  display: block;
+  font-size: 0.83rem;
+  line-height: 1.5;
+  min-height: 3em;
+}
+.behavioralHeadlines strong {
+  display: block;
+  font-size: 1.9rem;
+  margin-block: 0.7rem;
+}
+.behavioralHeadlines .behavioralUnit {
+  display: block;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #52695f;
+}
+.behavioralHeadlines time {
+  margin-top: auto;
+  font-size: 0.78rem;
+  color: #52695f;
+}
+.behavioralChart {
+  background: #fff;
+  border: 1px solid #dbe4de;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+.behavioralChart label {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 600px;
+  font-size: 0.85rem;
+}
+.behavioralChart select {
+  font: inherit;
+  width: 100%;
+  border: 1px solid #bcd1c2;
+  padding: 0.8rem;
+  border-radius: 0.6rem;
+  color: #254d3c;
+  background: #fff;
+}
+.behavioralChart svg {
+  width: 100%;
+  height: auto;
+}
+.behavioralLatest {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.behavioralLatest strong {
+  font-size: 2rem;
+  color: #236146;
+}
+.behavioralLatest time {
+  font-size: 0.85rem;
+  color: #52695f;
+}
+.behavioralChart details {
+  margin-block: 1rem;
+}
+@media (max-width: 850px) {
+  .behavioralHeadlines {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 430px) {
+  .behavioralHeadlines {
+    grid-template-columns: 1fr;
+  }
+}
+.decisionHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  padding-block: 1.4rem 2rem;
+  border-bottom: 1px solid var(--border, #dbe2dc);
+}
+.decisionHero h1 {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  max-width: 100%;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
+  margin-block: 0.5rem 1rem;
+}
+.decisionHero p {
+  max-width: 42rem;
+}
+.decisionHero label {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 220px;
+  font-size: 0.85rem;
+}
+.decisionHero select {
+  padding: 0.85rem 1rem;
+  border: 1px solid #bccfc7;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #153b32;
+  font: inherit;
+}
+.decisionPerspectives {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-block: 1.8rem;
+  align-items: center;
+}
+.decisionPerspectives button,
+.scenarioChoices button,
+.scenarioControls button {
+  font: inherit;
+  font-size: 0.88rem;
+  border: 1px solid #cbd8d1;
+  border-radius: 100px;
+  background: #fff;
+  color: #254b40;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+.decisionPerspectives button[aria-pressed="true"],
+.scenarioChoices button[aria-pressed="true"],
+.scenarioControls button[aria-pressed="true"] {
+  background: #163f33;
+  color: #fff;
+  border-color: #163f33;
+}
+.decisionPerspectives a {
+  margin-inline-start: auto;
+  color: #1c614c;
+  padding: 0.7rem 0;
+}
+.decisionContext {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-block: 2rem 1.5rem;
+}
+.decisionContext h2 {
+  margin-block: 0.3rem 0.7rem;
+}
+.decisionContext p {
+  margin-block: 0.3rem;
+  color: #52695f;
+}
+.decisionMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.decisionMetric {
+  border: 1px solid #dbe4de;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 1.3rem;
+  overflow: hidden;
+}
+.decisionMetricName {
+  font-size: 0.85rem;
+  min-height: 2.7em;
+  color: #355d4d;
+  margin: 0 0 0.9rem;
+}
+.decisionValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+.decisionValue time {
+  font-size: 0.78rem;
+  color: #52695f;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.decisionMetric small {
+  font-size: 0.7rem;
+  color: #52695f;
+}
+.decisionSpark {
+  width: 100%;
+  height: 65px;
+  color: #398667;
+  margin-top: 0.8rem;
+}
+.decisionMetric details {
+  border-top: 1px solid #e4ebe6;
+  padding-top: 0.8rem;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+}
+.decisionMetric summary,
+.decisionScenario summary {
+  cursor: pointer;
+  color: #235f46;
+}
+.decisionMissing {
+  min-height: 6.3rem;
+  font-size: 0.88rem;
+  color: #705a3c;
+}
+.decisionHistory {
+  max-height: 240px;
+  overflow: auto;
+  margin-top: 0.8rem;
+}
+.decisionHistory table,
+.decisionScenario table {
+  width: 100%;
+  font-size: 0.8rem;
+  border-collapse: collapse;
+}
+.decisionHistory td,
+.decisionHistory th,
+.decisionScenario td,
+.decisionScenario th {
+  padding: 0.4rem;
+  text-align: start;
+  border-bottom: 1px solid #e1e7e3;
+}
+.decisionHistory caption {
+  text-align: start;
+  margin-bottom: 0.7rem;
+}
+.decisionReading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-block: 2.5rem 3rem;
+  padding: 1.7rem;
+  background: #ecf2ec;
+  border-radius: 1rem;
+}
+.decisionReading h2 {
+  font-size: 1rem;
+  margin-top: 0;
+}
+.decisionReading p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.decisionScenario {
+  border-top: 1px solid #d2dfd6;
+  padding-block: 2rem;
+  scroll-margin-top: 5rem;
+}
+.decisionScenario header {
+  max-width: 850px;
+}
+.decisionScenario h2 {
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+  margin-block: 0.5rem 1rem;
+}
+.decisionScenario header p {
+  line-height: 1.8;
+}
+.scenarioChoices {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-block: 1.7rem;
+}
+.scenarioChoices button {
+  border-radius: 0.7rem;
+  min-height: 65px;
+  text-align: start;
+}
+.scenarioControls {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.scenarioControls > fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.scenarioResults {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  background: #153f33;
+  color: #fff;
+  border-radius: 1rem;
+  padding: 1.7rem;
+}
+.scenarioResults span {
+  display: block;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  min-height: 3em;
+  color: #d4e4d9;
+}
+.scenarioResults strong {
+  display: block;
+  font-size: 2.3rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  margin-top: 0.6rem;
+}
+.decisionScenario details {
+  padding-block: 1.5rem;
+  max-width: 850px;
+}
+@media (max-width: 1100px) {
+  .decisionMetricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scenarioChoices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 650px) {
+  .decisionHero,
+  .decisionContext {
+    align-items: start;
+    flex-direction: column;
+  }
+  .decisionHero label {
+    width: 100%;
+  }
+  .decisionMetricGrid,
+  .decisionReading {
+    grid-template-columns: 1fr;
+  }
+  .scenarioResults,
+  .scenarioChoices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .decisionPerspectives a {
+    margin-inline-start: 0;
+  }
+  .decisionReading {
+    gap: 1rem;
+    padding: 1.2rem;
+  }
+  .decisionValue {
+    font-size: 2rem;
+  }
+  .scenarioResults {
+    padding: 1.2rem;
+  }
+}
+
+.decisionRoom fieldset {
+  border: 0;
+  padding: 0;
+  margin-inline: 0;
+  min-inline-size: 0;
+}

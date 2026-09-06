@@ -100,6 +100,28 @@ function checkEvidencePrimitives() {
     bom.dependencies.find((dependency) => dependency.ref === "economyos:product")?.dependsOn
       .length === 1,
   );
+  const science = cyclonedxFromPnpmList(
+    [{ path: resolve(repositoryRoot, "services/scientific-worker") }],
+    {
+      generatedAt: "2026-09-06T00:00:00.000Z",
+      lockfileSha256: "c".repeat(64),
+      rootComponent,
+      rootRef: rootComponent["bom-ref"],
+      serialNumber: "urn:uuid:00000000-0000-5000-8000-000000000000",
+    },
+  );
+  const runtimeVersion = read("services/scientific-worker/.python-version").trim();
+  assert.ok(
+    science.components.some(
+      (component) => component.name === "CPython" && component.version === runtimeVersion,
+    ),
+  );
+  assert.deepEqual(
+    science.dependencies.find(
+      (dependency) => dependency.ref === "workspace:services/scientific-worker",
+    )?.dependsOn,
+    [`pkg:generic/cpython@${runtimeVersion}`],
+  );
 }
 
 function checkRepositoryContracts() {
@@ -133,6 +155,10 @@ function checkRepositoryContracts() {
   );
 
   assert.match(workflow, /node-version-file: \.node-version/);
+  assert.match(workflow, /python-version-file: services\/scientific-worker\/\.python-version/);
+  assert.match(workflow, /corepack pnpm test:science/);
+  assert.match(workflow, /corepack pnpm science:verify/);
+  assert.match(workflow, /corepack pnpm test:expansion/);
   assert.match(workflow, /ECONOMYOS_VERIFY_DATABASE: economyos_verify_ci/);
   assert.match(workflow, /ECONOMYOS_BENCHMARK_DATABASE: economyos_verify_ci/);
   assert.match(workflow, /ECONOMYOS_VERIFY_RUN_ID: github-\$\{\{ github\.run_id }}/);

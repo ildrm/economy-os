@@ -91,7 +91,7 @@ describe("ingestion activities", () => {
     const sourceBytes = new TextEncoder().encode(
       '[{"page":"1","pages":"1","per_page":"1000","total":"1","sourceid":"2"},' +
         '[{"countryiso3code":"USA","indicator":{"id":"NY.GDP.MKTP.CD"},' +
-        '"date":"2020","value":123.4500}]]',
+        '"country":{"value":"United States"},"unit":"","obs_status":"","date":"2020","value":123.4500}]]',
     );
     const providerFetch = vi.fn(
       async () =>
@@ -149,6 +149,16 @@ describe("ingestion activities", () => {
       objectStorage,
       repository: repo,
       authorization,
+      observationDefinitions: [
+        {
+          code: "NY.GDP.MKTP.CD",
+          topic: "output",
+          unit: "usd",
+          valueType: "monetary_amount",
+          currency: "USD",
+          indexBase: null,
+        },
+      ],
       clock: () => new Date("2026-08-31T10:00:02Z"),
     });
     const input = workflow();
@@ -197,6 +207,33 @@ describe("ingestion activities", () => {
     })) as AdmissionDecision;
     expect(decision.disposition).toBe("promote");
     expect(decision.results.at(-1)).toMatchObject({ checkCode: "admission", status: "pass" });
+    await expect(
+      environment.run(activities.promote, { workflow: input, landing, decision }),
+    ).rejects.toThrow("not used");
+    expect(repo.promote).toHaveBeenCalledWith(
+      expect.objectContaining({
+        semantics: expect.objectContaining({
+          records: [
+            expect.objectContaining({
+              schemaVersion: 2,
+              vintage: "latest_revised_only",
+              knownAt: null,
+              raw: expect.objectContaining({
+                value: "123.4500",
+                unit: "",
+                sha256: sha256Hex(sourceBytes),
+              }),
+              observation: expect.objectContaining({
+                value: "123.4500",
+                currency: "USD",
+                revision_status: "unknown",
+                is_preliminary: null,
+              }),
+            }),
+          ],
+        }),
+      }),
+    );
 
     const replayedExecution = new MockActivityEnvironment(
       {

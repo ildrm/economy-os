@@ -106,8 +106,8 @@ export function SourcePolicyGuide({ locale }: { locale: Locale }) {
         <summary>{w("Available data and collection gaps", "داده موجود و خلأ گردآوری")}</summary>
         <p>
           {w(
-            "The connected public dataset is World Bank WDI: annual macroeconomic reference series. Direct national consumer-price feeds and Eurostat HICP are not connected yet. HICP will be an additional, separately labelled comparison series; it will not silently replace a national CPI basket.",
-            "مجموعه عمومی متصل، شاخص‌های توسعه جهانی بانک جهانی است: سری مرجع سالانه اقتصاد کلان. جریان مستقیم قیمت مصرف‌کننده از مراکز آمار ملی و HICP یورواستات هنوز متصل نیست. HICP سری مقایسه‌ای اضافی با برچسب مستقل خواهد بود و بی‌صدا جایگزین سبد ملی نمی‌شود.",
+            "Connected public datasets include 80 World Bank WDI annual indicators and ECB Consumer Expectations Survey aggregates for eleven covered countries. Direct national consumer-price feeds and Eurostat HICP are not connected yet. HICP will be an additional, separately labelled comparison series; it will not silently replace a national CPI basket.",
+            "مجموعه‌های عمومی متصل شامل ۸۰ شاخص سالانه بانک جهانی و آماره‌های پیمایش انتظارات مصرف‌کننده بانک مرکزی اروپا برای یازده کشور تحت پوشش هستند. جریان مستقیم قیمت مصرف‌کننده از مراکز آمار ملی و HICP یورواستات هنوز متصل نیست. HICP سری مقایسه‌ای اضافی با برچسب مستقل خواهد بود و بی‌صدا جایگزین سبد ملی نمی‌شود.",
           )}
         </p>
         <p>

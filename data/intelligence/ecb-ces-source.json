@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "ecb-ces",
+    "name": "European Central Bank — Consumer Expectations Survey",
+    "grade": "A",
+    "type": "government",
+    "is_official": true,
+    "country_codes": ["BE", "DE", "ES", "FI", "FR", "IT", "NL", "AT", "GR", "IE", "PT"],
+    "variables": [
+      {
+        "key": "expected-inflation-1y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-inflation-3y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-inflation-5y",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "perceived-inflation",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-uncertainty",
+        "value_type": "rate",
+        "unit": "percentage-points",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-q25",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "inflation-q75",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-home-prices",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-income",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-growth",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-unemployment",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-mortgage-rate",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "perceived-spending",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      },
+      {
+        "key": "expected-spending",
+        "value_type": "rate",
+        "unit": "percent",
+        "frequency": "monthly"
+      }
+    ],
+    "interfaces": ["sdmx", "csv"],
+    "selected_interface": "sdmx",
+    "free_access": true,
+    "review": {
+      "terms_url": "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+      "reviewed_at": "2026-09-06T00:00:00Z",
+      "expires_at": "2027-03-06T00:00:00Z",
+      "automated_access": true,
+      "robots_allowed": false,
+      "commercial_display": true,
+      "non_display": true,
+      "redistribution": true
+    }
+  },
+  "metrics": [
+    {
+      "id": "expected-inflation-1y",
+      "variable": "C1120",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations over the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-inflation-3y",
+      "variable": "C1220",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations 3 years ahead (% change)",
+      "horizonMonths": 36,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-inflation-5y",
+      "variable": "E2020",
+      "denominator": "WM",
+      "titlePrefix": "Inflation expectations 5 years ahead (% change)",
+      "horizonMonths": 60,
+      "unit": "percent"
+    },
+    {
+      "id": "perceived-inflation",
+      "variable": "C1020",
+      "denominator": "WM",
+      "titlePrefix": "Inflation perceptions over the previous 12 months (% change)",
+      "horizonMonths": null,
+      "unit": "percent"
+    },
+    {
+      "id": "inflation-uncertainty",
+      "variable": "C1150_UNCERT",
+      "denominator": "WM",
+      "titlePrefix": "Inflation uncertainty 12 months ahead (probabilistic bins), implied interquartile range",
+      "horizonMonths": 12,
+      "unit": "percentage-points"
+    },
+    {
+      "id": "inflation-q25",
+      "variable": "C1150_EXP",
+      "denominator": "WP25",
+      "titlePrefix": "Inflation expectations 12 months ahead (probabilistic bins), implied mean",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "inflation-q75",
+      "variable": "C1150_EXP",
+      "denominator": "WP75",
+      "titlePrefix": "Inflation expectations 12 months ahead (probabilistic bins), implied mean",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-home-prices",
+      "variable": "C2120",
+      "denominator": "WM",
+      "titlePrefix": "Home price expectations 12 months ahead (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-income",
+      "variable": "C3220",
+      "denominator": "WM",
+      "titlePrefix": "Household income expectations 12 months ahead (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-growth",
+      "variable": "C4020",
+      "denominator": "WM",
+      "titlePrefix": "Economic growth expectations for the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-unemployment",
+      "variable": "C4031",
+      "denominator": "WA",
+      "titlePrefix": "Expected unemployment rate in the next 12 months (%)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-mortgage-rate",
+      "variable": "C5111",
+      "denominator": "WA",
+      "titlePrefix": "Mortgage interest rate expectations 12 months ahead (%)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    },
+    {
+      "id": "perceived-spending",
+      "variable": "C6020",
+      "denominator": "WM",
+      "titlePrefix": "Household spending perceptions over the previous 12 months (% change)",
+      "horizonMonths": null,
+      "unit": "percent"
+    },
+    {
+      "id": "expected-spending",
+      "variable": "C6120",
+      "denominator": "WM",
+      "titlePrefix": "Household spending expectations over the next 12 months (% change)",
+      "horizonMonths": 12,
+      "unit": "percent"
+    }
+  ],
+  "accessScope": "Published aggregate CES statistics only; excludes microdata and authored papers.",
+  "conditions": [
+    "Attribute ECB and link directly to the original data.",
+    "State that source data is available free of charge, including before any subscription payment.",
+    "Identify calculated changes and other modifications.",
+    "Do not imply ECB endorsement."
+  ],
+  "evidence": [
+    "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html",
+    "https://data.ecb.europa.eu/data/datasets/CES"
+  ],
+  "reviewNotes": "Public aggregate data permission reviewed from the ECB copyright conditions on 2026-09-06. Statistical strength is assessed separately; survey weights are applied by the source. Normal observation status A is not interpreted as final."
+}

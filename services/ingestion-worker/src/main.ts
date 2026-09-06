@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import { loadEnvFile } from "node:process";
 import { fileURLToPath } from "node:url";
 
@@ -21,6 +22,9 @@ try {
 }
 
 const config = loadWorkerConfig(process.env);
+const observationDefinitions = JSON.parse(
+  await readFile(new URL("../../../data/public-economy/indicators.json", import.meta.url), "utf8"),
+);
 const pool = new pg.Pool({
   connectionString: config.databaseUrl,
   max: 10,
@@ -62,6 +66,7 @@ try {
         objectStorage,
         repository,
         authorization,
+        observationDefinitions,
       }),
       ...createReleaseNotificationActivities(releaseNotificationRepository),
     },

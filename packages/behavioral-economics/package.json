@@ -9,6 +9,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./decision-support": {
+      "types": "./dist/decision-support.d.ts",
+      "default": "./dist/decision-support.js"
     }
   },
   "scripts": {

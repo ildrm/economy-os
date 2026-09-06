@@ -1,4 +1,5 @@
 export * from "./agents.js";
+export * from "./decision-support.js";
 export * from "./evidence.js";
 export * from "./integration.js";
 export type { BehavioralScope } from "./internals.js";

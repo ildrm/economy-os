@@ -38,7 +38,7 @@ for (const entry of sourceCatalog.entries) {
 assert.equal(manifest.schemaVersion, 1);
 assert.equal(manifest.retrievedAt, provenance.retrievedAt);
 assert.ok(manifest.countries.length >= 190);
-assert.equal(catalog.length, 40);
+assert.ok(catalog.length >= 80, "The documented core must include at least 80 metrics");
 assert.equal(new Set(catalog.map(({ id }) => id)).size, catalog.length);
 assert.equal(new Set(catalog.map(({ code }) => code)).size, catalog.length);
 assert.equal(manifest.countries.length + 1, Object.keys(manifest.files).length);

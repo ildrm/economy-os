@@ -23,13 +23,17 @@ export function WorkbenchShell({
   const advanced = search.get("advanced") === "1";
   const current = pathname.includes("/countries")
     ? "countries"
-    : pathname.endsWith("/compare")
-      ? "compare"
-      : pathname.endsWith("/science")
-        ? "science"
-        : pathname.endsWith("/research")
-          ? "lab"
-          : (search.get("view") ?? "overview");
+    : pathname.endsWith("/decisions")
+      ? "decisions"
+      : pathname.endsWith("/behavioral")
+        ? "behavioral"
+        : pathname.endsWith("/compare")
+          ? "compare"
+          : pathname.endsWith("/science")
+            ? "science"
+            : pathname.endsWith("/research")
+              ? "lab"
+              : (search.get("view") ?? "overview");
   return (
     <div className="workbenchShell publicShell">
       <a className="skipLink" href="#main-content">

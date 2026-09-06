@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { gzipSync } from "node:zlib";
+import { gunzipSync, gzipSync } from "node:zlib";
 import { parseWorldBankDocument } from "../packages/canonical-data/dist/world-bank.js";
 import {
   annualReferenceObservation,
@@ -17,8 +17,36 @@ const rawDirectory = `${root}data/public-economy/raw`;
 const outputDirectory = `${root}apps/web/public/economy`;
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const raw = [];
+const cached = new Map();
+const reuseCache = process.argv.includes("--reuse-cache");
+const stagingDirectory = `${root}.cache/public-economy`;
+await mkdir(stagingDirectory, { recursive: true });
+if (reuseCache) {
+  const previous = JSON.parse(await readFile(`${rawDirectory}/manifest.json`, "utf8"));
+  for (const item of previous.payloads) {
+    const bytes = gunzipSync(await readFile(`${root}${item.path}`));
+    if (hash(bytes) !== item.sha256)
+      throw new Error(`Corrupted retained raw payload: ${item.path}`);
+    cached.set(item.url, { ...item, bytes, document: parseWorldBankDocument(bytes) });
+  }
+}
 
 async function request(url) {
+  // A retained payload keeps its original retrieval instant. Reuse is explicit,
+  // and never represented as a new provider release or a historical vintage.
+  if (cached.has(url)) return cached.get(url);
+  const stagedPath = `${stagingDirectory}/${hash(url)}.json`;
+  if (reuseCache) {
+    try {
+      const item = JSON.parse(await readFile(stagedPath, "utf8"));
+      const bytes = Buffer.from(item.body, "base64");
+      if (item.url !== url || hash(bytes) !== item.sha256)
+        throw new Error("Staged raw response failed integrity validation");
+      return { ...item, bytes, document: parseWorldBankDocument(bytes) };
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+  }
   let lastError;
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
@@ -42,7 +70,24 @@ async function request(url) {
       if (Number(document[0].pages) !== 1 || Number(document[0].total) !== document[1].length) {
         throw new Error(`Incomplete World Bank pagination for ${url}`);
       }
-      return { bytes, document, url, sha256: hash(bytes), retrievedAt: new Date().toISOString() };
+      const result = {
+        bytes,
+        document,
+        url,
+        sha256: hash(bytes),
+        retrievedAt: new Date().toISOString(),
+      };
+      if (reuseCache)
+        await atomicFile(
+          stagedPath,
+          JSON.stringify({
+            url,
+            sha256: result.sha256,
+            retrievedAt: result.retrievedAt,
+            body: bytes.toString("base64"),
+          }),
+        );
+      return result;
     } catch (error) {
       lastError = error;
       if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 500 * (attempt + 1)));

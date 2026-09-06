@@ -11,7 +11,7 @@ test("a visitor sees actual world data and chooses an economic perspective witho
   await page.goto("/en");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Understand the economy");
   await expect(page.locator(".economicFacts")).toContainText("2.92%");
-  await expect(page.locator(".dataCoverage").first()).toContainText("180,656");
+  await expect(page.locator(".dataCoverage").first()).toContainText("336,444");
   await expect(page.locator('input:not([type="range"]):not([type="checkbox"])')).toHaveCount(0);
   await expect(page.getByText(/UUID|true_vintage|systemAt/)).toHaveCount(0);
   await page.getByRole("button", { name: "Business", exact: true }).click();
@@ -45,7 +45,7 @@ test("country directory filters real profiles across the complete provider direc
       .locator(".economicTable")
       .filter({ has: page.locator(".economicValue, .missingValue") })
       .locator("tbody tr"),
-  ).toHaveCount(40);
+  ).toHaveCount(80);
   await expect(
     page.getByRole("heading", { name: "Do these indicators move together?" }),
   ).toBeVisible();
@@ -92,7 +92,7 @@ test("comparison opens with actual matched-year numbers, survives refresh and ex
   await expect(inflation.locator("td").nth(2)).toContainText("Not reported");
   await expect(inflation.locator(".economicValue").first()).toHaveText("42.17%");
   await page.getByRole("combobox", { name: "Economic topic", exact: true }).selectOption("all");
-  await expect(table.locator("tbody tr")).toHaveCount(40);
+  await expect(table.locator("tbody tr")).toHaveCount(80);
   await page.reload();
   await expect(page.getByRole("combobox", { name: "Economic topic", exact: true })).toHaveValue(
     "all",

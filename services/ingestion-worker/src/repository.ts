@@ -1,3 +1,4 @@
+import { assertObservationRecord } from "@economyos/contracts";
 import {
   assertIsoInstant,
   assertSha256,
@@ -19,8 +20,8 @@ import type {
   RecordStageInput,
 } from "@economyos/data-admission/workflow-contracts";
 import type { Pool, PoolClient, QueryResultRow } from "pg";
-
 import type { IngestionAuthorizationGuard } from "./authorization.js";
+import type { PromotionSemantics } from "./observation-semantics.js";
 
 export class IngestionConflictError extends Error {
   constructor(message: string) {
@@ -49,6 +50,7 @@ export interface IngestionRepository {
     readonly completedAt: string;
   }): Promise<void>;
   promote(input: {
+    readonly semantics?: PromotionSemantics;
     readonly workflow: IngestionWorkflowInput;
     readonly landing: LandingResult;
     readonly decision: AdmissionDecision;
@@ -149,6 +151,7 @@ interface ObservationRow extends QueryResultRow {
   readonly value_numeric: string | null;
   readonly missing_reason: string | null;
   readonly status: string;
+  readonly semantics_generation: number;
   readonly parser_version: string;
   readonly transformation_run_id: string;
   readonly recorded_at: Date | string;
@@ -1025,6 +1028,7 @@ export class PgIngestionRepository implements IngestionRepository {
   }
 
   async promote(input: {
+    readonly semantics?: PromotionSemantics;
     readonly workflow: IngestionWorkflowInput;
     readonly landing: LandingResult;
     readonly decision: AdmissionDecision;
@@ -1114,7 +1118,7 @@ export class PgIngestionRepository implements IngestionRepository {
              transformation_run_id
            ) VALUES (
              $1::uuid, $2::uuid, $3::uuid, $4::uuid, $5::timestamptz,
-             $6::timestamptz, $7::numeric, $8, 'final', $9, $10::timestamptz,
+             $6::timestamptz, $7::numeric, $8, 'unknown', $9, $10::timestamptz,
              $11::uuid
            ) ON CONFLICT (tenant_scope, series_id, release_id, period_start, period_end,
              transformation_run_id) DO NOTHING`,
@@ -1134,7 +1138,7 @@ export class PgIngestionRepository implements IngestionRepository {
         );
         const storedObservation = await client.query<ObservationRow>(
           `SELECT id, series_id, release_id, period_start, period_end, value_numeric::text,
-             missing_reason, status, parser_version, transformation_run_id, recorded_at
+             missing_reason, status, semantics_generation, parser_version, transformation_run_id, recorded_at
            FROM evidence.observations
            WHERE tenant_scope = coalesce($1::uuid, '00000000-0000-0000-0000-000000000000'::uuid)
              AND series_id = $2::uuid AND release_id = $3::uuid
@@ -1162,7 +1166,8 @@ export class PgIngestionRepository implements IngestionRepository {
             candidate.value !== null &&
             normalizedDecimal(stored.value_numeric) !== normalizedDecimal(candidate.value)) ||
           stored.missing_reason !== candidate.missingReason ||
-          stored.status !== "final" ||
+          (stored.status !== "unknown" &&
+            !(stored.semantics_generation === 0 && stored.status === "final")) ||
           stored.parser_version !== input.workflow.parser.version ||
           stored.transformation_run_id !== input.decision.transformationRunId ||
           databaseInstant(stored.recorded_at) !== transformationCompletedAt
@@ -1171,6 +1176,69 @@ export class PgIngestionRepository implements IngestionRepository {
         }
       }
       observationIds.sort();
+      if (input.semantics) {
+        const semantics = input.semantics;
+        if (
+          digestJson([...semantics.records.map((record) => record.id)].sort()) !==
+          digestJson(observationIds)
+        )
+          throw new IngestionConflictError(
+            "Semantics do not cover exactly the promoted observations",
+          );
+        await client.query(
+          `INSERT INTO evidence.dataset_semantics_versions
+          (organization_id, dataset_id, version, definition) VALUES ($1::uuid,$2::uuid,$3,$4::jsonb)
+          ON CONFLICT (tenant_scope, dataset_id, version) DO NOTHING`,
+          [
+            input.workflow.organizationId,
+            input.workflow.datasetId,
+            semantics.version,
+            JSON.stringify(semantics.definition),
+          ],
+        );
+        const definitions = await client.query(
+          `SELECT definition FROM evidence.dataset_semantics_versions
+          WHERE organization_id IS NOT DISTINCT FROM $1::uuid AND dataset_id=$2::uuid AND version=$3`,
+          [input.workflow.organizationId, input.workflow.datasetId, semantics.version],
+        );
+        assertSameJson(
+          definitions.rows[0]?.definition,
+          semantics.definition,
+          "Semantics definition changed during replay",
+        );
+        for (const record of semantics.records) {
+          assertObservationRecord(record);
+          if (
+            record.datasetId !== input.workflow.datasetId ||
+            record.semanticsVersion !== semantics.version
+          )
+            throw new IngestionConflictError("Semantics dataset/version binding mismatch");
+          await client.query(
+            `INSERT INTO evidence.observation_semantics
+            (organization_id, observation_id, dataset_id, semantics_version, contract_version, document, raw_payload_sha256)
+            VALUES ($1::uuid,$2::uuid,$3::uuid,$4,2,$5::jsonb,$6)
+            ON CONFLICT (tenant_scope, observation_id, semantics_version) DO NOTHING`,
+            [
+              input.workflow.organizationId,
+              record.id,
+              record.datasetId,
+              semantics.version,
+              JSON.stringify(record),
+              record.raw.sha256,
+            ],
+          );
+          const stored = await client.query(
+            `SELECT document FROM evidence.observation_semantics
+            WHERE organization_id IS NOT DISTINCT FROM $1::uuid AND observation_id=$2::uuid AND semantics_version=$3`,
+            [input.workflow.organizationId, record.id, semantics.version],
+          );
+          assertSameJson(
+            stored.rows[0]?.document,
+            record,
+            "Observation semantics changed during replay",
+          );
+        }
+      }
       const observationSetSha256 = digestJson(observationIds);
       await insertCheckpoint(client, {
         organizationId: input.workflow.organizationId,
@@ -1325,7 +1393,7 @@ export class PgIngestionRepository implements IngestionRepository {
       const transformationCompletedAt = databaseInstant(transformationRow.completed_at);
       const actual = await client.query<ObservationRow>(
         `SELECT id, series_id, release_id, period_start, period_end, value_numeric::text,
-           missing_reason, status, parser_version, transformation_run_id, recorded_at
+           missing_reason, status, semantics_generation, parser_version, transformation_run_id, recorded_at
          FROM evidence.observations
          WHERE transformation_run_id = $1::uuid
          ORDER BY period_start, period_end`,
@@ -1372,7 +1440,8 @@ export class PgIngestionRepository implements IngestionRepository {
             observation.release_id !== input.promotion.releaseId ||
             observation.transformation_run_id !== input.promotion.transformationRunId ||
             observation.parser_version !== input.workflow.parser.version ||
-            observation.status !== "final" ||
+            (observation.status !== "unknown" &&
+              !(observation.semantics_generation === 0 && observation.status === "final")) ||
             databaseInstant(observation.recorded_at) !== transformationCompletedAt ||
             observation.missing_reason !== candidate.missingReason ||
             (observation.value_numeric === null) !== (candidate.value === null) ||

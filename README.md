@@ -6,7 +6,15 @@ The project serves the general public, businesses, economists, analysts, researc
 
 **Status:** the foundation and canonical data platform have passed their declared local acceptance gates. Analytical product phases remain in progress, and the complete product is **not cleared for production release**. Working research kernels and local tests do not establish empirical model validity or production readiness.
 
-The public platform includes **217 economy profiles, 40 World Development Indicators and 180,656 reported annual values for 2000–2025**, retrieved on 6 September 2026. It opens with real world statistics and populated country comparisons. Users select countries, observation years, economic topics and model presets; no technical identifiers or typed numbers are required. Historical charts, source definitions, plain-language comparisons and CSV downloads retain their data provenance.
+The public platform includes **217 economy profiles, 80 World Development Indicators and 336,444 reported annual values for 2000–2025**, retrieved on 6 September 2026. It opens with real world statistics and populated country comparisons. Users select countries, observation years, economic topics and model presets; no technical identifiers or typed numbers are required. Historical charts, source definitions, plain-language comparisons and CSV downloads retain their data provenance.
+
+The [expansion delivery ledger](docs/expansion-delivery.md) records the current implementation and remaining acceptance work. New pages at `/en/intelligence/decisions` and `/en/intelligence/behavioral` add audience-specific country dashboards, ten explicitly hypothetical scenarios, and **9,806 actual ECB Consumer Expectations Survey measurements across eleven covered countries**. The latter includes expectations, perceptions, spending, housing and separately labelled disagreement/individual uncertainty. Controls and explanatory framing support all twelve locales; the older metric definitions still require completion and economic terminology review beyond English/Persian.
+
+The decision page also separates four risk areas with sixteen dated indicators and consecutive-year changes. The [public intelligence API](docs/public-intelligence-api.md) exposes the verified catalog, measurements, comparisons, survey evidence, supported questions, risk indicators and bounded scenarios without opening protected research tables. Forecast probabilities remain explicitly unavailable until appropriate models are approved.
+
+The scientific batch worker uses **Python 3.14.5**, pinned in `services/scientific-worker/.python-version`, with no third-party Python dependencies. Install this version before the full workspace build. `corepack pnpm test:science` checks independent reference calculations; `corepack pnpm science:verify` reproduces eleven retained revised-history baseline evaluations. These artifacts do not approve a forecast model. CI and the unsigned SBOM include this runtime and the deterministic worker archive.
+
+To refresh ECB aggregates, run `corepack pnpm behavioral:refresh`. Both economic and behavioral refresh commands accept `--reuse-cache` for interrupted-job recovery using verified retained bytes and their original retrieval dates; omit it for a fresh provider request. `corepack pnpm data:verify` reparses both published collections offline. The public pages use these approved snapshots; CES has not yet been connected to the governed Temporal/PostgreSQL publication workflow.
 
 The [data-source selection policy](docs/data-source-policy.md) defines official-source priority, ten distinct price types, timing/access requirements, raw provenance and separate currency conversion. Public snapshots and CSV exports validate complete observation metadata. The supplied 87-entry catalog is preserved with pending-review status; catalog entries are not represented as connected feeds.
 
@@ -445,7 +453,7 @@ corepack pnpm db:verify
 corepack pnpm benchmark:db
 ```
 
-The two database variables must match, and the database must not already exist. `db:prepare` records ownership using the run ID. `db:verify` applies all 40 current migrations and runs SQL checks for tenant isolation, RLS, temporal selection, immutability, admission, governance, and domain persistence. Run the benchmark after verification establishes the schema.
+The two database variables must match, and the database must not already exist. `db:prepare` records ownership using the run ID. `db:verify` applies all 41 current migrations and runs SQL checks for tenant isolation, RLS, temporal selection, immutability, admission, governance, and domain persistence. Run the benchmark after verification establishes the schema.
 
 After reviewing the results, clean up in the **same shell with the same exported values**, including after a test failure:
 

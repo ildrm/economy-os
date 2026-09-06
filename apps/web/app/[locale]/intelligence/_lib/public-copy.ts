@@ -1,4 +1,6 @@
 import type { Locale } from "@economyos/i18n";
+import { behavioralText } from "./behavioral-copy";
+import { decisionText } from "./decision-copy";
 import { PUBLIC_DATA } from "./public-economy";
 
 export function publicLanguage(locale: Locale): "en" | "fa" {
@@ -13,6 +15,8 @@ export const PUBLIC_NAV = [
   "overview",
   "countries",
   "compare",
+  "decisions",
+  "behavioral",
   "concepts",
   "science",
   "lab",
@@ -93,13 +97,24 @@ const navLabels: Record<Locale, readonly string[]> = {
 
 export function publicNavLabel(locale: Locale, view: (typeof PUBLIC_NAV)[number]): string {
   if (view === "science") return scienceLabels[locale];
-  const index = PUBLIC_NAV.filter((item) => item !== "science").indexOf(view);
+  if (view === "decisions") return decisionText(locale, "title");
+  if (view === "behavioral") return behavioralText(locale, "title");
+  const index = PUBLIC_NAV.filter(
+    (item) => item !== "science" && item !== "decisions" && item !== "behavioral",
+  ).indexOf(view);
   return navLabels[locale][index] ?? view;
 }
 
 export function publicHref(locale: Locale, view: PublicView): string {
   const root = `/${locale}/intelligence`;
-  if (view === "countries" || view === "compare" || view === "science") return `${root}/${view}`;
+  if (
+    view === "countries" ||
+    view === "compare" ||
+    view === "science" ||
+    view === "decisions" ||
+    view === "behavioral"
+  )
+    return `${root}/${view}`;
   if (view === "lab") return `${root}/research`;
   return `${root}/global${view === "overview" ? "" : `?view=${view}`}`;
 }

@@ -329,6 +329,29 @@ export function cyclonedxFromPnpmList(roots, metadata) {
   }
 
   for (const root of roots) visit(root, metadata.rootRef, true);
+  const scienceRef = "workspace:services/scientific-worker";
+  if (components.has(scienceRef)) {
+    const version = readFileSync(
+      resolve(repositoryRoot, "services/scientific-worker/.python-version"),
+      "utf8",
+    ).trim();
+    if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error("Scientific runtime must be pinned");
+    const runtimeRef = `pkg:generic/cpython@${version}`;
+    components.set(runtimeRef, {
+      type: "application",
+      "bom-ref": runtimeRef,
+      name: "CPython",
+      version,
+      purl: runtimeRef,
+      licenses: [{ license: { id: "PSF-2.0" } }],
+      properties: [
+        { name: "economyos:runtime", value: "scientific-worker" },
+        { name: "economyos:third-party-python-packages", value: "none" },
+      ],
+    });
+    dependencies.get(scienceRef).add(runtimeRef);
+    dependencies.set(runtimeRef, new Set());
+  }
   if (components.size === 0)
     throw new Error("Production SBOM contains no workspace or dependency components");
 

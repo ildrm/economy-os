@@ -121,6 +121,9 @@ export function unitLabel(unit: string, locale: Locale): string {
     index: ["source base = 100", "پایه منبع = ۱۰۰"],
     "local-per-usd": ["local currency / US$", "پول محلی / دلار"],
     "percent-exports": ["% of exports & primary income", "٪ صادرات و درآمد اولیه"],
+    "percentage-points": ["percentage points", "واحد درصد"],
+    "constant-2015-usd": ["constant 2015 US$", "دلار ثابت ۲۰۱۵"],
+    "branches-per-100000-adults": ["branches / 100,000 adults", "شعبه / ۱۰۰ هزار بزرگسال"],
   };
   return labels[unit]?.[locale === "fa" ? 1 : 0] ?? unit;
 }
@@ -144,7 +147,7 @@ export function formatValue(
       ? { style: "currency" as const, currency: "USD", currencyDisplay: "narrowSymbol" as const }
       : {}),
   }).format(number);
-  return indicator.unit.startsWith("percent")
+  return ["percent", "percent-gdp", "percent-exports"].includes(indicator.unit)
     ? `${formatted}${locale === "fa" ? "٪" : "%"}`
     : formatted;
 }
